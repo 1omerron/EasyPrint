@@ -12,7 +12,6 @@ public class FileInfo
     private Path filePath;
     private String userId;
     private String fileId;
-    private String fileType;
 
     /**
      * Constructs FileInfo from an uploaded file

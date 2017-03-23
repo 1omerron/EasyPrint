@@ -10,7 +10,7 @@ public class PageRangeInstruction
     private HashSet<Integer> pages;
     private int printQuantity;
 
-    protected PageRangeInstruction()
+    public PageRangeInstruction()
     {
         pages = new HashSet<>();
         printQuantity = 0;
