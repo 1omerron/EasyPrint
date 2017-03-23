@@ -21,15 +21,7 @@ public class FileInstruction
     {
         ranges = new LinkedList<>();
         this.file = file;
-        ranges.add(new PageRangeInstruction() {
-            /**
-             * @return the number of pages to print
-             */
-            @Override
-            public int getNumberOfPages() {
-                return super.getNumberOfPages();
-            }
-        });
+        ranges.add(new PageRangeInstruction(1, file.getNumberOfPages(),1));
     }
 
     /**

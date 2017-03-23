@@ -12,11 +12,20 @@ public class FileInfo
     private Path filePath;
     private String userId;
     private String fileId;
+    private int numberOfPages;
 
     /**
      * Constructs FileInfo from an uploaded file
      */
     public FileInfo()
     {
+    }
+
+    /**
+     * @return the number of pages in this file
+     */
+    public int getNumberOfPages()
+    {
+        return this.numberOfPages;
     }
 }
