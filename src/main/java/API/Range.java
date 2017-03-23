@@ -7,7 +7,6 @@ import java.util.HashSet;
  */
 public class Range
 {
-   // sdfsdfffffffffffffffffffffffffffffffffffffffffffff
     private HashSet<Integer> pages;
     protected int printQuantity;
 
