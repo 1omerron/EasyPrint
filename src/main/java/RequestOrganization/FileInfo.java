@@ -1,14 +1,12 @@
 package RequestOrganization;
 
-import API.FileType;
-
 import java.io.File;
 import java.nio.file.Path;
 
 /**
  * Created by 1omer on 23/03/2017.
  */
-public class FileInfo implements FileType
+public class FileInfo
 {
     private File file;
     private Path filePath;
@@ -21,14 +19,5 @@ public class FileInfo implements FileType
      */
     public FileInfo()
     {
-    }
-
-    /**
-     * @return the type of the document
-     */
-    @Override
-    public String getFileType()
-    {
-        return fileType;
     }
 }
