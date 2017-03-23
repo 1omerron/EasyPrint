@@ -8,7 +8,7 @@ import java.nio.file.Path;
 /**
  * Created by 1omer on 23/03/2017.
  */
-public class PFile implements FileType
+public class FileInfo implements FileType
 {
     private File file;
     private Path filePath;
@@ -17,9 +17,9 @@ public class PFile implements FileType
     private String fileType;
 
     /**
-     * Construcs PFile from an uploaded file
+     * Construcs FileInfo from an uploaded file
      */
-    public PFile()
+    public FileInfo()
     {
     }
 

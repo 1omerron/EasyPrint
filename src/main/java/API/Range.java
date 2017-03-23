@@ -5,7 +5,7 @@ import java.util.HashSet;
 /**
  * created by 1omerron on 23/03/2017.
  */
-public abstract class Range
+public class Range
 {
     private HashSet<Integer> pages;
     protected int printQuantity;
@@ -27,7 +27,7 @@ public abstract class Range
     /**
      * adds a new page to the pages to print set
      * @param pageNum page number
-     * @return true if the page was succesfully added, and false otherwise (if the page already included)
+     * @return true if the page was successfully added, and false otherwise (if the page already included)
      */
     protected boolean addPage(int pageNum)
     {
