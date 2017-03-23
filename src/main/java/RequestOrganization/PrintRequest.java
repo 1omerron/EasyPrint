@@ -20,6 +20,16 @@ public class PrintRequest
     public PrintRequest(PFile file)
     {
         ranges = new LinkedList<>();
+        this.file = file;
+        ranges.add(new Range() {
+            /**
+             * @return the number of pages to print
+             */
+            @Override
+            public int getNumberOfPages() {
+                return super.getNumberOfPages();
+            }
+        });
     }
 
     /**
@@ -29,6 +39,7 @@ public class PrintRequest
      */
     public PrintRequest(PFile file, Collection<Range> rangesToAdd)
     {
+        this.file=file;
         ranges = new LinkedList<>();
         for(Range range : rangesToAdd)
             this.ranges.add(range);
