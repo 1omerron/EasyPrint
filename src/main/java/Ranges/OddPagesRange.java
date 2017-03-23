@@ -4,6 +4,7 @@ import API.Range;
 
 /**
  * Created by 1omer on 23/03/2017.
+ * Range Type : printing only ODD numbered Pages in the given range (firstPage, lastPage)
  */
 public class OddPagesRange extends Range
 {
