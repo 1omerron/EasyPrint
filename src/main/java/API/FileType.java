@@ -5,5 +5,5 @@ package API;
  */
 public interface FileType
 {
-
+    String getFileType();
 }
