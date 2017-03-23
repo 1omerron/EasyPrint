@@ -1,6 +1,6 @@
 package RequestOrganization;
 
-import API.Range;
+import API.PageRangeInstruction;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -11,7 +11,7 @@ import java.util.LinkedList;
 public class FileInstruction
 {
     private FileInfo file;
-    private LinkedList<Range> ranges;
+    private LinkedList<PageRangeInstruction> ranges;
 
     /**
      * Constructs new FileInstruction with file only
@@ -21,7 +21,7 @@ public class FileInstruction
     {
         ranges = new LinkedList<>();
         this.file = file;
-        ranges.add(new Range() {
+        ranges.add(new PageRangeInstruction() {
             /**
              * @return the number of pages to print
              */
@@ -37,11 +37,11 @@ public class FileInstruction
      * @param file FileInfo from an uploaded file by the user
      * @param rangesToAdd Collection of ranges (printing instructions) which were set by the user
      */
-    public FileInstruction(FileInfo file, Collection<Range> rangesToAdd)
+    public FileInstruction(FileInfo file, Collection<PageRangeInstruction> rangesToAdd)
     {
         this.file=file;
         ranges = new LinkedList<>();
-        for(Range range : rangesToAdd)
+        for(PageRangeInstruction range : rangesToAdd)
             this.ranges.add(range);
     }
 }

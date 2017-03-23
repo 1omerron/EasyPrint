@@ -15,7 +15,7 @@ public class FileInfo
     private String fileType;
 
     /**
-     * Construcs FileInfo from an uploaded file
+     * Constructs FileInfo from an uploaded file
      */
     public FileInfo()
     {

@@ -5,12 +5,12 @@ import java.util.HashSet;
 /**
  * created by 1omerron on 23/03/2017.
  */
-public class Range
+public class PageRangeInstruction
 {
     private HashSet<Integer> pages;
-    protected int printQuantity;
+    private int printQuantity;
 
-    protected Range()
+    protected PageRangeInstruction()
     {
         pages = new HashSet<>();
         printQuantity = 0;
