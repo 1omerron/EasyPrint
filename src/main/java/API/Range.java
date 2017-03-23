@@ -3,7 +3,7 @@ package API;
 import java.util.HashSet;
 
 /**
- * Created by 1omer on 23/03/2017.
+ * omer is gay on 23/03/2017.
  */
 public abstract class Range
 {
