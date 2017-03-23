@@ -3,7 +3,7 @@ package RequestOrganization;
 import API.Range;
 
 import java.util.Collection;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.LinkedList;
 
 /**
  * Created by 1omer on 23/03/2017.
@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class PrintRequest
 {
     private PFile file;
-    private LinkedBlockingDeque<Range> ranges;
+    private LinkedList<Range> ranges;
 
     /**
      * Constructs new PrintRequest with file only
@@ -19,7 +19,7 @@ public class PrintRequest
      */
     public PrintRequest(PFile file)
     {
-        ranges = new LinkedBlockingDeque<>();
+        ranges = new LinkedList<>();
     }
 
     /**
@@ -29,7 +29,7 @@ public class PrintRequest
      */
     public PrintRequest(PFile file, Collection<Range> rangesToAdd)
     {
-        ranges = new LinkedBlockingDeque<>();
+        ranges = new LinkedList<>();
         for(Range range : rangesToAdd)
             this.ranges.add(range);
     }
