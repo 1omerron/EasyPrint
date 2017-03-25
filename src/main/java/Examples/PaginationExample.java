@@ -72,7 +72,7 @@ public class PaginationExample implements Printable, ActionListener {
             return NO_SUCH_PAGE;
         }
 
-        /* User (0,0) is typically outside the imageable area, so we must
+        /* Server.User (0,0) is typically outside the imageable area, so we must
          * translate by the X and Y values in the PageFormat to avoid clipping
          * Since we are drawing text we
          */
