@@ -25,7 +25,7 @@ public abstract class Packet
 
     // Constructors
 
-    public Packet(char code, char operation, byte[] dataArray)
+    /* Package Private */ Packet(char code, char operation, byte[] dataArray)
     {
         this.code = code;
         this.operation = operation;
@@ -39,10 +39,7 @@ public abstract class Packet
         byte[] encoded = new byte[data.length+2];
         encoded[0] = (byte)code;
         encoded[1] = (byte)operation;
-        for(int i=0;i<data.length;i++)
-        {
-            encoded[i+2] = data[i];
-        }
+        System.arraycopy(data, 0, encoded, 2, data.length); // i hope it works - omer
         return encoded;
     }
 
