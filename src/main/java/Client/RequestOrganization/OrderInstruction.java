@@ -24,6 +24,7 @@ public class OrderInstruction
      */
     public OrderInstruction(Collection<FileInstruction> fileInstructions)
     {
+        instructionsList = new LinkedList<>();
         for(FileInstruction instruction : fileInstructions)
         {
             this.instructionsList.add(instruction);

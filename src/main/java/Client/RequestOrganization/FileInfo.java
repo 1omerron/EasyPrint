@@ -17,8 +17,14 @@ public class FileInfo
     /**
      * Constructs FileInfo from an uploaded file
      */
+    //todo remove after testing json
     public FileInfo()
     {
+        file = null;
+        filePath = null;
+        userId = "123";
+        fileId = "json test";
+        numberOfPages = 20;
     }
 
     /**
