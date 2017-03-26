@@ -2,6 +2,13 @@ package Client.API.Packets;
 
 /**
  * Created by 1omer on 26/03/2017.
+ *
+ * Code : a
+ *
+ * Operation Field in Ack represents:
+ * always '0'
+ *
+ * byte[] data = the bytes representing the String value, of the acknowledge number
  */
 public class AckPacket extends Packet
 {

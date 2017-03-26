@@ -12,6 +12,8 @@ package Client.API.Packets;
  * 'd' - disconnect packet
  *
  * Operation field:
+ * a char which is relevant to the instruction of the packet
+ * Example - LogInOut packet - Operation '0' is logout request, Operation '1' is login request
  *
  * Data array:
  * array of bytes representing the data of the packet
@@ -34,6 +36,12 @@ public abstract class Packet
 
     // Encoding
 
+    /**
+     * encodes the packet to a byte array containing:
+     * Packet Code (1 char), Packet Operation (1char) - 0 is default (when not needed), and the array of
+     * bytes representing the data contained in this packet
+     * @return
+     */
     public byte[] encodePacket()
     {
         byte[] encoded = new byte[data.length+2];
