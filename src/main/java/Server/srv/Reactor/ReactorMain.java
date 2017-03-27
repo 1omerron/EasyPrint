@@ -2,6 +2,10 @@
 package Server.srv.Reactor;
 
 
+import Server.srv.NetworkImplementation.ServerEncoderDecoder;
+import Server.srv.NetworkImplementation.ServerProtocol;
+import Server.API.Server;
+
 /**
  * Created by Mika on 13/01/2017.
  */
@@ -14,9 +18,8 @@ public class ReactorMain
         Server.reactor(
                 Runtime.getRuntime().availableProcessors(),
                 port,
-                //7777, //port
-                () -> new TftpProtocol(), //protocol factory
-                TftpEncoderDecoder::new //message encoder decoder factory
+                () -> new ServerProtocol(), //protocol factory
+                () -> new ServerEncoderDecoder() //message encoder decoder factory
         ).serve();
     }
 }

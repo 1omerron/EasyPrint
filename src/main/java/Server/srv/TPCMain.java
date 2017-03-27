@@ -1,5 +1,9 @@
 package Server.srv;
 
+import Server.srv.NetworkImplementation.ServerEncoderDecoder;
+import Server.srv.NetworkImplementation.ServerProtocol;
+import Server.API.Server;
+
 /**
  * Created by Mika on 13/01/2017.
  */
@@ -9,8 +13,8 @@ public class TPCMain
         String port = args[0];
         Server.threadPerClient(
                 Integer.parseInt(port), //port
-                () -> new TftpProtocol(), //protocol factory
-                TftpEncoderDecoder::new //message encoder decoder factory
+                () -> new ServerProtocol(), //protocol factory
+                () -> new ServerEncoderDecoder() //message encoder decoder factory
         ).serve();
 
     }
