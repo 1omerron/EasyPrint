@@ -9,7 +9,19 @@ import java.nio.file.Path;
 public class FileInfo
 {
     private File file;
-    private Path filePath;
+
+    public File getFile() {
+        return file;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
     private String userId;
     private String fileId;
     private int numberOfPages;
@@ -20,8 +32,7 @@ public class FileInfo
     //todo remove after testing json
     public FileInfo()
     {
-        file = null;
-        filePath = null;
+        file = new File("C:\\Users\\nimrod\\order.json");
         userId = "123";
         fileId = "json test";
         numberOfPages = 20;

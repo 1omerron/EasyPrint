@@ -4,18 +4,14 @@ import Client.API.ConnectionHandler;
 import Client.API.MessageEncoderDecoder;
 import Client.API.MessagingProtocol;
 import Client.NetworkImplementation.BlockingConnectionHandler;
-import Client.NetworkImplementation.ClientEncoderDecoder;
-import Client.NetworkImplementation.ClientProtocol;
 import Client.RequestOrganization.FileInfo;
 import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by 1omer on 25/03/2017.
@@ -56,6 +52,7 @@ public class Client
      * convert OrderInstruction to json file.
      * @param order instruction of the user.
      */
+    //todo this function static - maybe we need to change this
     public static void toJson(OrderInstruction order)
     {
         //1. Convert object to JSON string

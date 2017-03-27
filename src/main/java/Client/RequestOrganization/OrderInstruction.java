@@ -19,8 +19,8 @@ public class OrderInstruction
     }
 
     /**
-     * Constructs new OrderInstruction from an existing FileInstruction Collection
-     * @param fileInstructions an existing Collection of FileInstruction
+     * Constructs new OrderInstruction from an existing FileInstructionS Collection
+     * @param fileInstructions an existing Collection of FileInstructionS
      */
     public OrderInstruction(Collection<FileInstruction> fileInstructions)
     {
@@ -32,12 +32,15 @@ public class OrderInstruction
     }
 
     /**
-     * Constructs new OrderInstruction with a single FileInstruction (First File)
+     * Constructs new OrderInstruction with a single FileInstructionS (First File)
      * @param fileInstruction
      */
-    public OrderInstruction(FileInstruction fileInstruction)
-    {
+    public OrderInstruction(FileInstruction fileInstruction) {
         this.instructionsList = new LinkedList<>();
         this.instructionsList.add(fileInstruction);
+    }
+
+    public LinkedList<FileInstruction> getInstructionsList() {
+        return instructionsList;
     }
 }
