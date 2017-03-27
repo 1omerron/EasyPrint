@@ -48,8 +48,7 @@ public class Client
         list.add(file1);
         list.add(file2);
         OrderInstruction order= new OrderInstruction(list);
-        ConvertToZip toZip = new ConvertToZip();
-        toZip.zipFiles(order);
+        new ConvertToZip().zipFiles(order);
         //todo end json tests
         //Client client = new Client("127.0.0.1",7777);
         //client.start(new ClientEncoderDecoder(),new ClientProtocol());

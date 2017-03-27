@@ -1,5 +1,6 @@
 package Server;
 
+import Client.RequestOrganization.FileInfo;
 import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 import com.google.gson.Gson;
@@ -18,7 +19,18 @@ public class fromJson
     public static String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the server
     public static void main(String[] args)
     {
-        OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"
+        FileInfo fileInfo1 = new FileInfo();
+        FileInfo fileInfo2 = new FileInfo();
+        fileInfo1.setFile(new File("C:\\Users\\nimrod\\Desktop\\algo\\algo-zohar.pdf"));
+        fileInfo2.setFile(new File("C:\\Users\\nimrod\\Desktop\\easyPrint\\zohar.pdf"));
+        FileInstruction file1 = new FileInstruction(fileInfo1);
+        FileInstruction file2 = new FileInstruction(fileInfo2);
+        LinkedList<FileInstruction> list = new LinkedList<>();
+        list.add(file1);
+        list.add(file2);
+        OrderInstruction order = new OrderInstruction(list);
+        new UnZip().unZipIt(order);
+        //OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"
         // Client client = new Client("127.0.0.1",7777);
         // client.start(new ClientEncoderDecoder(),new ClientProtocol());
     }
