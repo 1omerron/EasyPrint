@@ -1,11 +1,12 @@
 package Client.NetworkImplementation;
 
 import Client.API.MessageEncoderDecoder;
+import Client.API.Packets.Packet;
 
 /**
  * Created by 1omer on 25/03/2017.
  */
-public class ClientEncoderDecoder implements MessageEncoderDecoder
+public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
 {
     /**
      * add the next byte to the decoding process
@@ -15,7 +16,10 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder
      * @return a message if this byte completes one or null if it doesnt.
      */
     @Override
-    public Object decodeNextByte(byte nextByte) {
+    public Packet decodeNextByte(byte nextByte)
+    {
+        byte[] buffer;
+        // TODO implement
         return null;
     }
 
@@ -26,7 +30,8 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder
      * @return the encoded bytes
      */
     @Override
-    public byte[] encode(Object message) {
-        return new byte[0];
+    public byte[] encode(Packet message)
+    {
+        return message.encodePacket();
     }
 }

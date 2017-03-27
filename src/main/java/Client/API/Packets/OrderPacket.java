@@ -10,10 +10,9 @@ import org.json.simple.JSONObject;
  * Operation Field in Order Packet represents:
  * '0' - JSON file
  * '1' - JSON file NAME
- * '2' - The file to print itself
  * .
  *
- * byte[] data = the bytes representing the information to send (JSON File / Json file Name / File to print)
+ * byte[] data = the bytes representing the information to send (JSON File / Json file Name)
  */
 public class OrderPacket extends Packet
 {
@@ -27,7 +26,7 @@ public class OrderPacket extends Packet
     }
 
     // Constructor with JSON name
-    public OrderPacket(String jsonName)
+    public OrderPacket(String jsonName /* Should be Order-Number.json */)
     {
         super('o','1', jsonName.getBytes());
         information = jsonName;
