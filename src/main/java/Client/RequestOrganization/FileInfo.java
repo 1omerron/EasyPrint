@@ -50,6 +50,7 @@ public class FileInfo
 
     public void setFile(File file) {
         this.file = file;
+        this.fileName = file.getName();
     }
 
     public String getFileName() {

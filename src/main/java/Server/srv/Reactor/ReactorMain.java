@@ -1,3 +1,4 @@
+/*
 
 package Server.srv.Reactor;
 
@@ -6,9 +7,11 @@ import Server.srv.NetworkImplementation.ServerEncoderDecoder;
 import Server.srv.NetworkImplementation.ServerProtocol;
 import Server.API.Server;
 
+*/
 /**
  * Created by Mika on 13/01/2017.
- */
+ *//*
+
 
 public class ReactorMain
 {
@@ -23,3 +26,4 @@ public class ReactorMain
         ).serve();
     }
 }
+*/

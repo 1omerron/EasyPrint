@@ -30,7 +30,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
         this.protocol = protocol;
     }
 
-    @Override
+
     public void run()
     {
         protocol.start();

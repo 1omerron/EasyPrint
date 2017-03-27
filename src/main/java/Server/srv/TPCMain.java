@@ -1,12 +1,15 @@
+/*
 package Server.srv;
 
 import Server.srv.NetworkImplementation.ServerEncoderDecoder;
 import Server.srv.NetworkImplementation.ServerProtocol;
 import Server.API.Server;
 
+*/
 /**
  * Created by Mika on 13/01/2017.
- */
+ *//*
+
 public class TPCMain
 {
     public static void main(String[] args) {
@@ -19,3 +22,4 @@ public class TPCMain
 
     }
 }
+*/

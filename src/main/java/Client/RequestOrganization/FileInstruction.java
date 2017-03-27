@@ -26,6 +26,7 @@ public class FileInstruction
     {
         ranges = new LinkedList<>();
         this.file = file;
+        //todo change
         ranges.add(new PageRangeInstruction(1, file.getNumberOfPages(),1));
     }
 

@@ -1,3 +1,4 @@
+/*
 package Server.srv;
 
 import Server.API.MessageEncoderDecoder;
@@ -36,7 +37,8 @@ public abstract class BaseServer<T> implements Server<T> {
 
             while (!Thread.currentThread().isInterrupted()) {
 
-                Socket clientSock = serverSock.accept();
+                */
+/*Socket clientSock = serverSock.accept();
 
                 BlockingConnectionHandler<T> handler = new BlockingConnectionHandler(
                         clientSock,
@@ -44,7 +46,8 @@ public abstract class BaseServer<T> implements Server<T> {
                         protocolFactory.get(), this.connections);
                 connections.add(handler);
 
-                execute(handler);
+                execute(handler);*//*
+
             }
         } catch (IOException ex) {
         }
@@ -61,3 +64,4 @@ public abstract class BaseServer<T> implements Server<T> {
     protected abstract void execute(BlockingConnectionHandler<T>  handler);
 
 }
+*/

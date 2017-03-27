@@ -1,8 +1,11 @@
+/*
 package Server.API;
 
+*/
 /**
  * Created by Mika on 08/01/2017.
- */
+ *//*
+
 
 import Server.API.ConnectionHandler;
 import Server.API.Server;
@@ -17,4 +20,4 @@ public interface Connections<T> {
 
     void sendAll(Collection<ConnectionHandler> handlers, T msg) throws IOException;
     void disconnect(int connectionId);
-}
+}*/

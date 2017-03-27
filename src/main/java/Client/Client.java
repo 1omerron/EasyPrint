@@ -3,10 +3,13 @@ import Client.API.ConnectionHandler;
 import Client.API.MessageEncoderDecoder;
 import Client.API.MessagingProtocol;
 import Client.NetworkImplementation.BlockingConnectionHandler;
+import Client.RequestOrganization.FileInfo;
+import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.*;
+import java.util.LinkedList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -24,7 +27,7 @@ public class Client
     private void start(MessageEncoderDecoder coder, MessagingProtocol prot)
     {
         this.handler = new BlockingConnectionHandler(serverIp, serverPort, coder, prot);
-        handler.run();
+        //handler.run();todo fix this line
     }
 
     public Client(String ip, int port)
@@ -35,11 +38,21 @@ public class Client
 
     public static void main(String[] args)
     {
+        FileInfo fileInfo1 = new FileInfo();
+        FileInfo fileInfo2 = new FileInfo();
+        fileInfo1.setFile(new File("C:\\Users\\nimrod\\Desktop\\algo\\algo-zohar.pdf"));
+        fileInfo2.setFile(new File("C:\\Users\\nimrod\\Desktop\\easyPrint\\zohar.pdf"));
+        FileInstruction file1 = new FileInstruction(fileInfo1);
+        FileInstruction file2 = new FileInstruction(fileInfo2);
+        LinkedList<FileInstruction> list = new LinkedList<>();
+        list.add(file1);
+        list.add(file2);
+        OrderInstruction order= new OrderInstruction(list);
         ConvertToZip toZip = new ConvertToZip();
-        toZip.zipFiles(pathClient+"\\nimrod",pathClient+"\\nimrod.zip");
+        toZip.zipFiles(order);
         //todo end json tests
-       // Client client = new Client("127.0.0.1",7777);
-       // client.start(new ClientEncoderDecoder(),new ClientProtocol());
+        //Client client = new Client("127.0.0.1",7777);
+        //client.start(new ClientEncoderDecoder(),new ClientProtocol());
     }
 
     /**
