@@ -13,15 +13,23 @@ import org.json.simple.JSONObject;
  * '2' - The file to print itself
  * .
  *
- * byte[] data = the bytes representing the JSON file bytes
+ * byte[] data = the bytes representing the information to send (JSON File / Json file Name / File to print)
  */
 public class OrderPacket extends Packet
 {
-    private JSONObject order;
+    Object information;
 
-    public OrderPacket(char code, char operation, JSONObject orderJsonFile)
+    // Constructor with JSON Object
+    public OrderPacket(JSONObject orderJsonFile)
     {
-        super(code,operation, orderJsonFile.toString().getBytes() /* TODO change the empty string for the super constructor! */);
-        this.order = orderJsonFile;
+        super('o','0', orderJsonFile.toString().getBytes());
+        information = orderJsonFile;
+    }
+
+    // Constructor with JSON name
+    public OrderPacket(String jsonName)
+    {
+        super('o','1', jsonName.getBytes());
+        information = jsonName;
     }
 }
