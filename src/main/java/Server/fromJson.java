@@ -1,6 +1,5 @@
 package Server;
 
-import Client.RequestOrganization.FileInfo;
 import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 import com.google.gson.Gson;
@@ -16,7 +15,7 @@ import java.util.LinkedList;
  */
 public class fromJson
 {
-    public static String pathServer = "C:\\Users\\nimrod\\";//todo check what the path to the files in the server
+    public static String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the server
     public static void main(String[] args)
     {
         OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"

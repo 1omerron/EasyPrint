@@ -1,19 +1,12 @@
 package Client;
-
 import Client.API.ConnectionHandler;
 import Client.API.MessageEncoderDecoder;
 import Client.API.MessagingProtocol;
 import Client.NetworkImplementation.BlockingConnectionHandler;
-import Client.RequestOrganization.FileInfo;
-import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.LinkedList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -22,7 +15,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class Client
 {
-    public static String pathClient = "C:\\Users\\nimrod\\";//todo check what the path to the files in the client
+    public static String pathClient = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the client
     private final String serverIp;
     private final int serverPort;
 
@@ -42,15 +35,8 @@ public class Client
 
     public static void main(String[] args)
     {
-
-        //todo json tests
-        FileInstruction fileIns1 = new FileInstruction(new FileInfo());
-        FileInstruction fileIns2 = new FileInstruction(new FileInfo());
-        LinkedList<FileInstruction> list = new LinkedList<>();
-        list.add(fileIns1);
-        list.add(fileIns2);
-        OrderInstruction ordreIns = new OrderInstruction(list);
-        toJson(ordreIns);
+        ConvertToZip toZip = new ConvertToZip();
+        toZip.zipFiles(pathClient+"\\nimrod",pathClient+"\\nimrod.zip");
         //todo end json tests
        // Client client = new Client("127.0.0.1",7777);
        // client.start(new ClientEncoderDecoder(),new ClientProtocol());
@@ -72,29 +58,36 @@ public class Client
 
         //2. Convert object to JSON string and save into a file directly
         String filename = order.getOrderId();
-        try (FileWriter writer = new FileWriter(pathClient+filename)) {
+        try (FileWriter writer = new FileWriter(pathClient+"\\"+filename+".json")) {
 
             gson.toJson(order, writer);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        zipFile(pathClient+"order.json");
+
     }
-    private static void zipFile(String filePath) {
+    private static void zipFile(String filePath, String filename) {
         try {
-            File file = new File(filePath);
-            String zipFileName = file.getName().concat(".zip");
 
-            FileOutputStream fos = new FileOutputStream(zipFileName);
-            ZipOutputStream zos = new ZipOutputStream(fos);
+            // input file
+            FileInputStream in = new FileInputStream(filePath);
 
-            zos.putNextEntry(new ZipEntry(file.getName()));
+            // out put file
+            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(pathClient+"\\"+filename+".zip"));
 
-            byte[] bytes = Files.readAllBytes(Paths.get(filePath));
-            zos.write(bytes, 0, bytes.length);
-            zos.closeEntry();
-            zos.close();
+            // name the file inside the zip  file
+            out.putNextEntry(new ZipEntry(filename+".json"));
+
+            // buffer size
+            byte[] b = new byte[1024];
+            int count;
+
+            while ((count = in.read(b)) > 0) {
+                out.write(b, 0, count);
+            }
+            out.close();
+            in.close();
 
         } catch (FileNotFoundException ex) {
             System.err.format("The file %s does not exist", filePath);

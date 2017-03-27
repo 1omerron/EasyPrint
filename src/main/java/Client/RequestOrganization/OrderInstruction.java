@@ -26,8 +26,6 @@ public class OrderInstruction
      */
     public OrderInstruction()
     {
-        //todo for testing
-        orderId = "order";
         instructionsList = new LinkedList<>();
     }
 
@@ -42,6 +40,8 @@ public class OrderInstruction
         {
             this.instructionsList.add(instruction);
         }
+        //todo for testing
+        orderId = "order";
     }
 
     /**
