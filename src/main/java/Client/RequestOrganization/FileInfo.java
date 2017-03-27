@@ -51,4 +51,8 @@ public class FileInfo
     public void setFile(File file) {
         this.file = file;
     }
+
+    public String getFileName() {
+        return fileName;
+    }
 }

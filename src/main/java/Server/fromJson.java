@@ -5,6 +5,7 @@ import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -15,6 +16,7 @@ import java.util.LinkedList;
  */
 public class fromJson
 {
+    private static String pathname;//todo check what the path to the files in the server
     public static void main(String[] args)
     {
         OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"
@@ -30,13 +32,19 @@ public class fromJson
     {
         Gson gson = new Gson();
         OrderInstruction orderIns=null;
-        try (Reader reader = new FileReader("C:\\Users\\nimrod\\"+filename)) {
+        try (Reader reader = new FileReader(pathname+filename)) {
 
             // Convert JSON to Java Object
             orderIns = gson.fromJson(reader, OrderInstruction.class);
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        //update the File file in each file info
+        for(FileInstruction fileins: orderIns.getInstructionsList())
+        {
+            filename = fileins.getFile().getFileName();
+            fileins.getFile().setFile(new File(pathname+"\\"+filename));
         }
         return orderIns;
     }
