@@ -12,6 +12,10 @@ import java.io.IOException;
 
 /**
  * Created by 1omer on 27/03/2017.
+ *
+ * Notes:
+ * 1. The class checks if JSON file NAME packet was received before the file itself, in order to create the json file,
+ *    we can move it to the protocol if we want.
  */
 public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
 {
