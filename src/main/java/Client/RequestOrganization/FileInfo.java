@@ -9,6 +9,7 @@ import java.nio.file.Path;
 public class FileInfo
 {
     private File file;
+    private String fileName;
 
     public File getFile() {
         return file;
@@ -36,6 +37,7 @@ public class FileInfo
         userId = "123";
         fileId = "json test";
         numberOfPages = 20;
+        this.fileName = file.getName();
     }
 
     /**
@@ -44,5 +46,9 @@ public class FileInfo
     public int getNumberOfPages()
     {
         return this.numberOfPages;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 }

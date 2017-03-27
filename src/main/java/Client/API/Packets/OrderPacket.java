@@ -8,9 +8,9 @@ import org.json.simple.JSONObject;
  * Code : o (the letter o, not zero)
  *
  * Operation Field in Order Packet represents:
- * '0' - print
- * '1' -
- * .
+ * '0' - JSON file
+ * '1' - JSON file NAME
+ * '2' - The file to print itself
  * .
  *
  * byte[] data = the bytes representing the JSON file bytes
