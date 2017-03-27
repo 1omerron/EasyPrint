@@ -6,13 +6,14 @@
 package Server.srv;
 
 import Server.API.ConnectionHandler;
+import Server.API.Connections;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ConnectionsImpl<T> implements Connections<T>{
+public class ConnectionsImpl<T> implements Connections<T> {
 
 
     private AtomicInteger nextConnectionId= new AtomicInteger(0);
