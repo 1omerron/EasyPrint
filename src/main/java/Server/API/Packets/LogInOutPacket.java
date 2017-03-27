@@ -20,4 +20,8 @@ public class LogInOutPacket extends Packet
         super(code,operation,userName.getBytes());
         this.userName = userName;
     }
+
+    public String getUserName() {
+        return userName;
+    }
 }

@@ -19,4 +19,8 @@ public class AckPacket extends Packet
         super(code,operation,String.valueOf(ackPacketNumber).getBytes());
         this.ackPacketNumber = ackPacketNumber;
     }
+
+    public int getAckPacketNumber() {
+        return ackPacketNumber;
+    }
 }

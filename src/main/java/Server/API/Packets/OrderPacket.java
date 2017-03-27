@@ -1,6 +1,6 @@
 package Server.API.Packets;
 
-import org.json.simple.JSONObject;
+import java.io.File;
 
 /**
  * Created by 1omer on 26/03/2017.
@@ -16,10 +16,10 @@ import org.json.simple.JSONObject;
  */
 public class OrderPacket extends Packet
 {
-    Object information;
+    private Object information;
 
     // Constructor with JSON Object
-    public OrderPacket(JSONObject orderJsonFile)
+    public OrderPacket(File orderJsonFile)
     {
         super('o','0', orderJsonFile.toString().getBytes());
         information = orderJsonFile;
@@ -30,5 +30,9 @@ public class OrderPacket extends Packet
     {
         super('o','1', jsonName.getBytes());
         information = jsonName;
+    }
+
+    public Object getInformation() {
+        return information;
     }
 }
