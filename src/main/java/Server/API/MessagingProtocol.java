@@ -1,4 +1,4 @@
-package Server.api;
+package Server.API;
 
 public interface MessagingProtocol<T> {
  
@@ -13,5 +13,10 @@ public interface MessagingProtocol<T> {
      * @return true if the connection should be terminated
      */
     boolean shouldTerminate();
+
+    /**
+     * starts the protocol
+     */
+    void start();
  
 }

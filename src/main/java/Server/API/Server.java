@@ -1,7 +1,9 @@
-package Server.srv;
+package Server.API;
 
-import Server.api.MessageEncoderDecoder;
-import Server.api.bidi.BidiMessagingProtocol;
+import Server.srv.BaseServer;
+import Server.srv.BlockingConnectionHandler;
+import Server.srv.Reactor.Reactor;
+
 import java.io.Closeable;
 import java.util.function.Supplier;
 
@@ -22,10 +24,11 @@ public interface Server<T> extends Closeable {
      */
     public static <T> Server<T>  threadPerClient(
             int port,
-            Supplier<BidiMessagingProtocol<T>> protocolFactory,
+            Supplier<MessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T> > encoderDecoderFactory) {
 
-        return new BaseServer<T>(port, protocolFactory, encoderDecoderFactory) {
+        return new BaseServer<T>(port, protocolFactory, encoderDecoderFactory)
+        {
             @Override
             protected void execute(BlockingConnectionHandler<T> handler) {
                 new Thread(handler).start();
@@ -46,7 +49,7 @@ public interface Server<T> extends Closeable {
     public static <T> Server<T> reactor(
             int nthreads,
             int port,
-            Supplier<BidiMessagingProtocol<T>> protocolFactory,
+            Supplier<MessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T>> encoderDecoderFactory) {
         return new Reactor<T>(nthreads, port, protocolFactory, encoderDecoderFactory);
     }

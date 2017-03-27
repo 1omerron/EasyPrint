@@ -1,4 +1,4 @@
-package Client.API;
+package Server.API;
 
 import java.io.Closeable;
 import java.io.IOException;

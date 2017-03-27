@@ -1,16 +1,15 @@
-/*
-package Server.impl.TFTPreactor;
-import Server.impl.TftpEncoderDecoder;
-import Server.impl.TftpProtocol;
 
-*/
+package Server.srv.Reactor;
+
+
 /**
  * Created by Mika on 13/01/2017.
- *//*
+ */
 
-public class ReactorMain {
-  
-    public static void main(String[] args) {
+public class ReactorMain
+{
+    public static void main(String[] args)
+    {
         int port = Integer.parseInt(args[0]);
         Server.reactor(
                 Runtime.getRuntime().availableProcessors(),
@@ -21,4 +20,3 @@ public class ReactorMain {
         ).serve();
     }
 }
-*/

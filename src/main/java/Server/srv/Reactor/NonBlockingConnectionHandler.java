@@ -1,15 +1,14 @@
-package Server.srv;
+package Server.srv.Reactor;
 
-import Server.api.MessageEncoderDecoder;
-import Server.api.MessagingProtocol;
-import Server.api.bidi.BidiMessagingProtocol;
+import Server.API.ConnectionHandler;
+import Server.API.MessageEncoderDecoder;
+import Server.API.MessagingProtocol;
+import Server.srv.ConnectionsImpl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedByInterruptException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -18,7 +17,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     private static final int BUFFER_ALLOCATION_SIZE = 1 << 13; //8k
     private static final ConcurrentLinkedQueue<ByteBuffer> BUFFER_POOL = new ConcurrentLinkedQueue<>();
 
-    private final BidiMessagingProtocol<T> protocol;
+    private final MessagingProtocol<T> protocol;
     private final MessageEncoderDecoder<T> encdec;
     private final Queue<ByteBuffer> writeQueue = new ConcurrentLinkedQueue<>();
     private final SocketChannel chan;
@@ -28,7 +27,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
 
     public NonBlockingConnectionHandler(
             MessageEncoderDecoder<T> reader,
-            BidiMessagingProtocol<T> protocol,
+            MessagingProtocol<T> protocol,
             SocketChannel chan,
             Reactor reactor, ConnectionsImpl connections) {
         this.chan = chan;
@@ -40,7 +39,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
 
     public Runnable continueRead() {
         ByteBuffer buf = leaseBuffer();
-        protocol.start(id,connections);
+        protocol.start();
         boolean success = false;
         try {
             success = chan.read(buf) != -1;
@@ -134,7 +133,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     public int getId(){return id;}
 
     @Override
-    public BidiMessagingProtocol<T> getProtocol() {
+    public MessagingProtocol<T> getProtocol() {
         return protocol;
     }
 }

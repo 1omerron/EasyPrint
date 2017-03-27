@@ -1,4 +1,4 @@
-package Server.api;
+package Server.API;
 
 public interface MessageEncoderDecoder<T> {
 

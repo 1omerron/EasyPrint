@@ -5,7 +5,7 @@
  */
 package Server.srv;
 
-import Server.api.bidi.Connections;
+import Server.API.ConnectionHandler;
 
 import java.io.IOException;
 import java.util.Collection;
