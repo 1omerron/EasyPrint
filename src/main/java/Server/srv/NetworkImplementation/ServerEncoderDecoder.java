@@ -6,7 +6,9 @@ import Server.API.Packets.Packet;
 /**
  * Created by 1omer on 27/03/2017.
  */
-public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet> {
+public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
+{
+
     /**
      * add the next byte to the decoding process
      *
