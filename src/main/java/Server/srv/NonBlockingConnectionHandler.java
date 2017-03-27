@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class NonBlockingConnectionHandler<T> implements bgu.spl171.net.srv.ConnectionHandler<T> {
+public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
 
     private static final int BUFFER_ALLOCATION_SIZE = 1 << 13; //8k
     private static final ConcurrentLinkedQueue<ByteBuffer> BUFFER_POOL = new ConcurrentLinkedQueue<>();
@@ -22,15 +22,15 @@ public class NonBlockingConnectionHandler<T> implements bgu.spl171.net.srv.Conne
     private final MessageEncoderDecoder<T> encdec;
     private final Queue<ByteBuffer> writeQueue = new ConcurrentLinkedQueue<>();
     private final SocketChannel chan;
-    private final bgu.spl171.net.srv.Reactor reactor;
-    private bgu.spl171.net.srv.ConnectionsImpl connections;
+    private final Reactor reactor;
+    private ConnectionsImpl connections;
     private int id =-1;
 
     public NonBlockingConnectionHandler(
             MessageEncoderDecoder<T> reader,
             BidiMessagingProtocol<T> protocol,
             SocketChannel chan,
-            bgu.spl171.net.srv.Reactor reactor, bgu.spl171.net.srv.ConnectionsImpl connections) {
+            Reactor reactor, ConnectionsImpl connections) {
         this.chan = chan;
         this.encdec = reader;
         this.protocol = protocol;

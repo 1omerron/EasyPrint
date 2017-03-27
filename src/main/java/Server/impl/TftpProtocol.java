@@ -2,16 +2,14 @@ package Server.impl;
 
 import Server.api.bidi.BidiMessagingProtocol;
 import Server.api.bidi.Connections;
-import bgu.spl171.net.srv.ConnectionHandler;
-import bgu.spl171.net.srv.ConnectionsImpl;
+import Server.srv.ConnectionHandler;
+import Server.srv.ConnectionsImpl;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.locks.Lock;
 
 /**
  * Created by Mika on 09/01/2017.
@@ -67,7 +65,7 @@ public class TftpProtocol<T> implements BidiMessagingProtocol<T> {
                                     helpAckCounter = true;
                                 }
                             } else {
-                                bgu.spl171.net.impl.Error response = new Error((short) 2, "Access violation – File cannot be written, read or deleted.");
+                                Error response = new Error((short) 2, "Access violation – File cannot be written, read or deleted.");
                                 connections.send(connectionId, response);
                             }
                         } else {

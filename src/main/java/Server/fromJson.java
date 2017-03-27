@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class fromJson
 {
-    private static String pathname;//todo check what the path to the files in the server
+    public static String pathServer = "C:\\Users\\nimrod\\";//todo check what the path to the files in the server
     public static void main(String[] args)
     {
         OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"
@@ -32,7 +32,7 @@ public class fromJson
     {
         Gson gson = new Gson();
         OrderInstruction orderIns=null;
-        try (Reader reader = new FileReader(pathname+filename)) {
+        try (Reader reader = new FileReader(pathServer+filename)) {
 
             // Convert JSON to Java Object
             orderIns = gson.fromJson(reader, OrderInstruction.class);
@@ -44,7 +44,7 @@ public class fromJson
         for(FileInstruction fileins: orderIns.getInstructionsList())
         {
             filename = fileins.getFile().getFileName();
-            fileins.getFile().setFile(new File(pathname+"\\"+filename));
+            fileins.getFile().setFile(new File(pathServer+filename));
         }
         return orderIns;
     }

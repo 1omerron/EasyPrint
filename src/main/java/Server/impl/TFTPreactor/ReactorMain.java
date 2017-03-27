@@ -1,14 +1,13 @@
+/*
 package Server.impl.TFTPreactor;
-import bgu.spl171.net.impl.TftpEncoderDecoder;
-import bgu.spl171.net.impl.TftpProtocol;
-import bgu.spl171.net.Server;
+import Server.impl.TftpEncoderDecoder;
+import Server.impl.TftpProtocol;
 
-
-
-
+*/
 /**
  * Created by Mika on 13/01/2017.
- */
+ *//*
+
 public class ReactorMain {
   
     public static void main(String[] args) {
@@ -22,3 +21,4 @@ public class ReactorMain {
         ).serve();
     }
 }
+*/

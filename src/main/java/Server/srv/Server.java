@@ -2,8 +2,6 @@ package Server.srv;
 
 import Server.api.MessageEncoderDecoder;
 import Server.api.bidi.BidiMessagingProtocol;
-import bgu.spl171.net.srv.Reactor;
-
 import java.io.Closeable;
 import java.util.function.Supplier;
 
@@ -27,9 +25,9 @@ public interface Server<T> extends Closeable {
             Supplier<BidiMessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T> > encoderDecoderFactory) {
 
-        return new bgu.spl171.net.srv.BaseServer<T>(port, protocolFactory, encoderDecoderFactory) {
+        return new BaseServer<T>(port, protocolFactory, encoderDecoderFactory) {
             @Override
-            protected void execute(bgu.spl171.net.srv.BlockingConnectionHandler<T> handler) {
+            protected void execute(BlockingConnectionHandler<T> handler) {
                 new Thread(handler).start();
             }
         };

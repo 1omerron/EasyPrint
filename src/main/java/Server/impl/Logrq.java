@@ -1,6 +1,5 @@
 package Server.impl;
 
-import bgu.spl171.net.impl.Packet;
 
 /**
  * Created by Mika on 09/01/2017.

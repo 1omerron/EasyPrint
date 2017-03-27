@@ -8,6 +8,17 @@ import java.util.LinkedList;
  */
 public class OrderInstruction
 {
+    private String orderId;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public static String getPathClient() {
+        return pathClient;
+    }
+
+    public static String pathClient;
     private LinkedList<FileInstruction> instructionsList;
 
     /**
@@ -15,6 +26,8 @@ public class OrderInstruction
      */
     public OrderInstruction()
     {
+        //todo for testing
+        orderId = "order";
         instructionsList = new LinkedList<>();
     }
 
