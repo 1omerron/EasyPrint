@@ -48,6 +48,7 @@ public class Client
         list.add(file1);
         list.add(file2);
         OrderInstruction order= new OrderInstruction(list);
+        toJson(order);
         new ConvertToZip().zipFiles(order);
         //todo end json tests
         //Client client = new Client("127.0.0.1",7777);
@@ -78,33 +79,5 @@ public class Client
             e.printStackTrace();
         }
 
-    }
-    private static void zipFile(String filePath, String filename) {
-        try {
-
-            // input file
-            FileInputStream in = new FileInputStream(filePath);
-
-            // out put file
-            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(pathClient+"\\"+filename+".zip"));
-
-            // name the file inside the zip  file
-            out.putNextEntry(new ZipEntry(filename+".json"));
-
-            // buffer size
-            byte[] b = new byte[1024];
-            int count;
-
-            while ((count = in.read(b)) > 0) {
-                out.write(b, 0, count);
-            }
-            out.close();
-            in.close();
-
-        } catch (FileNotFoundException ex) {
-            System.err.format("The file %s does not exist", filePath);
-        } catch (IOException ex) {
-            System.err.println("I/O error: " + ex);
-        }
     }
 }
