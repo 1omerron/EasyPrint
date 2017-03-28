@@ -1,4 +1,4 @@
-package Client.API;
+package Client.RequestOrganization;
 
 /**
  * created by 1omerron on 23/03/2017.
