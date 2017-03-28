@@ -1,12 +1,14 @@
 package Server.srv.NetworkImplementation;
 
 import Server.API.MessagingProtocol;
+import Server.API.Packets.Packet;
 
 /**
  * Created by 1omer on 27/03/2017.
  */
-public class ServerProtocol implements MessagingProtocol
+public class ServerProtocol implements MessagingProtocol<Packet>
 {
+
     /**
      * process the given message
      *
@@ -14,7 +16,7 @@ public class ServerProtocol implements MessagingProtocol
      * @return the response to send or null if no response is expected by the client
      */
     @Override
-    public Object process(Object msg) {
+    public Packet process(Packet msg) {
         return null;
     }
 

@@ -6,10 +6,9 @@ package Client.API.Packets;
  * Packets Instructions:
  * (the char representing the type of packet is the first letter of the description)
  * 'e' - error packet
- * 'l' - log in packet
+ * 'l' - log in/out packet
  * 'a' - acknowledge packet
  * 'o' - order packet
- * 'd' - disconnect packet
  *
  * Operation field:
  * a char which is relevant to the instruction of the packet
@@ -40,7 +39,7 @@ public abstract class Packet
      * encodes the packet to a byte array containing:
      * Packet Code (1 char), Packet Operation (1char) - 0 is default (when not needed), and the array of
      * bytes representing the data contained in this packet
-     * @return
+     * @return the encoded byte array
      */
     public byte[] encodePacket()
     {
@@ -48,6 +47,7 @@ public abstract class Packet
         encoded[0] = (byte)code;
         encoded[1] = (byte)operation;
         System.arraycopy(data, 0, encoded, 2, data.length); // i hope it works - omer
+        // TODO we might need to add '\0' to the end of the byte array
         return encoded;
     }
 

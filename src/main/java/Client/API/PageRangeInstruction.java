@@ -41,4 +41,12 @@ public class PageRangeInstruction
     {
         this.lastPage = lastPage;
     }
+
+    public int getFirstPage() {
+        return firstPage;
+    }
+
+    public int getLastPage() {
+        return lastPage;
+    }
 }

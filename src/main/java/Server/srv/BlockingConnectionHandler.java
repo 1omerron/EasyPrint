@@ -1,51 +1,51 @@
-/*
 package Server.srv;
 
-
-
-import Server.API.ConnectionHandler;
 import Server.API.MessageEncoderDecoder;
+import Server.API.ConnectionHandler;
+import Server.API.Connections;
+import Server.API.MessagingProtocol;
+import Server.srv.NetworkImplementation.ConnectionsImpl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler<T> {
+public class BlockingConnectionHandler<T> implements Runnable, java.io.Closeable,ConnectionHandler<T> {
 
-    private final BidiMessagingProtocol<T> protocol;
+    private final MessagingProtocol<T> protocol;
     private final MessageEncoderDecoder<T> encdec;
     private final Socket sock;
     private BufferedInputStream in;
     private BufferedOutputStream out;
     private volatile boolean connected = true;
-    private ConnectionsImpl connections;
-    private int id=-1;
 
-    public BlockingConnectionHandler(Socket sock, MessageEncoderDecoder<T> reader, BidiMessagingProtocol<T> protocol,ConnectionsImpl connections) {
+    /* Package Private */ BlockingConnectionHandler(Socket sock, MessageEncoderDecoder<T> reader, MessagingProtocol<T> protocol, Connections<T> connections, int id) {
+
         this.sock = sock;
         this.encdec = reader;
         this.protocol = protocol;
-        this.connections = connections;
+        this.protocol.start();
+        ((ConnectionsImpl<T>)connections).add(id, this); //add the connection to the connections
     }
 
     @Override
     public void run() {
 
-        protocol.start(id,connections);
         try (Socket sock = this.sock) { //just for automatic closing
             int read;
 
             in = new BufferedInputStream(sock.getInputStream());
             out = new BufferedOutputStream(sock.getOutputStream());
 
-            while (!protocol.shouldTerminate()&&connected && (read = in.read()) >= 0) {
+            while (!protocol.shouldTerminate() && connected && (read = in.read()) >= 0)
+            {
                 T nextMessage = encdec.decodeNextByte((byte) read);
-                if (nextMessage != null) {
+                if (nextMessage != null)
+                {
                     protocol.process(nextMessage);
                 }
             }
-
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -54,27 +54,23 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     }
 
     @Override
-    public void close() throws IOException {
-        connections.disconnect(id);
+    public void close() throws IOException
+    {
         connected = false;
         sock.close();
     }
 
     @Override
-    public void send(T msg) throws IOException{
-        out.write(encdec.encode(msg));
-        out.flush();
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId(){return id;}
-
-    @Override
-    public BidiMessagingProtocol<T> getProtocol() {
-        return protocol;
+    public void send(T msg)
+    {
+        if(msg!=null)
+        {
+            try {
+                out.write(encdec.encode(msg));
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
     }
 }
-*/

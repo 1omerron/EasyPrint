@@ -6,7 +6,7 @@ package Client.API.Packets;
  * Code : e
  *
  * Operation Field in ErrorPacket represents the Error Code:
- * '0' -
+ * '0' - illegal packet information received (illegal op-code / illegal operation-code / could not decode packet / etc.)
  * '1' -
  * '2' -
  * '3' -

@@ -1,4 +1,4 @@
-package Server.srv.Reactor;
+package Server.srv;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -11,23 +11,25 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class ActorThreadPool {
+/* Package Private */ class ActorThreadPool {
 
     private final Map<Object, Queue<Runnable>> acts;
     private final ReadWriteLock actsRWLock;
     private final Set<Object> playingNow;
     private final ExecutorService threads;
 
-    public ActorThreadPool(int threads) {
+    /* Package Private */ ActorThreadPool(int threads) {
         this.threads = Executors.newFixedThreadPool(threads);
         acts = new WeakHashMap<>();
         playingNow = ConcurrentHashMap.newKeySet();
         actsRWLock = new ReentrantReadWriteLock();
     }
 
-    public void submit(Object act, Runnable r) {
-        synchronized (act) {
-            if (!playingNow.contains(act)) {
+    /* Package Private */ void submit(Object act, Runnable r) {
+        synchronized (act)
+        {
+            if (!playingNow.contains(act))
+            {
                 playingNow.add(act);
                 execute(r, act);
             } else {
@@ -36,7 +38,7 @@ public class ActorThreadPool {
         }
     }
 
-    public void shutdown() {
+    /* Package Private */ void shutdown() {
         threads.shutdownNow();
     }
 

@@ -1,9 +1,10 @@
-/*
 package Server.srv;
 
+import Server.API.Connections;
 import Server.API.MessageEncoderDecoder;
 import Server.API.MessagingProtocol;
 import Server.API.Server;
+import Server.srv.NetworkImplementation.ConnectionsImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,8 +17,10 @@ public abstract class BaseServer<T> implements Server<T> {
     private final Supplier<MessagingProtocol<T>> protocolFactory;
     private final Supplier<MessageEncoderDecoder<T>> encdecFactory;
     private ServerSocket sock;
-    private ConnectionsImpl connections = new ConnectionsImpl();
-    public BaseServer(
+    private int id;
+    private Connections<T> connections;
+
+    protected BaseServer(
             int port,
             Supplier<MessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T>> encdecFactory) {
@@ -26,6 +29,8 @@ public abstract class BaseServer<T> implements Server<T> {
         this.protocolFactory = protocolFactory;
         this.encdecFactory = encdecFactory;
 		this.sock = null;
+		connections = new ConnectionsImpl<>();
+		id=0;
     }
 
     @Override
@@ -35,33 +40,29 @@ public abstract class BaseServer<T> implements Server<T> {
 
             this.sock = serverSock; //just to be able to close
 
-            while (!Thread.currentThread().isInterrupted()) {
-
-                */
-/*Socket clientSock = serverSock.accept();
-
-                BlockingConnectionHandler<T> handler = new BlockingConnectionHandler(
+            while (!Thread.currentThread().isInterrupted())
+            {
+                Socket clientSock = serverSock.accept();
+                BlockingConnectionHandler<T> handler = new BlockingConnectionHandler<>(
                         clientSock,
                         encdecFactory.get(),
-                        protocolFactory.get(), this.connections);
-                connections.add(handler);
+                        protocolFactory.get(),connections,id);
 
-                execute(handler);*//*
-
+                execute(handler);
+                id++;
             }
         } catch (IOException ex) {
+            ex.printStackTrace();
         }
-
-        System.out.println("server closed!!!");
     }
 
     @Override
-    public void close() throws IOException {
-		if (sock != null)
+    public void close() throws IOException
+    {
+        if (sock != null)
 			sock.close();
     }
 
     protected abstract void execute(BlockingConnectionHandler<T>  handler);
 
 }
-*/

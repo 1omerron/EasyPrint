@@ -1,10 +1,10 @@
-/*
-package Server.srv.Reactor;
+package Server.srv;
 
 import Server.API.ConnectionHandler;
+import Server.API.Connections;
 import Server.API.MessageEncoderDecoder;
 import Server.API.MessagingProtocol;
-import Server.srv.ConnectionsImpl;
+import Server.srv.NetworkImplementation.ConnectionsImpl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -13,34 +13,34 @@ import java.nio.channels.SocketChannel;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
+public class NonBlockingConnectionHandler<T> implements java.io.Closeable,ConnectionHandler<T> {
 
     private static final int BUFFER_ALLOCATION_SIZE = 1 << 13; //8k
     private static final ConcurrentLinkedQueue<ByteBuffer> BUFFER_POOL = new ConcurrentLinkedQueue<>();
-
     private final MessagingProtocol<T> protocol;
     private final MessageEncoderDecoder<T> encdec;
     private final Queue<ByteBuffer> writeQueue = new ConcurrentLinkedQueue<>();
     private final SocketChannel chan;
-    private final Reactor reactor;
-    private ConnectionsImpl connections;
-    private int id =-1;
+    private final Reactor<T> reactor;
+    private Connections<T> connections;
 
-    public NonBlockingConnectionHandler(
+    /* Package Private */ NonBlockingConnectionHandler(
             MessageEncoderDecoder<T> reader,
             MessagingProtocol<T> protocol,
             SocketChannel chan,
-            Reactor reactor, ConnectionsImpl connections) {
+            Reactor<T> reactor, Connections<T> connections, int id) {
         this.chan = chan;
         this.encdec = reader;
         this.protocol = protocol;
         this.reactor = reactor;
+        this.protocol.start();
         this.connections = connections;
+        ((ConnectionsImpl<T>)connections).add(id,this);
     }
 
-    public Runnable continueRead() {
+    /* Package Private */ Runnable continueRead() {
         ByteBuffer buf = leaseBuffer();
-        protocol.start();
+
         boolean success = false;
         try {
             success = chan.read(buf) != -1;
@@ -49,18 +49,21 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
             ex.printStackTrace();
         }
 
-        if (success) {
+        if (success)
+        {
             buf.flip();
-            return () -> {
-                try {
-                    while (buf.hasRemaining()) {
-                        T nextMessage = encdec.decodeNextByte(buf.get());
-                        if (nextMessage != null) {
+            return () ->
+            {
+                try
+                {
+                    while (buf.hasRemaining())
+                    {
+                        T nextMessage =  encdec.decodeNextByte(buf.get());
+                        if (nextMessage != null)
+                        {
                             protocol.process(nextMessage);
                         }
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 } finally {
                     releaseBuffer(buf);
                 }
@@ -85,7 +88,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
         return !chan.isOpen();
     }
 
-    public void continueWrite() {
+    /* Package Private */ void continueWrite() {
         while (!writeQueue.isEmpty()) {
             try {
                 ByteBuffer top = writeQueue.peek();
@@ -121,21 +124,17 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
         BUFFER_POOL.add(buff);
     }
 
+    /**
+     * sends the msg T to the client using Connection object
+     * @param msg message to be sent
+     */
     @Override
-    public void send(T msg) throws IOException{
-        writeQueue.add(ByteBuffer.wrap(encdec.encode(msg)));
-        reactor.updateInterestedOps(chan, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId(){return id;}
-
-    @Override
-    public MessagingProtocol<T> getProtocol() {
-        return protocol;
+    public void send(T msg)
+    {
+        if(msg!=null)
+        {
+            writeQueue.add(ByteBuffer.wrap(encdec.encode(msg)));
+            reactor.updateInterestedOps(chan, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+        }
     }
 }
-*/
