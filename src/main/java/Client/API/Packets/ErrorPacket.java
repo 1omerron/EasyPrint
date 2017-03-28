@@ -7,7 +7,7 @@ package Client.API.Packets;
  *
  * Operation Field in ErrorPacket represents the Error Code:
  * '0' - illegal packet information received (illegal op-code / illegal operation-code / could not decode packet / etc.)
- * '1' -
+ * '1' - username already exists (for login request) / username does not exists (for logout request)
  * '2' -
  * '3' -
  * .

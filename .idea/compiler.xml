@@ -11,6 +11,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="EasyPrint" target="1.8" />
+      <module name="GUItry" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

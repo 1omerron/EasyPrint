@@ -18,7 +18,7 @@ public class OrderPacket extends Packet
 {
     private Object information;
 
-    // Constructor with JSON Object
+    // Constructor with JSON Object / Zipped File
     public OrderPacket(File file)
     {
         super('o','0', file.toString().getBytes());
