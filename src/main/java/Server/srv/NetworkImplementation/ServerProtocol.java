@@ -4,18 +4,31 @@ import Server.API.Connections;
 import Server.API.MessagingProtocol;
 import Server.API.Packets.AckPacket;
 import Server.API.Packets.ErrorPacket;
+import Server.API.Packets.OrderPacket;
 import Server.API.Packets.Packet;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by 1omer on 27/03/2017.
  */
 public class ServerProtocol implements MessagingProtocol<Packet>
 {
+    public static String filesPath = "path to save zipped files and json files";
+    // TODO make this path in 1 class instead of every class
+
     private boolean shouldTerminate;
 
     private char opCode;
     private char operation;
     private Packet toReturn;
+    private int orderPartsReceived = 0;
+
+    private String jsonFileName;
 
     /**
      * process the given message
@@ -48,7 +61,7 @@ public class ServerProtocol implements MessagingProtocol<Packet>
             }
             case 'o': // order packet
             {
-                toReturn = handleOrder();
+                toReturn = handleOrder((OrderPacket)msg);
                 return toReturn;
             }
             default: // wrong op code
@@ -60,29 +73,54 @@ public class ServerProtocol implements MessagingProtocol<Packet>
 
     /**
      * handles order packet
+     * the encoder decoder checks that the first packet is the json file name
      * @return packet to return, or null if no answer needed
      */
-    private Packet handleOrder()
+    private Packet handleOrder(OrderPacket msg)
     {
         switch (operation)
         {
-            case '0':
+            case '0': // JSON file
             {
-
+                Path existingFilePath = ((File)(msg.getInformation())).toPath();
+                Path targetLocation = Paths.get(filesPath);
+                try {
+                    // MOVES THE ORIGINAL FILE TO THE FILES FOLDER!
+                    Files.move(existingFilePath, targetLocation);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                orderPartsReceived++;
+                break;
             }
-            case '1':
+            case '1': // JSON file name - COMES FIRST
             {
-
+                jsonFileName = (String) msg.getInformation();
+                orderPartsReceived++;
+                break;
             }
-            case '2':
+            case '2': // Zipped file
             {
-
+                Path existingFilePath = ((File)(msg.getInformation())).toPath();
+                Path targetLocation = Paths.get(filesPath);
+                try {
+                    // MOVES THE ORIGINAL FILE TO THE FILES FOLDER!
+                    Files.move(existingFilePath, targetLocation);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                orderPartsReceived++;
+                break;
             }
             default:
             {
-                return new ErrorPacket('e', return new ErrorPacket('e', '0', "Incorrect Operation Code In Order Packet");
+                return new ErrorPacket('e', '0', "Incorrect Operation Code In Order Packet");
             }
         }
+        toReturn = new AckPacket('a', '0', orderPartsReceived);
+        if(orderPartsReceived==3)
+            orderPartsReceived=0;
+        return toReturn;
     }
 
     /**
@@ -91,6 +129,7 @@ public class ServerProtocol implements MessagingProtocol<Packet>
      */
     private Packet handleAck()
     {
+        // TODO implement if needed
         return null;
     }
 

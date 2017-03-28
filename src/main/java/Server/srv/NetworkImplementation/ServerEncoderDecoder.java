@@ -1,7 +1,10 @@
 package Server.srv.NetworkImplementation;
 
-import Server.API.MessageEncoderDecoder;
-import Server.API.Packets.*;
+import Client.API.MessageEncoderDecoder;
+import Server.API.Packets.AckPacket;
+import Server.API.Packets.LogInOutPacket;
+import Server.API.Packets.OrderPacket;
+import Server.API.Packets.Packet;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -77,7 +80,9 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
                 {
                     reset();
                     jsonFileName = null;
-                    return new ErrorPacket('e','0', "Wrong Op-Code Received From Decoded Packet");
+                    throw new RuntimeException("ServerEncDec >> decoderNextByte >> Wrong Op Code");
+                    // TODO handle wrong op code - return error message
+                    // break;
                 }
             }
         }
@@ -98,7 +103,8 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
             {
                 received++;
                 if(jsonFileName==null)
-                    return new ErrorPacket('e','0',"Can't Open JSON without getting File Name Before");
+                    throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
+                // TODO handle - send error packet
                 else // JSON file name was received
                 {
                     try {
@@ -111,8 +117,10 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
                         e.printStackTrace();
                     }
                     finally {
-                        if(received==3)
-                            jsonFileName=null;
+                        if(received==3) {
+                            jsonFileName = null;
+                            received = 0;
+                        }
                     }
                 }
             }
@@ -121,15 +129,18 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
                 received++;
                 jsonFileName = new String(buffer, 2, index-2);
                 toReturn = new OrderPacket(jsonFileName);
-                if(received==3)
-                    jsonFileName=null;
+                if(received==3) {
+                    jsonFileName = null;
+                    received = 0;
+                }
                 return toReturn;
             }
             case '2':
             {
                 received++;
                 if(jsonFileName==null)
-                    return new ErrorPacket('e','0',"Can't Open JSON without getting File Name Before");
+                    throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
+                    // TODO handle - send error packet
                 else // JSON file name was received
                 {
                     try {
@@ -142,14 +153,18 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
                         e.printStackTrace();
                     }
                     finally {
-                        if(received==3)
-                            jsonFileName=null;
+                        if(received==3) {
+                            jsonFileName = null;
+                            received = 0;
+                        }
                     }
                 }
             }
             default:
             {
-                return new ErrorPacket('e','0',"Illegal Operation Code of Order Packet");
+                throw new RuntimeException("ServerEncDec >> decodeOrder >> Illegal Operation Code");
+                // TODO handle illegal operation code - return error packet
+                // break;
             }
         }
     }
