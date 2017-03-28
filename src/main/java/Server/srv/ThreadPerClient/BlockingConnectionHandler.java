@@ -1,4 +1,4 @@
-package Server.srv;
+package Server.srv.ThreadPerClient;
 
 import Server.API.MessageEncoderDecoder;
 import Server.API.ConnectionHandler;

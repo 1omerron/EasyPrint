@@ -9,7 +9,6 @@ import Server.API.Packets.Packet;
  */
 public class ServerProtocol implements MessagingProtocol<Packet>
 {
-
     /**
      * process the given message
      * @param msg the received message

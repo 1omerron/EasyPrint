@@ -1,4 +1,4 @@
-package Server.srv;
+package Server.srv.Reactor;
 
 import java.util.LinkedList;
 import java.util.Map;

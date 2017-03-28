@@ -40,4 +40,12 @@ public class Client<T>
         serverPort = port;
         start(new ClientEncoderDecoder(),new ClientProtocol());
     }
+
+    public static void main(String[] args)
+    {
+        /* Checking Client Only*/
+
+        Client client = new Client("192.168.1.15", 7777);
+        System.out.println("Client >> Main >> passed new Client Line");
+    }
 }

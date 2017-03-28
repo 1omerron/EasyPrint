@@ -1,6 +1,6 @@
 package Server.srv.NetworkImplementation;
 
-import Client.API.MessageEncoderDecoder;
+import Server.API.MessageEncoderDecoder;
 import Server.API.Packets.*;
 
 import java.io.File;
