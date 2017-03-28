@@ -18,8 +18,9 @@ import java.nio.file.Paths;
  */
 public class ServerProtocol implements MessagingProtocol<Packet>
 {
-    public static String filesPath = "path to save zipped files and json files";
-    // TODO make this path in 1 class instead of every class
+    public static String filesPath = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles";
+    // TODO change to Client files directory
+    // TODO make it somewhere static so every class will use this path
 
     private boolean shouldTerminate;
 
@@ -146,6 +147,7 @@ public class ServerProtocol implements MessagingProtocol<Packet>
                 if(opCode=='l' /* TODO check if the username exists in the database */)
                 {
                     // TODO remove the username from the database
+                    shouldTerminate = true;
                     return new AckPacket('a', '0', 0);
                 }
                 else

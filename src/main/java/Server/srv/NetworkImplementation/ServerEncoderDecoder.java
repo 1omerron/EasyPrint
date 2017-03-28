@@ -19,7 +19,9 @@ import java.io.IOException;
  */
 public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
 {
-    private static final String JsonFilesDirectory = "."+ File.separator +"Jsons"; // TODO change to required directory
+    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles";
+    // TODO change to Client files directory
+    // TODO make it somewhere static so every class will use this path
 
     // general variables
     private final int BUFFER_SIZE = 1024;

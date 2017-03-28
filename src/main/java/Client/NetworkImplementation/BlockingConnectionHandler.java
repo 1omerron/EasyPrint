@@ -4,13 +4,11 @@ import Client.API.ConnectionHandler;
 import Client.API.MessageEncoderDecoder;
 import Client.API.MessagingProtocol;
 
-import java.io.IOException;
+import java.io.*;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.net.Socket;
 
-public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler<T>
+public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler<T>, Closeable
 {
     private final MessagingProtocol<T> protocol;
     private final MessageEncoderDecoder<T> encdec;
@@ -24,10 +22,31 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
         this.socket = sock;
         this.encdec = reader;
         this.protocol = protocol;
-        this.protocol.start();
+        this.protocol.start(this); // using this in the constructor should do something?
     }
 
+    public void sendOrder(File jsonObject, String jsonFileName, File zippedFolder)
+    {
+        int read;
+        try {
+            in = new BufferedInputStream(socket.getInputStream());
+            out = new BufferedOutputStream(socket.getOutputStream());
 
+            ((ClientProtocol)protocol).setAndSendOrder(jsonObject, jsonFileName, zippedFolder);
+            while (!protocol.shouldTerminate() && connected && (read = in.read()) >= 0)
+            {
+                T nextMessage = encdec.decodeNextByte((byte) read);
+                if (nextMessage != null) {
+                    protocol.process(nextMessage);
+                }
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException("BlockingConnectionHandler >> run() >> new Socket >> IOException");
+        }
+    }
+
+    // WE DONT USE THE FUNCTION RUN
     public void run()
     {
         int read;
@@ -44,7 +63,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
             }
         }
         catch (IOException e) {
-            throw new RuntimeException("BlockingConnectionHandler >> run() >> new Socket >> IOExceptio");
+            throw new RuntimeException("BlockingConnectionHandler >> run() >> new Socket >> IOException");
         }
     }
 
