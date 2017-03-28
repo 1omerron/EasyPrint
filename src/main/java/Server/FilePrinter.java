@@ -7,10 +7,9 @@ import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.MediaSize;
-import javax.print.attribute.standard.Sides;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import javax.print.event.PrintJobAdapter;
+import javax.print.event.PrintJobEvent;
+import java.io.*;
 
 
 public class FilePrinter {
@@ -18,8 +17,9 @@ public class FilePrinter {
         // Input the file
         FileInputStream textstream = null;
         try {
-            textstream = new FileInputStream("card.txt");
+            textstream = new FileInputStream("C:\\Users\\Mika\\IdeaProjects\\EasyPrint\\src\\mika.txt");
         } catch (FileNotFoundException ffne) {
+            System.out.println("exception 1");
         }
         if (textstream == null) {
             System.out.println("is null");
@@ -33,9 +33,9 @@ public class FilePrinter {
         Doc myDoc = new SimpleDoc(textstream, myFormat, null);
 // Build a set of attributes
         PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-        aset.add(new Copies(5));
-        aset.add(MediaSize.ISO.A4);
-        aset.add(Sides.DUPLEX);
+        aset.add(new Copies(1));
+        //aset.add(MediaSize.ISO.A4);
+        //aset.add(Sides.DUPLEX);
 // discover the printers that can print the format according to the
 // instructions in the attribute set
         PrintService[] services =
@@ -48,11 +48,67 @@ public class FilePrinter {
 
             }
 
-            DocPrintJob job = services[1].createPrintJob();
+            DocPrintJob job = services[0].createPrintJob();
+            PrintJobWatcher pjw = new PrintJobWatcher(job);
+
             try {
-                job.print(myDoc, null);
-            } catch (PrintException pe) {}
+                job.print(myDoc, aset);
+                pjw.waitForDone();
+                textstream.close();
+            } catch (PrintException pe) {
+                System.out.println("exception 2");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        InputStream ff = new ByteArrayInputStream("\f".getBytes());
+        Doc docff = new SimpleDoc(ff, myFormat, null);
+        DocPrintJob jobff = services[0].createPrintJob();
+        try {
+            jobff.print(docff, null);
+        } catch (PrintException e) {
+            e.printStackTrace();
         }
     }
 }
 
+class PrintJobWatcher {
+    boolean done = false;
+
+    PrintJobWatcher(DocPrintJob job) {
+        job.addPrintJobListener(new PrintJobAdapter() {
+            public void printJobCanceled(PrintJobEvent pje) {
+                allDone();
+            }
+
+            public void printJobCompleted(PrintJobEvent pje) {
+                allDone();
+            }
+
+            public void printJobFailed(PrintJobEvent pje) {
+                allDone();
+            }
+
+            public void printJobNoMoreEvents(PrintJobEvent pje) {
+                allDone();
+            }
+
+            void allDone() {
+                synchronized (PrintJobWatcher.this) {
+                    done = true;
+                    System.out.println("Printing done ...");
+                    PrintJobWatcher.this.notify();
+                }
+            }
+        });
+    }
+
+    public synchronized void waitForDone() {
+        try {
+            while (!done) {
+                wait();
+            }
+        } catch (InterruptedException e) {
+        }
+    }
+}

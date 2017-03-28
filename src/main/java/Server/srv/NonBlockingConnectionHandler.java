@@ -33,7 +33,7 @@ public class NonBlockingConnectionHandler<T> implements java.io.Closeable,Connec
         this.encdec = reader;
         this.protocol = protocol;
         this.reactor = reactor;
-        this.protocol.start();
+        this.protocol.start(connections);
         this.connections = connections;
         ((ConnectionsImpl<T>)connections).add(id,this);
     }
