@@ -14,8 +14,8 @@ import java.io.IOException;
  * Created by 1omer on 27/03/2017.
  *
  * Notes:
- * 1. The class checks if JSON file NAME packet was received before the file itself, in order to create the json file,
- *    we can move it to the protocol if we want.
+ * 1. The class checks if JSON file NAME packet was received before the Zipped file itself and before the json file,
+ * in order to create the files in the server's directory. we can move it to the protocol if we want.
  */
 public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
 {
@@ -31,6 +31,7 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
     private char opCode;
     private char operationCode;
     private String jsonFileName = null;
+    private int received=0;
 
     /**
      * add the next byte to the decoding process
@@ -100,6 +101,7 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
         {
             case '0':
             {
+                received++;
                 if(jsonFileName==null)
                     throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
                 // TODO handle - send error packet
@@ -115,13 +117,42 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
                         e.printStackTrace();
                     }
                     finally {
-                        jsonFileName = null;
+                        if(received==3)
+                            jsonFileName=null;
                     }
                 }
             }
             case '1':
             {
+                received++;
                 jsonFileName = new String(buffer, 2, index-2);
+                toReturn = new OrderPacket(jsonFileName);
+                if(received==3)
+                    jsonFileName=null;
+                return toReturn;
+            }
+            case '2':
+            {
+                received++;
+                if(jsonFileName==null)
+                    throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
+                    // TODO handle - send error packet
+                else // JSON file name was received
+                {
+                    try {
+                        FileOutputStream stream = new FileOutputStream(JsonFilesDirectory + File.separator + jsonFileName + ".zip");
+                        stream.write(buffer, 2, index - 2);
+                        stream.flush();
+                        stream.close();
+                        return new OrderPacket(new File(JsonFilesDirectory + File.separator + jsonFileName + ".zip"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        if(received==3)
+                            jsonFileName=null;
+                    }
+                }
             }
             default:
             {
