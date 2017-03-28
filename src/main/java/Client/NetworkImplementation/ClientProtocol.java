@@ -1,18 +1,19 @@
 package Client.NetworkImplementation;
 
 import Client.API.MessagingProtocol;
+import Client.API.Packets.Packet;
 
 /**
  * Created by 1omer on 25/03/2017.
  */
-public class ClientProtocol implements MessagingProtocol
+public class ClientProtocol implements MessagingProtocol<Packet>
 {
-    /**
-     * starts the protocol
-     */
-    public void start()
-    {
-    }
+    private boolean shouldTerminate = false;
+
+    // processing variables
+    private char op;
+    private char operation;
+    // private int connectionId;
 
     /**
      * process the given message
@@ -21,7 +22,15 @@ public class ClientProtocol implements MessagingProtocol
      * @return the response to send or null if no response is expected by the client
      */
     @Override
-    public Object process(Object msg) {
+    public Packet process(Packet msg)
+    {
+        this.op = msg.getCode();
+        this.op = msg.getOperation();
+        if(op=='e')
+        {
+
+        }
+
         return null;
     }
 
@@ -30,6 +39,15 @@ public class ClientProtocol implements MessagingProtocol
      */
     @Override
     public boolean shouldTerminate() {
-        return false;
+        return shouldTerminate;
+    }
+
+    /**
+     * starts the protocol
+     */
+    @Override
+    public void start()
+    {
+
     }
 }

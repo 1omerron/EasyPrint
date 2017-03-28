@@ -25,7 +25,7 @@ public class BlockingConnectionHandler<T> implements Runnable, java.io.Closeable
         this.sock = sock;
         this.encdec = reader;
         this.protocol = protocol;
-        this.protocol.start();
+        this.protocol.start(connections);
         ((ConnectionsImpl<T>)connections).add(id, this); //add the connection to the connections
     }
 

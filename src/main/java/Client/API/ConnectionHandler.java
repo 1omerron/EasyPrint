@@ -8,8 +8,5 @@ import java.io.IOException;
  */
 public interface ConnectionHandler<T> extends Closeable
 {
-    void send(T msg) throws IOException;
-    void setId(int id);
-    int getId();
-    MessagingProtocol getProtocol();
+    void send(T msg) ;
 }

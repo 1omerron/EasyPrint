@@ -1,5 +1,6 @@
 package Server.srv.NetworkImplementation;
 
+import Server.API.Connections;
 import Server.API.MessagingProtocol;
 import Server.API.Packets.Packet;
 
@@ -11,7 +12,6 @@ public class ServerProtocol implements MessagingProtocol<Packet>
 
     /**
      * process the given message
-     *
      * @param msg the received message
      * @return the response to send or null if no response is expected by the client
      */
@@ -30,9 +30,11 @@ public class ServerProtocol implements MessagingProtocol<Packet>
 
     /**
      * starts the protocol
+     * @param connections handles the clients connected to the server
      */
     @Override
-    public void start() {
+    public void start(Connections connections)
+    {
 
     }
 }

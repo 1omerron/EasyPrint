@@ -14,29 +14,24 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
 {
     private final MessagingProtocol<T> protocol;
     private final MessageEncoderDecoder<T> encdec;
-    private String serverIp;
-    private int serverPort;
     private BufferedInputStream in;
     private BufferedOutputStream out;
     private volatile boolean connected = true;
-    private int id=-1;
     private Socket socket;
 
-    public BlockingConnectionHandler(String serverIp, int port, MessageEncoderDecoder<T> reader, MessagingProtocol<T> protocol)
-    {
-        this.serverIp = serverIp;
-        this.serverPort = port;
+    public BlockingConnectionHandler(Socket sock, MessageEncoderDecoder<T> reader, MessagingProtocol<T> protocol) {
+
+        this.socket = sock;
         this.encdec = reader;
         this.protocol = protocol;
+        this.protocol.start();
     }
 
 
     public void run()
     {
-        protocol.start();
         int read;
         try {
-            this.socket = new Socket(serverIp, serverPort);
             in = new BufferedInputStream(socket.getInputStream());
             out = new BufferedOutputStream(socket.getOutputStream());
 
@@ -61,21 +56,13 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     }
 
     @Override
-    public void send(T msg) throws IOException
+    public void send(T msg)
     {
-        out.write(encdec.encode(msg));
-        out.flush();
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId(){return id;}
-
-    @Override
-    public MessagingProtocol<T> getProtocol()
-    {
-        return protocol;
+        try {
+            out.write(encdec.encode(msg));
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

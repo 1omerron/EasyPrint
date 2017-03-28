@@ -9,14 +9,17 @@ import Client.RequestOrganization.OrderInstruction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.*;
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
  * Created by 1omer on 25/03/2017.
+ *
+ * Client does not use Connections Interface so its connection handler is a bit changed
  */
-public class Client
+public class Client<T>
 {
     public static String pathClient = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the client
     private final String serverIp;
@@ -24,9 +27,10 @@ public class Client
 
     private ConnectionHandler handler;
 
-    private void start(MessageEncoderDecoder coder, MessagingProtocol prot)
+    private void start(MessageEncoderDecoder<T> coder, MessagingProtocol<T> prot) throws IOException
     {
-        this.handler = new BlockingConnectionHandler(serverIp, serverPort, coder, prot);
+        Socket socket = new Socket(serverIp, serverPort);
+        this.handler = new BlockingConnectionHandler<>(socket, coder, prot);
         //handler.run();todo fix this line
     }
 
@@ -38,6 +42,11 @@ public class Client
 
     public static void main(String[] args)
     {
+        /*
+           Client client = new Client("127.0.0.1",7777);
+           client.start(new ClientEncoderDecoder(),new ClientProtocol());
+         */
+
         FileInfo fileInfo1 = new FileInfo();
         FileInfo fileInfo2 = new FileInfo();
         fileInfo1.setFile(new File("C:\\Users\\nimrod\\Desktop\\algo\\algo-zohar.pdf"));
@@ -51,8 +60,6 @@ public class Client
         toJson(order);
         new ConvertToZip().zipFiles(order);
         //todo end json tests
-        //Client client = new Client("127.0.0.1",7777);
-        //client.start(new ClientEncoderDecoder(),new ClientProtocol());
     }
 
     /**

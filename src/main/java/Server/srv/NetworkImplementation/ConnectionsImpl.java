@@ -3,7 +3,6 @@ package Server.srv.NetworkImplementation;
 import Server.API.ConnectionHandler;
 import Server.API.Connections;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +17,7 @@ public class ConnectionsImpl<T> implements Connections<T>
     {
         currentConnections = new ConcurrentHashMap<>();
     }
+
     public void add(int connectionId, ConnectionHandler<T> myHandler)
     {
         currentConnections.put(connectionId,myHandler);

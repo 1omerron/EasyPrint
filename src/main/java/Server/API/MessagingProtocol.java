@@ -17,6 +17,6 @@ public interface MessagingProtocol<T> {
     /**
      * starts the protocol
      */
-    void start();
+    void start(Connections connections);
  
 }
