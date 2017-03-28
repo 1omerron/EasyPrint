@@ -1,10 +1,7 @@
 package Server.srv.NetworkImplementation;
 
 import Client.API.MessageEncoderDecoder;
-import Server.API.Packets.AckPacket;
-import Server.API.Packets.LogInOutPacket;
-import Server.API.Packets.OrderPacket;
-import Server.API.Packets.Packet;
+import Server.API.Packets.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -80,9 +77,7 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
                 {
                     reset();
                     jsonFileName = null;
-                    throw new RuntimeException("ServerEncDec >> decoderNextByte >> Wrong Op Code");
-                    // TODO handle wrong op code - return error message
-                    // break;
+                    return new ErrorPacket('e','0', "Wrong Op-Code Received From Decoded Packet");
                 }
             }
         }
@@ -103,8 +98,7 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
             {
                 received++;
                 if(jsonFileName==null)
-                    throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
-                // TODO handle - send error packet
+                    return new ErrorPacket('e','0',"Can't Open JSON without getting File Name Before");
                 else // JSON file name was received
                 {
                     try {
@@ -135,8 +129,7 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
             {
                 received++;
                 if(jsonFileName==null)
-                    throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
-                    // TODO handle - send error packet
+                    return new ErrorPacket('e','0',"Can't Open JSON without getting File Name Before");
                 else // JSON file name was received
                 {
                     try {
@@ -156,9 +149,7 @@ public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
             }
             default:
             {
-                throw new RuntimeException("ServerEncDec >> decodeOrder >> Illegal Operation Code");
-                // TODO handle illegal operation code - return error packet
-                // break;
+                return new ErrorPacket('e','0',"Illegal Operation Code of Order Packet");
             }
         }
     }
