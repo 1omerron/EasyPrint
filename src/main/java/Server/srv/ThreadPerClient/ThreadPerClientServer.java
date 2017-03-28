@@ -25,14 +25,4 @@ public class ThreadPerClientServer<T> extends BaseServer<T> {
     {
         new Thread(handler).start();
     }
-
-    public static void main(String[] args)
-    {
-        ThreadPerClientServer tpc = new ThreadPerClientServer(
-                7777, //port
-                () ->  new ServerProtocol(), //protocol factory
-                () -> new ServerEncoderDecoder() //message encoder decoder factory
-        );
-        tpc.serve();
-    }
 }

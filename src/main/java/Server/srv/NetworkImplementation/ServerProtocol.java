@@ -55,7 +55,7 @@ public class ServerProtocol implements MessagingProtocol<Packet>
                 toReturn = handleLog();
                 return toReturn;
             }
-            case 'a': // ack packet
+            case 'a': // ack packet - server should not receive ack packets
             {
                 toReturn = handleAck();
                 return toReturn;
@@ -144,6 +144,8 @@ public class ServerProtocol implements MessagingProtocol<Packet>
         {
             case '0': // log out
             {
+                // TODO make sure to close the socket before the client??
+
                 if(opCode=='l' /* TODO check if the username exists in the database */)
                 {
                     // TODO remove the username from the database
@@ -157,7 +159,7 @@ public class ServerProtocol implements MessagingProtocol<Packet>
             }
             case '1': // log in
             {
-                if(opCode=='l' /* TODO check if the username exists in the database */)
+                if(opCode!='l' /* TODO check if the username exists in the database */)
                 {
                     return new ErrorPacket('e', '1', "Username is Already Taken");
                 }

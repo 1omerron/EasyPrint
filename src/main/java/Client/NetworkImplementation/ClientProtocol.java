@@ -13,6 +13,7 @@ public class ClientProtocol implements MessagingProtocol<Packet>
 {
     private boolean shouldTerminate;
     private ConnectionHandler<Packet> myHandler;
+    private String myUserName;
 
     private char opCode;
     private char operation;
@@ -98,7 +99,8 @@ public class ClientProtocol implements MessagingProtocol<Packet>
             case 3:
             {
                 orderPartsSent = 0;
-                toReturn = null;
+                shouldTerminate = true;
+                toReturn = new LogInOutPacket('l', '0', myUserName);
                 break;
             }
             default:
@@ -126,5 +128,6 @@ public class ClientProtocol implements MessagingProtocol<Packet>
     {
         this.myHandler = myHandler;
         shouldTerminate = false;
+        this.myUserName = "Omer"; // TODO change
     }
 }
