@@ -1,7 +1,7 @@
 package Server.API;
-import Server.srv.BaseServer;
-import Server.srv.BlockingConnectionHandler;
-import Server.srv.Reactor;
+import Server.srv.ThreadPerClient.BaseServer;
+import Server.srv.ThreadPerClient.BlockingConnectionHandler;
+import Server.srv.Reactor.Reactor;
 
 import java.io.Closeable;
 import java.util.function.Supplier;

@@ -1,7 +1,5 @@
 package Client.RequestOrganization;
 
-import Client.API.PageRangeInstruction;
-
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -41,6 +39,18 @@ public class FileInstruction
         ranges = new LinkedList<>();
         for(PageRangeInstruction range : rangesToAdd)
             this.ranges.add(range);
+    }
+
+    public FileInstruction(FileInfo file, PageRangeInstruction rangesToAdd)
+    {
+        this.file=file;
+        ranges = new LinkedList<>();
+        ranges.addLast(rangesToAdd);
+    }
+
+    public void addPageRangeInstruction(PageRangeInstruction pageRange)
+    {
+        ranges.addLast(pageRange);
     }
 
     public LinkedList<PageRangeInstruction> getRanges() {

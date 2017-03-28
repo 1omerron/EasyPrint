@@ -1,4 +1,4 @@
-package Server.srv;
+package Server.srv.Reactor;
 
 import Server.API.ConnectionHandler;
 import Server.API.Connections;

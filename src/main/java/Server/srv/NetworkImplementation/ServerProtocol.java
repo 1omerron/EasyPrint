@@ -2,13 +2,33 @@ package Server.srv.NetworkImplementation;
 
 import Server.API.Connections;
 import Server.API.MessagingProtocol;
+import Server.API.Packets.AckPacket;
+import Server.API.Packets.ErrorPacket;
+import Server.API.Packets.OrderPacket;
 import Server.API.Packets.Packet;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by 1omer on 27/03/2017.
  */
 public class ServerProtocol implements MessagingProtocol<Packet>
 {
+    public static String filesPath = "path to save zipped files and json files";
+    // TODO make this path in 1 class instead of every class
+
+    private boolean shouldTerminate;
+
+    private char opCode;
+    private char operation;
+    private Packet toReturn;
+    private int orderPartsReceived = 0;
+
+    private String jsonFileName;
 
     /**
      * process the given message
@@ -16,8 +36,140 @@ public class ServerProtocol implements MessagingProtocol<Packet>
      * @return the response to send or null if no response is expected by the client
      */
     @Override
-    public Packet process(Packet msg) {
+    public Packet process(Packet msg)
+    {
+        this.opCode = msg.getCode();
+        this.operation = msg.getOperation();
+
+        switch(opCode)
+        {
+            case 'e': // error
+            {
+                // the encoder decoder returns error message when decoding message with wrong op code
+                // the error message will be that the packet received had a non-existing op code
+                return new ErrorPacket('e',msg.getOperation(),((ErrorPacket)msg).getErrorMessage());
+            }
+            case 'l': // log in/out
+            {
+                toReturn = handleLog();
+                return toReturn;
+            }
+            case 'a': // ack packet
+            {
+                toReturn = handleAck();
+                return toReturn;
+            }
+            case 'o': // order packet
+            {
+                toReturn = handleOrder((OrderPacket)msg);
+                return toReturn;
+            }
+            default: // wrong op code
+            {
+                return new ErrorPacket('e', '0', "Wrong Op Code Received");
+            }
+        }
+    }
+
+    /**
+     * handles order packet
+     * the encoder decoder checks that the first packet is the json file name
+     * @return packet to return, or null if no answer needed
+     */
+    private Packet handleOrder(OrderPacket msg)
+    {
+        switch (operation)
+        {
+            case '0': // JSON file
+            {
+                Path existingFilePath = ((File)(msg.getInformation())).toPath();
+                Path targetLocation = Paths.get(filesPath);
+                try {
+                    // MOVES THE ORIGINAL FILE TO THE FILES FOLDER!
+                    Files.move(existingFilePath, targetLocation);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                orderPartsReceived++;
+                break;
+            }
+            case '1': // JSON file name - COMES FIRST
+            {
+                jsonFileName = (String) msg.getInformation();
+                orderPartsReceived++;
+                break;
+            }
+            case '2': // Zipped file
+            {
+                Path existingFilePath = ((File)(msg.getInformation())).toPath();
+                Path targetLocation = Paths.get(filesPath);
+                try {
+                    // MOVES THE ORIGINAL FILE TO THE FILES FOLDER!
+                    Files.move(existingFilePath, targetLocation);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                orderPartsReceived++;
+                break;
+            }
+            default:
+            {
+                return new ErrorPacket('e', '0', "Incorrect Operation Code In Order Packet");
+            }
+        }
+        toReturn = new AckPacket('a', '0', orderPartsReceived);
+        if(orderPartsReceived==3)
+            orderPartsReceived=0;
+        return toReturn;
+    }
+
+    /**
+     * handles receiving ack packet
+     * @return packet to return, or null if no answer needed
+     */
+    private Packet handleAck()
+    {
+        // TODO implement if needed
         return null;
+    }
+
+    /**
+     * handles log in request or log out request
+     * @return the coresponding packet, or null if no answer needed
+     */
+    private Packet handleLog()
+    {
+        switch (operation)
+        {
+            case '0': // log out
+            {
+                if(opCode=='l' /* TODO check if the username exists in the database */)
+                {
+                    // TODO remove the username from the database
+                    return new AckPacket('a', '0', 0);
+                }
+                else
+                {
+                    return new ErrorPacket('e', '1', "Username doesn't exist in the database");
+                }
+            }
+            case '1': // log in
+            {
+                if(opCode=='l' /* TODO check if the username exists in the database */)
+                {
+                    return new ErrorPacket('e', '1', "Username is Already Taken");
+                }
+                else
+                {
+                    // TODO add the username to the database
+                    return new AckPacket('a', '0', 0);
+                }
+            }
+            default:
+            {
+                return new ErrorPacket('e', '0', "Incorrect Operation Code In Log Packet");
+            }
+        }
     }
 
     /**
@@ -25,7 +177,7 @@ public class ServerProtocol implements MessagingProtocol<Packet>
      */
     @Override
     public boolean shouldTerminate() {
-        return false;
+        return shouldTerminate;
     }
 
     /**
@@ -35,6 +187,6 @@ public class ServerProtocol implements MessagingProtocol<Packet>
     @Override
     public void start(Connections connections)
     {
-
+        shouldTerminate = false;
     }
 }

@@ -1,12 +1,10 @@
-package Server.srv;
+package Server.srv.Reactor;
 
 import Server.API.Connections;
 import Server.API.MessageEncoderDecoder;
 import Server.API.MessagingProtocol;
 import Server.API.Server;
 import Server.srv.NetworkImplementation.ConnectionsImpl;
-import Server.srv.NetworkImplementation.ServerEncoderDecoder;
-import Server.srv.NetworkImplementation.ServerProtocol;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

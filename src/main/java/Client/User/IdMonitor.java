@@ -1,33 +1,37 @@
 package Client.User;
 
-import Client.API.IdMonitor;
 
 /**
  * Created by 1omer on 23/03/2017.
  */
-public class SimpleCounterIdMonitor implements IdMonitor<Integer>
+public class IdMonitor
 {
     private Integer counter;
+    private String id;
 
-    public SimpleCounterIdMonitor()
+    public IdMonitor()
     {
         counter = 0;
+        id = counter.toString();
     }
 
     /**
-     * @return the next ID
+     *
+     * @return available userId
      */
-    @Override
-    public Integer getId()
+    public String getAvailableId()
     {
-        return counter++;
+        String availableId = id;
+        counter++;
+        id  = counter.toString();
+        return availableId;
     }
 
     /**
      * restores ID to the available IDs (from a 'released' id)
      * @param returnedId the ID to be returned to the available IDs
      */
-    @Override
+
     public void returnId(Integer returnedId)
     {
         // Do nothing

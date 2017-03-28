@@ -35,8 +35,15 @@ public class FileInfo
     {
         file = new File("C:\\Users\\nimrod\\order.json");
         userId = "123";
-        fileId = "json test";
         numberOfPages = 20;
+        this.fileName = file.getName();
+    }
+
+    public FileInfo(String path, String userId)
+    {
+        file = new File(path);
+        this.userId = userId;
+        numberOfPages = 20;//todo check
         this.fileName = file.getName();
     }
 

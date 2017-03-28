@@ -56,4 +56,12 @@ public class OrderInstruction
     public LinkedList<FileInstruction> getInstructionsList() {
         return instructionsList;
     }
+
+    /**
+     * add new file instruction to this order
+     */
+    public void addFileInstruction(FileInstruction file)
+    {
+        instructionsList.addLast(file);
+    }
 }
