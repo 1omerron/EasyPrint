@@ -41,7 +41,7 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
     {
         this.opCode = msg.getCode();
         this.operation = msg.getOperation();
-
+        System.out.println("Server Protocol >> Process >> OpCode: "+opCode+", Operation: "+operation);
         switch(opCode)
         {
             case 'e': // error
@@ -96,6 +96,7 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
             }
             case '1': // JSON file name - COMES FIRST
             {
+                System.out.println("ServProt >> handleOrder >> received json file name packet");
                 jsonFileName = (String) msg.getInformation();
                 orderPartsReceived++;
                 break;

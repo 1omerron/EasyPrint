@@ -40,6 +40,7 @@ public class ClientProtocol implements MessagingProtocol<Packet>
     {
         this.opCode = msg.getCode();
         this.operation = msg.getOperation();
+        System.out.println("Client Protocol >> Process >> OpCode: "+opCode+", Operation: "+operation);
 
         switch(opCode)
         {

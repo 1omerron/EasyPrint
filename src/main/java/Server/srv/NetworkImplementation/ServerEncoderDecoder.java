@@ -27,7 +27,7 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
     private final int BUFFER_SIZE = 1024;
     private int index=0;
     private byte[] buffer = new byte[BUFFER_SIZE];
-    private Packet toReturn;
+    private Packet toReturn = null;
 
     // decoding variables
     private char opCode;
@@ -43,49 +43,68 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
     @Override
     public Packet decodeNextByte(byte nextByte)
     {
-        if(index>= this.buffer.length)
+        // TODO remove PINIs from this class
+
+        System.out.println("--------------------------------- Server decodeNextBye : "+(char)nextByte);
+        if(index>= this.buffer.length) {
+            System.out.println("Server EncDec increasing byte buffer");
             buffer = increaseBufferSize(buffer);
-        buffer[index++] = nextByte;
+        }
+        buffer[index] = nextByte;
+        index++;
         if(index==1) // already read 1 byte (op code byte)
-            opCode = (char) buffer[index-1];
-        else if(index==2) // already read 2 bytes (operation)
-            operationCode = (char) buffer[index-1];
-        else if(buffer[index-1]=='\0') // finished receiving bytes, decode. skip and return null otherwise
         {
-            switch(opCode)
+            opCode = (char) buffer[index - 1];
+            System.out.println("Server EncDec >> read opCode : '"+opCode+"'");
+            return null;
+        }
+        else if(index==2) // already read 2 bytes (operation)
+        {
+            operationCode = (char) buffer[index - 1];
+            System.out.println("Server EncDec >> read operationCode : '"+operationCode+"'");
+            return null;
+        }
+        switch(opCode)
+        {
+            case 'e': // Error
             {
-                case 'e': // Error
-                {
-                    toReturn = decodeError();
+                toReturn = decodeError();
+                if(toReturn!=null)
                     reset();
-                    return toReturn;
-                }
-                case 'l': // Log In/Out
-                {
-                    toReturn = decodeLog();
+                return toReturn;
+            }
+            case 'l': // Log In/Out
+            {
+                toReturn = decodeLog();
+                if(toReturn!=null)
                     reset();
-                    return toReturn;
-                }
-                case 'o': // Order
-                {
-                    toReturn = decodeOrder();
+                return toReturn;
+            }
+            case 'o': // Order
+            {
+                toReturn = decodeOrder();
+                if(toReturn!=null)
                     reset();
-                    return toReturn;
-                }
-                case 'a': // Acknowledge
-                {
-                    toReturn = decodeAck();
-                    reset();
-                    return toReturn;
-                }
-                default: // Any Other
+                return toReturn;
+            }
+            case 'a': // Acknowledge
+            {
+                toReturn = decodeAck();
+                if(toReturn!=null)
                 {
                     reset();
-                    jsonFileName = null;
-                    throw new RuntimeException("ServerEncDec >> decoderNextByte >> Wrong Op Code");
-                    // TODO handle wrong op code - return error message
-                    // break;
                 }
+                return toReturn;
+            }
+            default: // Any Other
+            {
+                reset();
+                jsonFileName = null;
+                System.out.println("################################################");
+                System.out.println("Server EncDec >> Illegal OpCode : '"+opCode+"'");
+                System.out.println("################################################");
+                // TODO handle wrong op code - return error message
+                break;
             }
         }
         return null;
@@ -114,6 +133,7 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
                         stream.write(buffer,2, index-2);
                         stream.flush();
                         stream.close();
+                        System.out.println("ServerEncDec >> decodeOrder >> finished creating file");
                         return new OrderPacket(new File(JsonFilesDirectory+File.separator+jsonFileName+".json"));
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -125,15 +145,23 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
                         }
                     }
                 }
+                break;
             }
-            case '1':
+            case '1': // json file name
             {
-                received++;
-                jsonFileName = new String(buffer, 2, index-2);
-                toReturn = new OrderPacket(jsonFileName);
-                if(received==3) {
-                    jsonFileName = null;
-                    received = 0;
+                toReturn = null; // TODO remove
+                System.out.println("Serv Enc Dec >> decodeOrder >> json file name");
+                if(buffer[index-1]=='\0')
+                {
+                    received++;
+                    jsonFileName = new String(buffer, 2, index-2);
+                    System.out.println("ServerEncDec >> decodeOrder >> JSON name length = index-2 = "+(index-2));
+                    System.out.println("ServerEncDec >> decodeOrder >> Received Json file name : "+jsonFileName);
+                    toReturn = new OrderPacket(jsonFileName);
+                    if(received==3) {
+                        jsonFileName = null;
+                        received = 0;
+                    }
                 }
                 return toReturn;
             }
@@ -161,6 +189,7 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
                         }
                     }
                 }
+                break;
             }
             default:
             {
@@ -169,6 +198,7 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
                 // break;
             }
         }
+        return toReturn;
     }
 
     private Packet decodeLog()

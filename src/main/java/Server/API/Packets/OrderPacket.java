@@ -21,14 +21,16 @@ public class OrderPacket extends Packet
     // Constructor with JSON Object / Zipped File
     public OrderPacket(File file)
     {
-        super('o','0', file.toString().getBytes());
+        // TODO added /0
+        super('o','0', (file.toString()+'\0').getBytes());
         information = file;
     }
 
     // Constructor with JSON name
     public OrderPacket(String jsonName /* Should be Order-Number.json */)
     {
-        super('o','1', jsonName.getBytes());
+        // TODO added /0
+        super('o','1', (jsonName+'\0').getBytes());
         information = jsonName;
     }
 
