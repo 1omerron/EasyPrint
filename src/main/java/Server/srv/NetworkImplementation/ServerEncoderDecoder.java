@@ -1,6 +1,6 @@
 package Server.srv.NetworkImplementation;
 
-import Client.API.MessageEncoderDecoder;
+import Server.API.MessageEncoderDecoder;
 import Server.API.Packets.AckPacket;
 import Server.API.Packets.LogInOutPacket;
 import Server.API.Packets.OrderPacket;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * 1. The class checks if JSON file NAME packet was received before the Zipped file itself and before the json file,
  * in order to create the files in the server's directory. we can move it to the protocol if we want.
  */
-public class ServerEncoderDecoder implements MessageEncoderDecoder<Packet>
+public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 {
     private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles";
     // TODO change to Client files directory

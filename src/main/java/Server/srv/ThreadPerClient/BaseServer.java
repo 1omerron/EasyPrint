@@ -5,6 +5,8 @@ import Server.API.MessageEncoderDecoder;
 import Server.API.MessagingProtocol;
 import Server.API.Server;
 import Server.srv.NetworkImplementation.ConnectionsImpl;
+import Server.srv.NetworkImplementation.ServerEncoderDecoder;
+import Server.srv.NetworkImplementation.ServerProtocol;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -43,7 +45,7 @@ public abstract class BaseServer<T> implements Server<T> {
             while (!Thread.currentThread().isInterrupted())
             {
                 Socket clientSock = serverSock.accept();
-                BlockingConnectionHandler<T> handler = new BlockingConnectionHandler<>(
+                BlockingConnectionHandler<T> handler = new BlockingConnectionHandler<T>(
                         clientSock,
                         encdecFactory.get(),
                         protocolFactory.get(),connections,id);

@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 /**
  * Created by 1omer on 27/03/2017.
  */
-public class ServerProtocol implements MessagingProtocol<Packet>
+public class ServerProtocol<T> implements MessagingProtocol<Packet>
 {
     public static String filesPath = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles";
     // TODO change to Client files directory
