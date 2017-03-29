@@ -6,6 +6,7 @@ import Client.API.Packets.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 
 /**
  * Created by 1omer on 25/03/2017.
@@ -84,9 +85,12 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
 
     private Packet decodeAck()
     {
-        System.out.println("ClientEncDec >> decodeAck >> message length = index-2 = "+(index-2));
-        String ackNumberString = new String(buffer,2,index-2);
-        return new AckPacket(opCode, operationCode, Integer.valueOf(ackNumberString));
+        System.out.println("ClientEncDec >> decodeAck >> message length = index-3 = "+(index-3));
+        String ackNumberString = new String(buffer, 2, index-2);
+        System.out.println("ClientEncDec >> decodeAck >> ackNumberString = "+ackNumberString);
+        ackNumberString = ackNumberString.substring(0, ackNumberString.length()-1);
+        int ackNum = Integer.parseInt(ackNumberString);
+        return new AckPacket(opCode, operationCode, ackNum);
     }
 
     private Packet decodeOrder()
@@ -102,7 +106,7 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
                 {
                     try {
                         FileOutputStream stream = new FileOutputStream(JsonFilesDirectory+File.separator+jsonFileName+".json");
-                        stream.write(buffer,2, index-2);
+                        stream.write(buffer,2, index-1);
                         stream.flush();
                         stream.close();
                         return new OrderPacket(new File(JsonFilesDirectory+File.separator+jsonFileName+".json"));
@@ -118,7 +122,7 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
             case '1':
             {
                 received++;
-                jsonFileName = new String(buffer, 2, index-2);
+                jsonFileName = new String(buffer, 2, index-1);
                 toReturn = new OrderPacket(jsonFileName);
                 if(received==3)
                     jsonFileName=null;
@@ -133,7 +137,7 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
                 {
                     try {
                         FileOutputStream stream = new FileOutputStream(JsonFilesDirectory + File.separator + jsonFileName + ".zip");
-                        stream.write(buffer, 2, index - 2);
+                        stream.write(buffer, 2, index - 1);
                         stream.flush();
                         stream.close();
                         return new OrderPacket(new File(JsonFilesDirectory + File.separator + jsonFileName + ".zip"));
@@ -155,13 +159,13 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
 
     private Packet decodeLog()
     {
-        String userName = new String(buffer,2,index-2);
+        String userName = new String(buffer,2,index-1);
         return new LogInOutPacket(opCode, operationCode, userName);
     }
 
     private Packet decodeError()
     {
-        String errorMessage = new String(buffer,2,index-2);
+        String errorMessage = new String(buffer,2,index-1);
         return new LogInOutPacket(opCode, operationCode, errorMessage);
     }
 

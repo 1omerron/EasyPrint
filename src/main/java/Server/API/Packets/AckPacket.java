@@ -18,6 +18,7 @@ public class AckPacket extends Packet
     {
         super(code,operation,(String.valueOf(ackPacketNumber)+'\0').getBytes());
         this.ackPacketNumber = ackPacketNumber;
+        System.out.println("AckPacket Constructor >> ackPacketNumber = "+this.ackPacketNumber);
     }
 
     public int getAckPacketNumber() {

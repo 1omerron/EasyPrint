@@ -96,8 +96,8 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
             }
             case '1': // JSON file name - COMES FIRST
             {
-                System.out.println("ServProt >> handleOrder >> received json file name packet");
                 jsonFileName = (String) msg.getInformation();
+                System.out.println("ServProt >> handleOrder >> received json file name : "+jsonFileName);
                 orderPartsReceived++;
                 break;
             }

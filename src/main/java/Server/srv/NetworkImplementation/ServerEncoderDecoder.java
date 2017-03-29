@@ -45,7 +45,6 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
     {
         // TODO remove PINIs from this class
 
-        System.out.println("--------------------------------- Server decodeNextBye : "+(char)nextByte);
         if(index>= this.buffer.length) {
             System.out.println("Server EncDec increasing byte buffer");
             buffer = increaseBufferSize(buffer);
@@ -150,13 +149,10 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
             case '1': // json file name
             {
                 toReturn = null; // TODO remove
-                System.out.println("Serv Enc Dec >> decodeOrder >> json file name");
                 if(buffer[index-1]=='\0')
                 {
                     received++;
                     jsonFileName = new String(buffer, 2, index-2);
-                    System.out.println("ServerEncDec >> decodeOrder >> JSON name length = index-2 = "+(index-2));
-                    System.out.println("ServerEncDec >> decodeOrder >> Received Json file name : "+jsonFileName);
                     toReturn = new OrderPacket(jsonFileName);
                     if(received==3) {
                         jsonFileName = null;
