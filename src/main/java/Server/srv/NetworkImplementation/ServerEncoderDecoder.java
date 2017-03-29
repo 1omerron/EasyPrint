@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 {
-    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles";
+    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles\\";
     // TODO change to Client files directory
     // TODO make it somewhere static so every class will use this path
 
@@ -117,6 +117,7 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 
     private Packet decodeOrder()
     {
+        System.out.println("ServerEncDec >> decodeOrder >> operation code : '"+operationCode+"'");
         switch(operationCode)
         {
             case '0':
@@ -128,7 +129,7 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
                 else // JSON file name was received
                 {
                     try {
-                        FileOutputStream stream = new FileOutputStream(JsonFilesDirectory+File.separator+jsonFileName+".json");
+                        FileOutputStream stream = new FileOutputStream(File.separator+JsonFilesDirectory+jsonFileName+".json");
                         stream.write(buffer,2, index-2);
                         stream.flush();
                         stream.close();

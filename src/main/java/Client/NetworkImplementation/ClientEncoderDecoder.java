@@ -6,7 +6,6 @@ import Client.API.Packets.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 
 /**
  * Created by 1omer on 25/03/2017.
@@ -46,48 +45,52 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
             operationCode = (char) buffer[index-1];
         else if(nextByte=='\0') // finished receiving bytes, decode. skip and return null otherwise
         {
+            System.out.println("ClientEncDec >> decodeNextByte : byte is /0 (packed fully received)");
             switch(opCode)
             {
                 case 'e': // Error
                 {
                     toReturn = decodeError();
-                    reset();
+                    if (toReturn != null)
+                        reset();
                     return toReturn;
                 }
                 case 'l': // Log In/Out
                 {
                     toReturn = decodeLog();
-                    reset();
+                    if (toReturn != null)
+                        reset();
                     return toReturn;
                 }
                 case 'o': // Order
                 {
                     toReturn = decodeOrder();
-                    reset();
+                    if (toReturn != null)
+                        reset();
                     return toReturn;
                 }
                 case 'a': // Acknowledge
                 {
                     toReturn = decodeAck();
-                    reset();
+                    if (toReturn != null)
+                        reset();
                     return toReturn;
                 }
                 default: // Any Other
                 {
-                    reset();
+                    if (toReturn != null)
+                        reset();
                     jsonFileName = null;
                     return new ErrorPacket('e','0', "Wrong Op-Code Received From Decoded Packet");
                 }
             }
         }
-        return null;
+        return toReturn;
     }
 
     private Packet decodeAck()
     {
-        System.out.println("ClientEncDec >> decodeAck >> message length = index-3 = "+(index-3));
         String ackNumberString = new String(buffer, 2, index-2);
-        System.out.println("ClientEncDec >> decodeAck >> ackNumberString = "+ackNumberString);
         ackNumberString = ackNumberString.substring(0, ackNumberString.length()-1);
         int ackNum = Integer.parseInt(ackNumberString);
         return new AckPacket(opCode, operationCode, ackNum);
@@ -132,7 +135,7 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
             {
                 received++;
                 if(jsonFileName==null)
-                    return new ErrorPacket('e','0',"Can't Open JSON without getting File Name Before");
+                    throw new RuntimeException("ClientEncDec >> decodeOrder >> Can't create file without jsonFileName first");
                 else // JSON file name was received
                 {
                     try {

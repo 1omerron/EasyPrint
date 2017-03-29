@@ -3,6 +3,7 @@ package Client.NetworkImplementation;
 import Client.API.ConnectionHandler;
 import Client.API.MessageEncoderDecoder;
 import Client.API.MessagingProtocol;
+import Client.API.Packets.Packet;
 
 import java.io.*;
 
@@ -36,11 +37,15 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
             while (!protocol.shouldTerminate() && connected && (read = in.read()) >= 0)
             {
                 T nextMessage = encdec.decodeNextByte((byte) read);
-                System.out.println("Client Handler >> sendOrder >> Finished decoding message");
                 if (nextMessage != null) {
+                    System.out.println("ClientHandler >> sendOrder >> received a message != null of opCode : "+((Packet)nextMessage).getCode());
                     T toReturn = protocol.process(nextMessage);
                     if(toReturn != null)
+                    {
+                        System.out.println("ClientHandler >> sendOrder >> protocol return a " +
+                                "not-null message to send back of opCode : "+((Packet)toReturn).getCode());
                         send(toReturn);
+                    }
                 }
             }
         }

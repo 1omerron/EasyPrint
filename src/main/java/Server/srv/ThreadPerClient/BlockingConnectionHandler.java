@@ -45,10 +45,9 @@ public class BlockingConnectionHandler<T> implements Runnable, java.io.Closeable
                 {
                     System.out.println("Server Handler >> run() >> Decoded Message != null");
                     T toReturn =  protocol.process(nextMessage);
-                    System.out.println("Server Handler >> run() >> protocol.process(nextMessage) finished");
                     if(toReturn!=null)
                     {
-                        System.out.println("Serv Handler >> Process return Packet != null. SENDING PACKET TO CLIENT");
+                        System.out.println("ServerHandler >> Process return Packet != null. SENDING PACKET TO CLIENT");
                         send(toReturn);
                     }
                 }

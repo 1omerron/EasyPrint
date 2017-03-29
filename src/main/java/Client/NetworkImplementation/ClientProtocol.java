@@ -90,11 +90,13 @@ public class ClientProtocol implements MessagingProtocol<Packet>
             case 1:
             {
                 toReturn = new OrderPacket(jsonObject);
+                orderPartsSent++;
                 break;
             }
             case 2:
             {
                 toReturn =  new OrderPacket(zippedFolder);
+                orderPartsSent++;
                 break;
             }
             case 3:
