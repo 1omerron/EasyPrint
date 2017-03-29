@@ -64,50 +64,50 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
             System.out.println("Server EncDec >> read operationCode : '"+operationCode+"'");
             return null;
         }
-        switch(opCode)
-        {
-            case 'e': // Error
-            {
-                toReturn = decodeError();
-                if(toReturn!=null)
-                    reset();
-                return toReturn;
-            }
-            case 'l': // Log In/Out
-            {
-                toReturn = decodeLog();
-                if(toReturn!=null)
-                    reset();
-                return toReturn;
-            }
-            case 'o': // Order
-            {
-                toReturn = decodeOrder();
-                if(toReturn!=null)
-                    reset();
-                return toReturn;
-            }
-            case 'a': // Acknowledge
-            {
-                toReturn = decodeAck();
-                if(toReturn!=null)
+        else if(nextByte=='\0') {
+            switch (opCode) {
+                case 'e': // Error
+                {
+                    toReturn = decodeError();
+                    if (toReturn != null)
+                        reset();
+                    return toReturn;
+                }
+                case 'l': // Log In/Out
+                {
+                    toReturn = decodeLog();
+                    if (toReturn != null)
+                        reset();
+                    return toReturn;
+                }
+                case 'o': // Order
+                {
+                    toReturn = decodeOrder();
+                    if (toReturn != null)
+                        reset();
+                    return toReturn;
+                }
+                case 'a': // Acknowledge
+                {
+                    toReturn = decodeAck();
+                    if (toReturn != null) {
+                        reset();
+                    }
+                    return toReturn;
+                }
+                default: // Any Other
                 {
                     reset();
+                    jsonFileName = null;
+                    System.out.println("################################################");
+                    System.out.println("Server EncDec >> Illegal OpCode : '" + opCode + "'");
+                    System.out.println("################################################");
+                    // TODO handle wrong op code - return error message
+                    break;
                 }
-                return toReturn;
-            }
-            default: // Any Other
-            {
-                reset();
-                jsonFileName = null;
-                System.out.println("################################################");
-                System.out.println("Server EncDec >> Illegal OpCode : '"+opCode+"'");
-                System.out.println("################################################");
-                // TODO handle wrong op code - return error message
-                break;
             }
         }
-        return null;
+        return toReturn;
     }
 
     private Packet decodeAck()

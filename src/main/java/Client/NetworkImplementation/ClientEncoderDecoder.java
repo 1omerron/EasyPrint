@@ -20,7 +20,7 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
     private final int BUFFER_SIZE = 1024;
     private int index=0;
     private byte[] buffer = new byte[BUFFER_SIZE];
-    private Packet toReturn;
+    private Packet toReturn = null;
 
     // decoding variables
     private char opCode;
@@ -43,7 +43,7 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
             opCode = (char) buffer[index-1];
         else if(index==2) // already read 2 bytes (operation)
             operationCode = (char) buffer[index-1];
-        else if(buffer[index-1]=='\0') // finished receiving bytes, decode. skip and return null otherwise
+        else if(nextByte=='\0') // finished receiving bytes, decode. skip and return null otherwise
         {
             switch(opCode)
             {
@@ -84,6 +84,7 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
 
     private Packet decodeAck()
     {
+        System.out.println("ClientEncDec >> decodeAck >> message length = index-2 = "+(index-2));
         String ackNumberString = new String(buffer,2,index-2);
         return new AckPacket(opCode, operationCode, Integer.valueOf(ackNumberString));
     }

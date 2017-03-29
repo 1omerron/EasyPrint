@@ -16,7 +16,7 @@ public class AckPacket extends Packet
 
     public AckPacket(char code, char operation, int ackPacketNumber)
     {
-        super(code,operation,String.valueOf(ackPacketNumber).getBytes());
+        super(code,operation,(String.valueOf(ackPacketNumber)+'\0').getBytes());
         this.ackPacketNumber = ackPacketNumber;
     }
 

@@ -17,7 +17,7 @@ public class LogInOutPacket extends Packet
 
     public LogInOutPacket(char code, char operation, String userName)
     {
-        super(code,operation,userName.getBytes());
+        super(code,operation,(userName+'\0').getBytes());
         this.userName = userName;
     }
 

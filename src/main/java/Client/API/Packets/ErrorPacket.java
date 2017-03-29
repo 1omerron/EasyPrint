@@ -22,7 +22,7 @@ public class ErrorPacket extends Packet
 
     public ErrorPacket(char code, char operation, String errorMessage)
     {
-        super(code,operation,errorMessage.getBytes());
+        super(code,operation,(errorMessage+'\0').getBytes());
         this.errorMessage = errorMessage;
     }
 
