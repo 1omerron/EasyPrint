@@ -1,4 +1,4 @@
-/*
+
 package Server;
 
 import Client.RequestOrganization.FileInfo;
@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
 
-*/
+
 /**
  * Created by nimrod on 26/03/2017.
- *//*
+ */
 
 public class FromJson
 {
@@ -37,11 +37,11 @@ public class FromJson
         // client.init(new ClientEncoderDecoder(),new ClientProtocol());
     }
 
-    */
+
 /**
      * converting json file to java object
      * @param filename name of the json file (including the ".json")
-     *//*
+     */
 
     public static OrderInstruction fromJson(String filename)
     {
@@ -64,4 +64,4 @@ public class FromJson
         return orderIns;
     }
 }
-*/
+
