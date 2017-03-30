@@ -72,6 +72,11 @@ public class UserInterface
         currentOrderId = null;
     }
 
+    public OrderInstruction createOrderInstruction(){
+
+    }
+
+
 
     /**
      * @param firstPage

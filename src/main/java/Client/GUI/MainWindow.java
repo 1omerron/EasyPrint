@@ -1,6 +1,5 @@
 package Client.GUI;
 
-import Client.RequestOrganization.OrderInstruction;
 import Client.User.User;
 import Client.UserInterface;
 
@@ -11,72 +10,54 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class MainWindow extends BigBasicFrame {
     private JButton newOrderButton;
-    private JButton recentOrdersButton;
+    private JButton editOrderWindow;
     Insets inset;
     GridBagConstraints constraints;
     private JList ordersList;
     JScrollPane ordersScrollList;
 
-    public MainWindow(User u) throws HeadlessException, MalformedURLException {
-        if(UI== null){setUI(u);}
+    public MainWindow() throws HeadlessException, MalformedURLException {
+        User user = new User( "12345" );
+        UI = new UserInterface( user );
         Dimension buttonSize = new Dimension(screenSize.width/15, screenSize.height/20);
         this.constraints = new GridBagConstraints();
         this.inset = new Insets(0, 0, screenSize.height/2, screenSize.width/6);
         this.constraints.insets = this.inset;
-        this.constraints.gridwidth = 0;
-        this.constraints.gridheight = 0;
-        this.constraints.gridx = 0;
-        this.constraints.gridy = 0;
-        this.constraints.ipadx = 0;
-        this.constraints.ipady = 0;
+
         this.newOrderButton = new JButton("New Order");
         this.newOrderButton.setName("newOrderButton");
         this.newOrderButton.setPreferredSize(buttonSize);
         newOrderButton.setFont(font);
-        this.newOrderButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    MainWindow re = new MainWindow(UI.getUser());
-                    System.out.println("num of orders: "+ UI.getUser().getOrderInstructionsById().size());
-                    re.setVisible(true);
-                    dispose();
-                } catch (MalformedURLException var2) {
-                    var2.printStackTrace();
-                }
+        this.newOrderButton.addActionListener( e -> {
+            try {
+                NewOrderWindow newOrderWindow = new NewOrderWindow();
+                newOrderWindow.setVisible(true);
+                dispose();
+            } catch (MalformedURLException var2) {
+                var2.printStackTrace();
             }
-        });
+        } );
         this.mainPanel.add(this.newOrderButton, this.constraints);
         this.inset = new Insets(0, screenSize.width/6, screenSize.height/2, 0);
         this.constraints.insets = this.inset;
-        this.constraints.gridwidth = 0;
-        this.constraints.gridheight = 0;
-        this.constraints.gridx = 0;
-        this.constraints.gridy = 0;
-        this.constraints.ipadx = 0;
-        this.constraints.ipady = 0;
-        this.recentOrdersButton = new JButton("Edit");
-        this.recentOrdersButton.setName("recentOrdersButton");
-        this.recentOrdersButton.setPreferredSize(buttonSize);
-        this.recentOrdersButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    NewOrderWindow newOrderWindow = new NewOrderWindow();
-                    newOrderWindow.setVisible( true );
-                    dispose();
-                } catch (MalformedURLException e1) {
-                    e1.printStackTrace();
-                }
+
+        this.editOrderWindow = new JButton("Edit");
+        this.editOrderWindow.setName("editOrderWindow");
+        this.editOrderWindow.setPreferredSize(buttonSize);
+        this.editOrderWindow.addActionListener( e -> {
+            try {
+                EditOrderWindow editOrderWindow = new EditOrderWindow();
+                editOrderWindow.setVisible( true );
+                dispose();
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
             }
-        });
-        this.mainPanel.add(this.recentOrdersButton, this.constraints);
+        } );
+        this.mainPanel.add(this.editOrderWindow, this.constraints);
         this.inset = new Insets(0, 0, 0, 0);
         this.constraints.insets = this.inset;
         //DefaultListModel listModel = new DefaultListModel<String>(UI.getOrders());
@@ -112,10 +93,8 @@ public class MainWindow extends BigBasicFrame {
         JTable table = new JTable(data, columnNames);
         table.setFont(font);
         table.setRowSelectionAllowed(true);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                orderToEdit = table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()).toString();
-            }
+        table.getSelectionModel().addListSelectionListener( event -> {
+            orderToEdit = table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()).toString();
         });
 
        // this.ordersList = new JList(testArray);

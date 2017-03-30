@@ -17,10 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class BigBasicFrame extends BasicFrame {
-
-
-    protected URL logoLocation = this.getClass().getClassLoader().getResource("Icons/logo.jpg");
-
+    protected URL logoLocation = this.getClass().getClassLoader().getResource("Icons/pandaprint.jpg");
     protected JLabel background;
 
     public BigBasicFrame() throws HeadlessException, MalformedURLException {

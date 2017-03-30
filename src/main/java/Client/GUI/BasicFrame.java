@@ -24,6 +24,8 @@ public class BasicFrame extends JFrame {
 
     public BasicFrame() throws HeadlessException, MalformedURLException {
         this.contentpane = new JPanel(new BorderLayout());
+        this.setDefaultCloseOperation(3);   //TODO choose the right one above close possibilities
+
     }
 
     protected void init() {
@@ -37,7 +39,7 @@ public class BasicFrame extends JFrame {
     public static void main(String[] args) {
         User user = new User("12345");
         try {
-            MainWindow e = new MainWindow(user);
+            MainWindow e = new MainWindow();
             e.setVisible(true);
         } catch (MalformedURLException var2) {
             var2.printStackTrace();
