@@ -34,6 +34,7 @@ public class BlockingConnectionHandler<T> implements Runnable, java.io.Closeable
     {
         try (Socket sock = this.sock) { //just for automatic closing
             int read;
+            System.out.println("connected");
 
             in = new BufferedInputStream(sock.getInputStream());
             out = new BufferedOutputStream(sock.getOutputStream());

@@ -2,13 +2,11 @@ package Server.srv.NetworkImplementation;
 
 import Server.API.Connections;
 import Server.API.MessagingProtocol;
-import Server.API.Packets.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import Server.API.Packets.AckPacket;
+import Server.API.Packets.ErrorPacket;
+import Server.API.Packets.OrderPacket;
+import Server.API.Packets.Packet;
+import Server.PrintOrder;
 
 /**
  * Created by 1omer on 27/03/2017.
@@ -16,7 +14,6 @@ import java.nio.file.Paths;
 public class ServerProtocol<T> implements MessagingProtocol<Packet>
 {
     private boolean shouldTerminate;
-
     private char opCode;
     private char operation;
     private Packet toReturn;
@@ -71,7 +68,7 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
      */
     private Packet handleOrder(OrderPacket msg)
     {
-        // PrintOrder printOrder = new PrintOrder(msg.getJsonFileName()); // PRINTING THE FILE
+    PrintOrder.printOrder(msg.getJsonFileName()); // PRINTING THE FILE
         toReturn = new AckPacket('a', '0', 0);
         return toReturn;
     }
@@ -142,5 +139,10 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
     public void start(Connections connections)
     {
         shouldTerminate = false;
+    }
+
+    public void printOrder(String jsonName)
+    {
+
     }
 }

@@ -19,7 +19,7 @@ public class UnZip
      * Unzip it
      */
     public static void unZipIt(OrderInstruction order){
-        String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the server
+        String pathServer = FromJson.pathServer;//todo check what the path to the files in the server
         new File(pathServer+File.separator+order.getOrderId()).mkdir();
         String zipFile = pathServer+File.separator+order.getOrderId()+".zip";
         String outputFolder = pathServer+File.separator+order.getOrderId();

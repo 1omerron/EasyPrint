@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 {
-    private static final String ServerFilesFolder = "C:\\Users\\1omer\\Desktop\\ServerFiles\\";
+    private static final String ServerFilesFolder = "C:\\Users\\nimrod\\Desktop\\easyPrint\\";
 
     // general variables
     private final int BUFFER_SIZE = 102400000;
@@ -29,11 +29,9 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
     private String jsonFileName;
     private File jsonFile;
     private File zippedFolder;
-
     private int nameLength;
     private int fileLength;
     private int zipLength;
-
     private int beginningOfFileIndex;
     private int partsReceived;
 
