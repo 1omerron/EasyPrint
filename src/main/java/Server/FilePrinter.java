@@ -7,6 +7,7 @@ import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.MediaSize;
 import javax.print.event.PrintJobAdapter;
 import javax.print.event.PrintJobEvent;
 import java.io.*;
@@ -34,7 +35,7 @@ public class FilePrinter {
 // Build a set of attributes
         PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
         aset.add(new Copies(1));
-        //aset.add(MediaSize.ISO.A4);
+        aset.add(MediaSize.ISO.A4);
         //aset.add(Sides.DUPLEX);
 // discover the printers that can print the format according to the
 // instructions in the attribute set
