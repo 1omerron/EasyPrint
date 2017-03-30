@@ -41,6 +41,14 @@ public class FileInstruction
             this.ranges.add(range);
     }
 
+    public void setFile(FileInfo file) {
+        this.file = file;
+    }
+
+    public void setRanges(LinkedList<PageRangeInstruction> ranges) {
+        this.ranges = ranges;
+    }
+
     public FileInstruction(FileInfo file, PageRangeInstruction rangesToAdd)
     {
         this.file=file;

@@ -5,6 +5,7 @@ import Client.RequestOrganization.OrderInstruction;
 import Client.RequestOrganization.PageRangeInstruction;
 import Client.User.User;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -16,6 +17,29 @@ public class UserInterface
     private String currentOrderId;
     private User user;
 
+    public UserInterface()
+    {
+        String jsonName = "";
+        User oldUser = null;
+        boolean exist = false;
+        File directory = new File(Client.pathClient);
+        String[] files = directory.list();
+        for(String s : files)
+        {
+            if(s.endsWith("_User.json"))
+            {
+                oldUser = JsonHandler.fromJson(s);
+                System.out.println("user in the system");//todo remove.
+                exist=true;
+                currentOrderId = null;
+                this.user = oldUser;
+            }
+        }
+        if(oldUser == null)// new user
+        {
+            this.user = new User();
+        }
+    }
     public void setCurrentOrderId(String currentOrderId) {
         this.currentOrderId = currentOrderId;
     }
@@ -74,7 +98,7 @@ public class UserInterface
      */
     public FileInfo createFileInfo(String path)
     {
-        FileInfo fileInfo = new FileInfo(path, user.getUserId());
+        FileInfo fileInfo = new FileInfo(path);
         return fileInfo;
     }
     /**
@@ -115,5 +139,9 @@ public class UserInterface
         {//order exist
             user.getOrderInstructions().get(currentOrderId).getInstructionsList().addLast(fileIns);
         }
+    }
+    public void exit()
+    {
+        JsonHandler.toJson(user);
     }
 }
