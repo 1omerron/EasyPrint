@@ -17,7 +17,7 @@ import java.util.LinkedList;
         /**
   * Created by chen on 28-Mar-17.
   */
-        public class KimhiServerProtocol {
+        public class Printer {
      private int connectionId;
      private Connections<Packet> connections;
  
