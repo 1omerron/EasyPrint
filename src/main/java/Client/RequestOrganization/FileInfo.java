@@ -1,7 +1,6 @@
 package Client.RequestOrganization;
 
 import java.io.File;
-import java.nio.file.Path;
 
 /**
  * Created by 1omer on 23/03/2017.
@@ -15,15 +14,11 @@ public class FileInfo
         return file;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
     public String getFileId() {
         return fileId;
     }
 
-    private String userId;
     private String fileId;
     private int numberOfPages;
 
@@ -34,15 +29,13 @@ public class FileInfo
     public FileInfo()
     {
         file = new File("\"C:\\\\Users\\\\חן\\\\IdeaProjects\\\\EasyPrint\\\\test.txt\"");
-        userId = "1234";
         numberOfPages = 1;
         this.fileName = file.getName();
     }
 
-    public FileInfo(String path, String userId)
+    public FileInfo(String path)
     {
         file = new File(path);
-        this.userId = userId;
         numberOfPages = 20;//todo check
         this.fileName = file.getName();
     }
