@@ -48,6 +48,7 @@ public class UserInterface
         currentOrderId = null;
     }
 
+
     /**
      * @param firstPage
      * @param lastPage
@@ -105,7 +106,10 @@ public class UserInterface
             LinkedList<FileInstruction> list = new LinkedList<>();
             list.addLast(fileIns);
             OrderInstruction newOrder = new OrderInstruction(fileIns);
-            user.getOrderInstructions().put(newOrder.getOrderId(),newOrder);
+            user.getOrderInstructions().put(currentOrderId,newOrder);
+            user.getOrderInstructionsById().put(fileIns.getFile().getFileName(),fileIns.getFile().getFileId());
+
+
         }
         else
         {//order exist

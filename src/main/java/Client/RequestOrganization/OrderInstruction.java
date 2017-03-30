@@ -10,6 +10,7 @@ public class OrderInstruction
 {
     private String orderId;
     private String userId;
+    private String orderName;
     public String getOrderId() {
         return orderId;
     }

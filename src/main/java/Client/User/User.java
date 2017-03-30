@@ -14,6 +14,8 @@ public class User
 {
     private String userId;
     private HashMap<String,OrderInstruction> orderInstructions;
+    private HashMap<String,String> orderInstructionsById;
+
 
     public User()
     {
@@ -41,7 +43,12 @@ public class User
         userId = SingeltonIdMonitor.getInstance().getAvailableId();
         this.orderInstructions = orderInstructions;
     }
-
+    //for test
+    public User(String id){
+        userId = id;
+        this.orderInstructions = new HashMap<>();
+        this.orderInstructionsById = new HashMap<>();
+    }
     public void setOrderInstructions(HashMap<String, OrderInstruction> orderInstructions) {
         this.orderInstructions = orderInstructions;
     }
@@ -51,6 +58,7 @@ public class User
         return userId;
     }
 
+    public HashMap<String,String > getOrderInstructionsById(){return orderInstructionsById;}
     public HashMap<String, OrderInstruction> getOrderInstructions() {
         return orderInstructions;
     }

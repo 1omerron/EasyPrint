@@ -33,9 +33,9 @@ public class FileInfo
     //todo remove after testing json
     public FileInfo()
     {
-        file = new File("C:\\Users\\nimrod\\order.json");
-        userId = "123";
-        numberOfPages = 20;
+        file = new File("\"C:\\\\Users\\\\חן\\\\IdeaProjects\\\\EasyPrint\\\\test.txt\"");
+        userId = "1234";
+        numberOfPages = 1;
         this.fileName = file.getName();
     }
 
