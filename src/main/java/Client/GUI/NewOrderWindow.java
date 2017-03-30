@@ -52,7 +52,7 @@ public class NewOrderWindow extends BasicFrame {
         createOrderButton.setPreferredSize( buttonSize );
         createOrderButton.addActionListener( e ->{
             newName = newNameTextBox.getText();
-            UI.createOrderInstruction();
+           // UI.createOrderInstruction();
 
         });
         mainPanel.add(createOrderButton, constraints);

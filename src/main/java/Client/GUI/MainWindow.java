@@ -3,10 +3,7 @@ package Client.GUI;
 import Client.User.User;
 import Client.UserInterface;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.HeadlessException;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
@@ -23,9 +20,9 @@ public class MainWindow extends BigBasicFrame {
     public MainWindow() throws HeadlessException, MalformedURLException {
         User user = new User( "12345" );
         UI = new UserInterface( user );
-        Dimension buttonSize = new Dimension(screenSize.width/15, screenSize.height/20);
+        Dimension buttonSize = new Dimension(screenSize.width/15, screenSize.height/22);
         this.constraints = new GridBagConstraints();
-        this.inset = new Insets(0, 0, screenSize.height/2, screenSize.width/6);
+        this.inset = new Insets(0, 0, screenSize.height/2, screenSize.width/8);
         this.constraints.insets = this.inset;
 
         this.newOrderButton = new JButton("New Order");
@@ -42,15 +39,17 @@ public class MainWindow extends BigBasicFrame {
             }
         } );
         this.mainPanel.add(this.newOrderButton, this.constraints);
-        this.inset = new Insets(0, screenSize.width/6, screenSize.height/2, 0);
+        this.inset = new Insets(0, screenSize.width/8, screenSize.height/2, 0);
         this.constraints.insets = this.inset;
 
         this.editOrderWindow = new JButton("Edit");
         this.editOrderWindow.setName("editOrderWindow");
         this.editOrderWindow.setPreferredSize(buttonSize);
+
+        editOrderWindow.setFont(font);
         this.editOrderWindow.addActionListener( e -> {
             try {
-                EditOrderWindow editOrderWindow = new EditOrderWindow();
+                EditOrderWindow editOrderWindow = new EditOrderWindow("");
                 editOrderWindow.setVisible( true );
                 dispose();
             } catch (MalformedURLException e1) {
@@ -58,7 +57,7 @@ public class MainWindow extends BigBasicFrame {
             }
         } );
         this.mainPanel.add(this.editOrderWindow, this.constraints);
-        this.inset = new Insets(0, 0, 0, 0);
+        this.inset = new Insets(0, 0, 50, 50);
         this.constraints.insets = this.inset;
         //DefaultListModel listModel = new DefaultListModel<String>(UI.getOrders());
         Object[] orderNameArray;
@@ -91,7 +90,8 @@ public class MainWindow extends BigBasicFrame {
                 "orders",
         };
         JTable table = new JTable(data, columnNames);
-        table.setFont(font);
+        Font font2 = new Font("Broadway", 0, 30);
+        table.setFont(font2);
         table.setRowSelectionAllowed(true);
         table.getSelectionModel().addListSelectionListener( event -> {
             orderToEdit = table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()).toString();
@@ -101,8 +101,11 @@ public class MainWindow extends BigBasicFrame {
       //  ordersList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         //ordersList.setLayoutOrientation(JList.VERTICAL_S);
         //ordersList.setVisibleRowCount(-1);
+        table.setSelectionMode(1);
         ordersScrollList = new JScrollPane(table);
         ordersScrollList.setPreferredSize(new Dimension(screenSize.width/4, screenSize.height/3));
+        ordersScrollList.createVerticalScrollBar();
+        ordersScrollList.setFont(font);
         this.mainPanel.add(this.ordersScrollList, this.constraints);
 
 
