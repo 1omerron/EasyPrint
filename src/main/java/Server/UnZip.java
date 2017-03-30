@@ -18,7 +18,7 @@ public class UnZip
     /**
      * Unzip it
      */
-    public void unZipIt(OrderInstruction order){
+    public static void unZipIt(OrderInstruction order){
         String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the server
         new File(pathServer+File.separator+order.getOrderId()).mkdir();
         String zipFile = pathServer+File.separator+order.getOrderId()+".zip";
