@@ -23,7 +23,7 @@ public abstract class BasicFrame extends JFrame {
     protected JLabel background;
 
     public BasicFrame() throws HeadlessException, MalformedURLException {
-        this.setBounds(0, 0, screenSize.width, screenSize.height);
+        this.setBounds(screenSize.width/4, 0, screenSize.width/2,  (int)(screenSize.height/1.1));
         this.contentpane = new JPanel(new BorderLayout());
         JPanel topLogoPanel = new JPanel();
         JLabel logoLabel = new JLabel(new ImageIcon(this.logoLocation));
@@ -34,7 +34,7 @@ public abstract class BasicFrame extends JFrame {
         this.setDefaultCloseOperation(3);
     }
 
-    protected void start() {
+    protected void init() {
         this.contentpane.add(this.mainPanel, "Center");
         this.setContentPane(this.contentpane);
     }
@@ -46,6 +46,5 @@ public abstract class BasicFrame extends JFrame {
         } catch (MalformedURLException var2) {
             var2.printStackTrace();
         }
-
     }
 }

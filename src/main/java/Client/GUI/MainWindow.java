@@ -1,6 +1,5 @@
 package Client.GUI;
 
-import Client.GUI.BasicFrame;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.HeadlessException;
@@ -46,6 +45,7 @@ public class MainWindow extends BasicFrame {
             }
         });
         this.mainPanel.add(this.recentOrdersButton, this.constraints);
-        this.start();
+
+        this.init();
     }
 }

@@ -1,3 +1,4 @@
+/*
 package Server;
 
 import Client.RequestOrganization.FileInfo;
@@ -11,9 +12,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
 
+*/
 /**
  * Created by nimrod on 26/03/2017.
- */
+ *//*
+
 public class FromJson
 {
     public static String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the server
@@ -32,13 +35,15 @@ public class FromJson
         new UnZip().unZipIt(order);
         //OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"
         // Client client = new Client("127.0.0.1",7777);
-        // client.start(new ClientEncoderDecoder(),new ClientProtocol());
+        // client.init(new ClientEncoderDecoder(),new ClientProtocol());
     }
 
-    /**
+    */
+/**
      * converting json file to java object
      * @param filename name of the json file (including the ".json")
-     */
+     *//*
+
     public static OrderInstruction fromJson(String filename)
     {
         Gson gson = new Gson();
@@ -60,3 +65,4 @@ public class FromJson
         return orderIns;
     }
 }
+*/
