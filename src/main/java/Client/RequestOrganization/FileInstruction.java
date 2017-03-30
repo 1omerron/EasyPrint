@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class FileInstruction
 {
     private FileInfo file;
-    private LinkedList<PageRangeInstruction> ranges;
+    private String ranges;
 
     public FileInfo getFile() {
         return file;
@@ -19,49 +19,40 @@ public class FileInstruction
      * Constructs new FileInstructionS with file only
      * @param file FileInfo from an uploaded file by the user
      */
-    public FileInstruction(FileInfo file)
-
-    {
-        ranges = new LinkedList<>();
-        this.file = file;
-        //todo change
-        ranges.add(new PageRangeInstruction(1, file.getNumberOfPages(),1));
-    }
+    public FileInstruction(FileInfo file) { this.file = file;}
 
     /**
      * Constructs new FileInstructionS with file, and a list of ranges to print
      * @param file FileInfo from an uploaded file by the user
      * @param rangesToAdd Collection of ranges (printing instructions) which were set by the user
      */
-    public FileInstruction(FileInfo file, Collection<PageRangeInstruction> rangesToAdd)
+    public FileInstruction(FileInfo file, String rangesToAdd)
     {
         this.file=file;
-        ranges = new LinkedList<>();
-        for(PageRangeInstruction range : rangesToAdd)
-            this.ranges.add(range);
+        this.ranges = rangesToAdd;
     }
 
     public void setFile(FileInfo file) {
         this.file = file;
     }
 
-    public void setRanges(LinkedList<PageRangeInstruction> ranges) {
+    public void setRanges(String ranges) {
         this.ranges = ranges;
     }
 
-    public FileInstruction(FileInfo file, PageRangeInstruction rangesToAdd)
+/*    public FileInstruction(FileInfo file, PageRangeInstruction rangesToAdd)
     {
         this.file=file;
         ranges = new LinkedList<>();
         ranges.addLast(rangesToAdd);
-    }
+    }*/
 
-    public void addPageRangeInstruction(PageRangeInstruction pageRange)
+    public void addPageRangeInstruction(String rangeToAdd)
     {
-        ranges.addLast(pageRange);
+        ranges += ", " + rangeToAdd;
     }
 
-    public LinkedList<PageRangeInstruction> getRanges() {
+    public String getRanges() {
         return ranges;
     }
 }

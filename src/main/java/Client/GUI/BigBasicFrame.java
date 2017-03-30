@@ -2,7 +2,6 @@ package Client.GUI;
 
 import Client.GUI.MainWindow;
 import Client.UserInterface;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
