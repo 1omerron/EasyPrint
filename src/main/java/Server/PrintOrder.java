@@ -7,6 +7,22 @@ import Client.RequestOrganization.OrderInstruction;
  */
 public class PrintOrder
 {
+    /**
+     * print the order
+     * @param jsonName the name of the json file
+     */
+    public void printOrder(String jsonName)
+    {
+        OrderInstruction order = createOrder(jsonName);
+        UnZip.unZipIt(order);
+
+    }
+
+    /**
+     *
+     * @param jsonName
+     * @return Order Instruction from the json file
+     */
     public OrderInstruction createOrder(String  jsonName)
     {
         OrderInstruction order = FromJson.fromJson(jsonName);
