@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 {
-    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles\\";
+    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\ServerFiles";
     // TODO change to Client files directory
     // TODO make it somewhere static so every class will use this path
 
@@ -33,7 +33,10 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
     private char opCode;
     private char operationCode;
     private String jsonFileName = null;
+    private File jsonFile;
+    private File zippedFolder;
     private int received=0;
+    private int orderIndex=2;
 
     /**
      * add the next byte to the decoding process
@@ -117,83 +120,61 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 
     private Packet decodeOrder()
     {
-        System.out.println("ServerEncDec >> decodeOrder >> operation code : '"+operationCode+"'");
-        switch(operationCode)
+        received++;
+        switch (received)
         {
-            case '0':
-            {
-                received++;
-                if(jsonFileName==null)
-                    throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
-                // TODO handle - send error packet
-                else // JSON file name was received
+            case 1: // json name
+                {
+                    jsonFileName = new String(buffer, 2, index-3);
+                    orderIndex = index;
+                    toReturn = null;
+                    break;
+                }
+            case 2: // json file
                 {
                     try {
-                        FileOutputStream stream = new FileOutputStream(File.separator+JsonFilesDirectory+jsonFileName+".json");
-                        stream.write(buffer,2, index-2);
+                        System.out.println("ServerEncDec >> jsonFileName = "+jsonFileName);
+                        File file = new File("C:\\Users\\1omer\\Desktop\\ServerFiles\\"+jsonFileName);
+                        file.createNewFile();
+                        FileOutputStream stream = new FileOutputStream(file);
+                        stream.write(buffer,orderIndex, index-orderIndex);
                         stream.flush();
                         stream.close();
-                        System.out.println("ServerEncDec >> decodeOrder >> finished creating file");
-                        return new OrderPacket(new File(JsonFilesDirectory+File.separator+jsonFileName+".json"));
+                        jsonFile = file;
+                        System.out.println("ServerEncDec >> decodeOrder >> finished creating json file");
+                        toReturn = null;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    finally {
-                        if(received==3) {
-                            jsonFileName = null;
-                            received = 0;
-                        }
-                    }
+                    orderIndex=index;
+                    break;
                 }
-                break;
-            }
-            case '1': // json file name
-            {
-                toReturn = null; // TODO remove
-                if(buffer[index-1]=='\0')
-                {
-                    received++;
-                    jsonFileName = new String(buffer, 2, index-2);
-                    toReturn = new OrderPacket(jsonFileName);
-                    if(received==3) {
-                        jsonFileName = null;
-                        received = 0;
-                    }
-                }
-                return toReturn;
-            }
-            case '2':
-            {
-                received++;
-                if(jsonFileName==null)
-                    throw new RuntimeException("ServerEncDec >> decodeOrder >> Received JSON file before JSON file name");
-                    // TODO handle - send error packet
-                else // JSON file name was received
+            case 3: // zipped folder
                 {
                     try {
-                        FileOutputStream stream = new FileOutputStream(JsonFilesDirectory + File.separator + jsonFileName + ".zip");
-                        stream.write(buffer, 2, index - 2);
+                        String zipName = jsonFileName.substring(0, (jsonFileName.length()-4)); // removes json (. stays)
+                        zipName = zipName + "zip";
+                        System.out.println("ServerEncDec >> zipFileName = "+zipName);
+                        File file = new File("C:\\Users\\1omer\\Desktop\\ServerFiles\\"+zipName);
+                        file.createNewFile();
+                        FileOutputStream stream = new FileOutputStream(file);
+                        stream.write(buffer,orderIndex, index-orderIndex);
                         stream.flush();
                         stream.close();
-                        return new OrderPacket(new File(JsonFilesDirectory + File.separator + jsonFileName + ".zip"));
+                        System.out.println("ServerEncDec >> decodeOrder >> finished creating zipped file");
+                        zippedFolder = file;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    finally {
-                        if(received==3) {
-                            jsonFileName = null;
-                            received = 0;
-                        }
-                    }
+                    toReturn = new OrderPacket(jsonFileName, jsonFile, zippedFolder);
+                    orderIndex=2;
+                    received=0;
+                    break;
                 }
-                break;
-            }
             default:
-            {
-                throw new RuntimeException("ServerEncDec >> decodeOrder >> Illegal Operation Code");
-                // TODO handle illegal operation code - return error packet
-                // break;
-            }
+                {
+                    System.out.println("ServerEncDec >> decodeOrder >> default switch case");
+                }
         }
         return toReturn;
     }

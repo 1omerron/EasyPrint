@@ -19,15 +19,15 @@ public class ClientProtocol implements MessagingProtocol<Packet>
     private char operation;
     private Packet toReturn;
 
-    private int orderPartsSent = 0;
+    private String jsonFileName;
     private File jsonObject, zippedFolder;
 
     public void setAndSendOrder(File jsonObject, String jsonFileName, File zippedFolder)
     {
         this.jsonObject = jsonObject;
         this.zippedFolder = zippedFolder;
-        this.myHandler.send(new OrderPacket(jsonFileName));
-        orderPartsSent++;
+        this.jsonFileName = jsonFileName;
+        this.myHandler.send(new OrderPacket(jsonFileName, jsonObject, zippedFolder));
     }
 
     /**
@@ -85,31 +85,22 @@ public class ClientProtocol implements MessagingProtocol<Packet>
      */
     private Packet handleAck()
     {
-        switch (orderPartsSent)
+        switch (operation)
         {
-            case 1:
+            case '0':
             {
-                toReturn = new OrderPacket(jsonObject);
-                orderPartsSent++;
-                break;
-            }
-            case 2:
-            {
-                toReturn =  new OrderPacket(zippedFolder);
-                orderPartsSent++;
-                break;
-            }
-            case 3:
-            {
-                orderPartsSent = 0;
-                shouldTerminate = true;
                 toReturn = new LogInOutPacket('l', '0', myUserName);
+                break;
+            }
+            case '1':
+            {
+                toReturn = null;
+                shouldTerminate = true;
                 break;
             }
             default:
             {
-                toReturn = null;
-                break;
+                System.out.println("ClientProt >> handleAck >> default switch case");
             }
         }
         return toReturn;

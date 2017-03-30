@@ -18,7 +18,7 @@ import java.nio.file.Paths;
  */
 public class ServerProtocol<T> implements MessagingProtocol<Packet>
 {
-    public static String filesPath = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ServerFiles";
+    public static String filesPath = "C:\\Users\\1omer\\Desktop\\ServerFiles";
     // TODO change to Client files directory
     // TODO make it somewhere static so every class will use this path
 
@@ -74,54 +74,14 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
 
     /**
      * handles order packet
-     * the encoder decoder checks that the first packet is the json file name
-     * @return packet to return, or null if no answer needed
+     * calls the printOrder function in order to handle the order
+     * @return acknowledge packet to return, or null if no answer needed
      */
     private Packet handleOrder(OrderPacket msg)
     {
-        switch (operation)
-        {
-            case '0': // JSON file
-            {
-                Path existingFilePath = ((File)(msg.getInformation())).toPath();
-                Path targetLocation = Paths.get(filesPath);
-                try {
-                    // MOVES THE ORIGINAL FILE TO THE FILES FOLDER!
-                    Files.move(existingFilePath, targetLocation);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                orderPartsReceived++;
-                break;
-            }
-            case '1': // JSON file name - COMES FIRST
-            {
-                jsonFileName = (String) msg.getInformation();
-                System.out.println("ServProt >> handleOrder >> received json file name : "+jsonFileName);
-                orderPartsReceived++;
-                break;
-            }
-            case '2': // Zipped file
-            {
-                Path existingFilePath = ((File)(msg.getInformation())).toPath();
-                Path targetLocation = Paths.get(filesPath);
-                try {
-                    // MOVES THE ORIGINAL FILE TO THE FILES FOLDER!
-                    Files.move(existingFilePath, targetLocation);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                orderPartsReceived++;
-                break;
-            }
-            default:
-            {
-                return new ErrorPacket('e', '0', "Incorrect Operation Code In Order Packet");
-            }
-        }
+        System.out.println("ServerProt >> handleOrder");
+        // PrintOrder printOrder = new PrintOrder(msg.getJsonFileName());
         toReturn = new AckPacket('a', '0', orderPartsReceived);
-        if(orderPartsReceived==3)
-            orderPartsReceived=0;
         return toReturn;
     }
 

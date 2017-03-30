@@ -16,7 +16,7 @@ import java.net.Socket;
  */
 public class Client<T>
 {
-    public static String pathClient = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ClientFiles";
+    public static String pathClient = "C:\\Users\\1omer\\Desktop\\ClientFiles";
     // TODO change to Client files directory
     // TODO make it somewhere static so every class will use this path
 

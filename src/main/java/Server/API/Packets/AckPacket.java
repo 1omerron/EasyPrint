@@ -6,7 +6,8 @@ package Server.API.Packets;
  * Code : a
  *
  * Operation Field in Ack represents:
- * always '0'
+ * '0' - ack for order
+ * '1' - ack for login/logout
  *
  * byte[] data = the bytes representing the String value, of the acknowledge number
  */

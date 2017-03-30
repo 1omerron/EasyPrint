@@ -29,7 +29,7 @@ public class FromJson
         list.add(file1);
         list.add(file2);
         OrderInstruction order = new OrderInstruction(list);
-        new UnZip().unZipIt(order);
+        UnZip.unZipIt(order);
         //OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"
         // Client client = new Client("127.0.0.1",7777);
         // client.start(new ClientEncoderDecoder(),new ClientProtocol());

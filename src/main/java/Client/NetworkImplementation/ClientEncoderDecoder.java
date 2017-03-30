@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
 {
-    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\עומר\\פרוייקטים\\EasyPrint\\ClientFiles";
+    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\ClientFiles";
     // TODO change to Client files directory
     // TODO make it somewhere static so every class will use this path
 
@@ -98,66 +98,8 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
 
     private Packet decodeOrder()
     {
-        switch(operationCode)
-        {
-            case '0':
-            {
-                received++;
-                if(jsonFileName==null)
-                    return new ErrorPacket('e','0',"Can't Open JSON without getting File Name Before");
-                else // JSON file name was received
-                {
-                    try {
-                        FileOutputStream stream = new FileOutputStream(JsonFilesDirectory+File.separator+jsonFileName+".json");
-                        stream.write(buffer,2, index-1);
-                        stream.flush();
-                        stream.close();
-                        return new OrderPacket(new File(JsonFilesDirectory+File.separator+jsonFileName+".json"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    finally {
-                        if(received==3)
-                            jsonFileName=null;
-                    }
-                }
-            }
-            case '1':
-            {
-                received++;
-                jsonFileName = new String(buffer, 2, index-1);
-                toReturn = new OrderPacket(jsonFileName);
-                if(received==3)
-                    jsonFileName=null;
-                return toReturn;
-            }
-            case '2':
-            {
-                received++;
-                if(jsonFileName==null)
-                    throw new RuntimeException("ClientEncDec >> decodeOrder >> Can't create file without jsonFileName first");
-                else // JSON file name was received
-                {
-                    try {
-                        FileOutputStream stream = new FileOutputStream(JsonFilesDirectory + File.separator + jsonFileName + ".zip");
-                        stream.write(buffer, 2, index - 1);
-                        stream.flush();
-                        stream.close();
-                        return new OrderPacket(new File(JsonFilesDirectory + File.separator + jsonFileName + ".zip"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    finally {
-                        if(received==3)
-                            jsonFileName=null;
-                    }
-                }
-            }
-            default:
-            {
-                return new ErrorPacket('e','0',"Illegal Operation Code of Order Packet");
-            }
-        }
+        // client should not get order packets
+        return null;
     }
 
     private Packet decodeLog()
