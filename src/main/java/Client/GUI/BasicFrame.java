@@ -1,6 +1,8 @@
 package Client.GUI;
 
 import Client.GUI.MainWindow;
+import Client.UserInterface;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class BasicFrame extends JFrame {
+    protected static UserInterface UI;
     protected static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     protected static Font font = new Font("Broadway", 0, 40);
     protected URL logoLocation = this.getClass().getClassLoader().getResource("Icons/logo.jpg");
