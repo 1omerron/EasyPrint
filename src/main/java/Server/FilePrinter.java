@@ -17,7 +17,7 @@ public class FilePrinter {
         // Input the file
         FileInputStream textstream = null;
         try {
-            textstream = new FileInputStream("C:\\Users\\Mika\\IdeaProjects\\EasyPrint\\src\\mika.txt");
+            textstream = new FileInputStream("C:\\Users\\חן\\IdeaProjects\\EasyPrint\\test.txt");
         } catch (FileNotFoundException ffne) {
             System.out.println("exception 1");
         }

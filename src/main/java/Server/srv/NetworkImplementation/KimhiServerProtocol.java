@@ -21,35 +21,7 @@ import java.util.LinkedList;
      private int connectionId;
      private Connections<Packet> connections;
  
-         
-             /**
-       * starts the protocol
-       * @param connectionId - the id of the specific client connection
-       * @param connections - TODO check if needed as we don't need the broadcast feature
-       */
-             public void start(int connectionId, Connections<Packet> connections) {
-                this.connectionId = connectionId;
-                this.connections = connections;
-            }
- 
-             /**
-       * process the given message
-       *
-       * @param msg the received message
-       * @return the response to send or null if no response is expected by the client
-       */
-             public Packet process(Packet msg) {
-                return null;
-            }
- 
-             /**
-       * @return true if the connection should be terminated
-       * //TODO when should it be..?
-       */
-             public boolean shouldTerminate() {
-                return false;
-        
-                    }
+
  
              private void sendOrderInstruction(OrderInstruction order){
                 for (FileInstruction instruction : order.getInstructionsList()
