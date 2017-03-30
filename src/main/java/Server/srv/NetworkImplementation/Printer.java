@@ -23,7 +23,7 @@ import java.util.LinkedList;
  
 
  
-             private void sendOrderInstruction(OrderInstruction order){
+             public void sendOrderInstruction(OrderInstruction order){
                 for (FileInstruction instruction : order.getInstructionsList()
                              ) {
                         printFile(instruction);

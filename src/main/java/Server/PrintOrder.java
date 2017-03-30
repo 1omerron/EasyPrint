@@ -1,6 +1,7 @@
 package Server;
 
 import Client.RequestOrganization.OrderInstruction;
+import Server.srv.NetworkImplementation.Printer;
 
 /**
  * Created by nimrod on 30/03/2017.
@@ -15,11 +16,10 @@ public class PrintOrder
     {
         OrderInstruction order = createOrder(jsonName);
         UnZip.unZipIt(order);
-
+        //call printer.print(order)
     }
 
     /**
-     *
      * @param jsonName
      * @return Order Instruction from the json file
      */
