@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 public abstract class BasicFrame extends JFrame {
     protected static UserInterface UI;
     protected static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    protected static Font font = new Font("Broadway", 0, 40);
+    protected static Font font = new Font("Broadway", 0, 44);
     protected URL logoLocation = this.getClass().getClassLoader().getResource("Icons/logo.jpg");
     protected JPanel contentpane;
     protected JPanel mainPanel;

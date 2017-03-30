@@ -1,4 +1,4 @@
-package Server.srv.NetworkImplementation;
+package Server;
 
 import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;

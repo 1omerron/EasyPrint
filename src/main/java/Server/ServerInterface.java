@@ -2,7 +2,6 @@
 package Server;
 
 import Client.RequestOrganization.OrderInstruction;
-import Server.srv.NetworkImplementation.Printer;
 
 */
 /**
