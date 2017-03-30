@@ -13,9 +13,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import javax.swing.*;
 
-
-public class MainWindow extends BasicFrame {
-    protected UserInterface UI;
+public class MainWindow extends BigBasicFrame {
     private JButton newOrderButton;
     private JButton recentOrdersButton;
     Insets inset;
@@ -24,7 +22,8 @@ public class MainWindow extends BasicFrame {
     JScrollPane ordersScrollList;
 
     public MainWindow() throws HeadlessException, MalformedURLException {
-        Dimension buttonSize = new Dimension(300, 100);
+
+        Dimension buttonSize = new Dimension(screenSize.width/15, screenSize.height/20);
         this.constraints = new GridBagConstraints();
         this.inset = new Insets(0, 0, 100, 50);
         this.constraints.insets = this.inset;
@@ -32,6 +31,8 @@ public class MainWindow extends BasicFrame {
         this.constraints.gridheight = 0;
         this.constraints.gridx = 0;
         this.constraints.gridy = 0;
+        this.constraints.ipadx = 0;
+        this.constraints.ipady = 0;
         this.newOrderButton = new JButton("New Order");
         this.newOrderButton.setName("newOrderButton");
         this.newOrderButton.setPreferredSize(buttonSize);
@@ -42,6 +43,8 @@ public class MainWindow extends BasicFrame {
         this.mainPanel.add(this.newOrderButton, this.constraints);
         this.inset = new Insets(0, 50, 100, 0);
         this.constraints.insets = this.inset;
+        this.constraints.gridwidth = 0;
+        this.constraints.gridheight = 0;
         this.constraints.gridx = 0;
         this.constraints.gridy = 0;
         this.constraints.ipadx = 0;
@@ -51,6 +54,13 @@ public class MainWindow extends BasicFrame {
         this.recentOrdersButton.setPreferredSize(buttonSize);
         this.recentOrdersButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                try {
+                    NewOrderWindow newOrderWindow = new NewOrderWindow();
+                    newOrderWindow.setVisible( true );
+                    dispose();
+                } catch (MalformedURLException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         this.mainPanel.add(this.recentOrdersButton, this.constraints);

@@ -1,40 +1,24 @@
 package Client.GUI;
 
-import Client.GUI.MainWindow;
 import Client.UserInterface;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.net.MalformedURLException;
-import java.net.URL;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-public abstract class BasicFrame extends JFrame {
+/**
+ * Created by Barak on 30-Mar-17.
+ */
+public class BasicFrame extends JFrame {
     protected static UserInterface UI;
     protected static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    protected static Font font = new Font("Broadway", 0, 44);
-    protected URL logoLocation = this.getClass().getClassLoader().getResource("Icons/logo.jpg");
+    protected static Font font = new Font("Broadway", 0, 40);
     protected JPanel contentpane;
-    protected JPanel mainPanel;
-    protected JLabel background;
+    JPanel mainPanel;
 
     public BasicFrame() throws HeadlessException, MalformedURLException {
-        this.setBounds(screenSize.width/4, 0, screenSize.width/2,  (int)(screenSize.height/1.1));
-        this.contentpane = new JPanel(new BorderLayout());
-        JPanel topLogoPanel = new JPanel();
-        JLabel logoLabel = new JLabel(new ImageIcon(this.logoLocation));
-        topLogoPanel.add(logoLabel);
-        this.contentpane.add(topLogoPanel, "North");
-        this.mainPanel = new JPanel();
-        this.mainPanel.setLayout(new GridBagLayout());
-        this.setDefaultCloseOperation(3);
+    this.contentpane = new JPanel(new BorderLayout());
+
     }
 
     protected void init() {
