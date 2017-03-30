@@ -8,33 +8,47 @@ import java.io.File;
  * Code : o (the letter o, not zero)
  *
  * Operation Field in Order Packet represents:
- * '0' - JSON file
- * '1' - JSON file NAME
- * '2' - Zipped file
+ * '0' - all order
  *
  * byte[] data = the bytes representing the information to send (JSON File / Json file Name)
  */
 public class OrderPacket extends Packet
 {
-    private Object information;
+    private String jsonFileName;
+    private File jsonFile;
+    private File zippedFolder;
 
     // Constructor with JSON Object / Zipped File
-    public OrderPacket(File file)
+    public OrderPacket(String jsonFileName, File jsonFile, File zippedFolder)
     {
         // TODO added /0
-        super('o','0', (file.toString()+'\0').getBytes());
-        information = file;
+        super('o','0', (jsonFileName.toString()+'\0'+jsonFile+'\0'+zippedFolder.toString().getBytes()+'\0').getBytes());
+        this.jsonFileName = jsonFileName;
+        this.jsonFile = jsonFile;
+        this.zippedFolder = zippedFolder;
     }
 
-    // Constructor with JSON name
-    public OrderPacket(String jsonName /* Should be Order-Number.json */)
-    {
-        // TODO added /0
-        super('o','1', (jsonName+'\0').getBytes());
-        information = jsonName;
+    public File getZippedFolder() {
+        return zippedFolder;
     }
 
-    public Object getInformation() {
-        return information;
+    public void setZippedFolder(File zippedFolder) {
+        this.zippedFolder = zippedFolder;
+    }
+
+    public File getJsonFile() {
+        return jsonFile;
+    }
+
+    public void setJsonFile(File jsonFile) {
+        this.jsonFile = jsonFile;
+    }
+
+    public String getJsonFileName() {
+        return jsonFileName;
+    }
+
+    public void setJsonFileName(String jsonFileName) {
+        this.jsonFileName = jsonFileName;
     }
 }
