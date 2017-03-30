@@ -15,8 +15,6 @@ import java.nio.file.Paths;
  */
 public class ServerProtocol<T> implements MessagingProtocol<Packet>
 {
-    public static String filesPath = "C:\\Users\\1omer\\Desktop\\ServerFiles";
-
     private boolean shouldTerminate;
 
     private char opCode;

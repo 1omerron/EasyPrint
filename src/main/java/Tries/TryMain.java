@@ -1,20 +1,19 @@
 package Tries;
 
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
 
 /**
  * Created by 1omer on 29/03/2017.
  */
 public class TryMain
 {
-    public static void main(String[] args)
+    public TryMain() throws Exception
     {
-        String s = "jsonfile.txt";
-        int fileExtPos = s.lastIndexOf(".");
-        if (fileExtPos >= 0 )
-            s= s.substring(0, fileExtPos);
-        System.out.println(s);
+        URL location = getClass().getClassLoader().getResource("ServerFiles/bla.txt");
+        URI uri = location.toURI();
+        File file = new File(uri);
     }
 
     public static int fromByteArray(byte[] bytes)

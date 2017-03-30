@@ -16,9 +16,7 @@ import java.net.Socket;
  */
 public class Client<T>
 {
-    public static String pathClient = "C:\\Users\\nimrod\\Desktop\\easyPrint";
-    // TODO change to Client files directory
-    // TODO make it somewhere static so every class will use this path
+    public static String pathClient = "C:\\Users\\1omer\\Desktop\\ClientFiles\\";
 
     private final String serverIp;
     private final int serverPort;
@@ -50,12 +48,13 @@ public class Client<T>
     public static void main(String[] args)
     {
         /* JUST FOR TESTING THE CLIENT - REMOVE THE MAIN AFTER */
-        Client client = new Client("127.0.0.1",7777);
+        Client client = new Client("132.72.233.199",7777);
         client.start(new ClientEncoderDecoder(),new ClientProtocol());
         String fileName = "jsonfile";
-        File jsonObject = new File(pathClient+File.separator+fileName+".json");
-        File zippedFiles = new File(pathClient+File.separator+fileName+".zip");
+        File jsonObject = new File(pathClient+fileName+".json");
+        File zippedFiles = new File(pathClient+fileName+".zip");
         String jsonFileName = jsonObject.getName();
         client.sendOrder(jsonObject, jsonFileName, zippedFiles);
+        System.out.println("Finished. Disconnected.");
     }
 }
