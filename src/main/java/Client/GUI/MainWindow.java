@@ -25,7 +25,7 @@ public class MainWindow extends BigBasicFrame {
 
         Dimension buttonSize = new Dimension(screenSize.width/15, screenSize.height/20);
         this.constraints = new GridBagConstraints();
-        this.inset = new Insets(0, 0, 100, 50);
+        this.inset = new Insets(0, 0, 700, 300);
         this.constraints.insets = this.inset;
         this.constraints.gridwidth = 0;
         this.constraints.gridheight = 0;
@@ -41,7 +41,7 @@ public class MainWindow extends BigBasicFrame {
             }
         });
         this.mainPanel.add(this.newOrderButton, this.constraints);
-        this.inset = new Insets(0, 50, 100, 0);
+        this.inset = new Insets(0, 310, 700, 0);
         this.constraints.insets = this.inset;
         this.constraints.gridwidth = 0;
         this.constraints.gridheight = 0;
@@ -64,7 +64,7 @@ public class MainWindow extends BigBasicFrame {
             }
         });
         this.mainPanel.add(this.recentOrdersButton, this.constraints);
-        this.inset = new Insets(150, 0, 0, 0);
+        this.inset = new Insets(0, 0, 200, 0);
         this.constraints.insets = this.inset;
         //DefaultListModel listModel = new DefaultListModel<String>(UI.getOrders());
        // OrderInstruction[] orderInstructionArray = (OrderInstruction[]) (UI.getOrders()).values().toArray();
@@ -75,8 +75,8 @@ public class MainWindow extends BigBasicFrame {
         ordersList.setLayoutOrientation(JList.VERTICAL);
         ordersList.setVisibleRowCount(-1);
         ordersScrollList = new JScrollPane(ordersList);
-        ordersScrollList.setPreferredSize(new Dimension(250, 100));
-
+        ordersScrollList.setPreferredSize(new Dimension(300, 250));
+        ordersScrollList.setFont(font);
         this.mainPanel.add(this.ordersScrollList, this.constraints);
 
 

@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 public class BasicFrame extends JFrame {
     protected static UserInterface UI;
     protected static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    protected static Font font = new Font("Broadway", 0, 40);
+    protected static Font font = new Font("Broadway", 0, 600);
     protected JPanel contentpane;
     JPanel mainPanel;
 
