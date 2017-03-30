@@ -52,8 +52,9 @@ public class Client<T>
         /* JUST FOR TESTING THE CLIENT - REMOVE THE MAIN AFTER */
         Client client = new Client("127.0.0.1",7777);
         client.start(new ClientEncoderDecoder(),new ClientProtocol());
-        File jsonObject = new File(pathClient+File.separator+"jsonfile.txt");
-        File zippedFiles = new File(pathClient+File.separator+"zipped.zip");
+        String fileName = "jsonfile";
+        File jsonObject = new File(pathClient+File.separator+fileName+".json");
+        File zippedFiles = new File(pathClient+File.separator+fileName+".zip");
         String jsonFileName = jsonObject.getName();
         client.sendOrder(jsonObject, jsonFileName, zippedFiles);
     }

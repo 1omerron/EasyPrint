@@ -37,13 +37,11 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
             while (!protocol.shouldTerminate() && connected && (read = in.read()) >= 0)
             {
                 T nextMessage = encdec.decodeNextByte((byte) read);
-                if (nextMessage != null) {
-                    System.out.println("ClientHandler >> sendOrder >> received a message != null of opCode : "+((Packet)nextMessage).getCode());
+                if (nextMessage != null)
+                {
                     T toReturn = protocol.process(nextMessage);
                     if(toReturn != null)
                     {
-                        System.out.println("ClientHandler >> sendOrder >> protocol return a " +
-                                "not-null message to send back of opCode : "+((Packet)toReturn).getCode());
                         send(toReturn);
                     }
                 }
@@ -54,10 +52,13 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
         }
     }
 
-    // WE DONT USE THE FUNCTION RUN
+
+    /**
+     * WE DO NOT USE THE FUNCTION RUN!
+     */
     public void run()
     {
-        int read;
+/*        int read;
         try {
             in = new BufferedInputStream(socket.getInputStream());
             out = new BufferedOutputStream(socket.getOutputStream());
@@ -72,7 +73,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
         }
         catch (IOException e) {
             throw new RuntimeException("BlockingConnectionHandler >> run() >> new Socket >> IOException");
-        }
+        }*/
     }
 
     @Override

@@ -2,10 +2,7 @@ package Server.srv.NetworkImplementation;
 
 import Server.API.Connections;
 import Server.API.MessagingProtocol;
-import Server.API.Packets.AckPacket;
-import Server.API.Packets.ErrorPacket;
-import Server.API.Packets.OrderPacket;
-import Server.API.Packets.Packet;
+import Server.API.Packets.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,16 +16,13 @@ import java.nio.file.Paths;
 public class ServerProtocol<T> implements MessagingProtocol<Packet>
 {
     public static String filesPath = "C:\\Users\\1omer\\Desktop\\ServerFiles";
-    // TODO change to Client files directory
-    // TODO make it somewhere static so every class will use this path
 
     private boolean shouldTerminate;
 
     private char opCode;
     private char operation;
     private Packet toReturn;
-
-    private String jsonFileName;
+    private Packet receivedPacket;
 
     /**
      * process the given message
@@ -40,7 +34,8 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
     {
         this.opCode = msg.getCode();
         this.operation = msg.getOperation();
-        System.out.println("Server Protocol >> Process >> OpCode: "+opCode+", Operation: "+operation);
+        this.receivedPacket = msg;
+        toReturn = null;
         switch(opCode)
         {
             case 'e': // error
@@ -78,8 +73,7 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
      */
     private Packet handleOrder(OrderPacket msg)
     {
-        System.out.println("ServerProt >> handleOrder");
-        // PrintOrder printOrder = new PrintOrder(msg.getJsonFileName());
+        // PrintOrder printOrder = new PrintOrder(msg.getJsonFileName()); // PRINTING THE FILE
         toReturn = new AckPacket('a', '0', 0);
         return toReturn;
     }
@@ -104,13 +98,11 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
         {
             case '0': // log out
             {
-                // TODO make sure to close the socket before the client??
-
                 if(opCode=='l' /* TODO check if the username exists in the database */)
                 {
                     // TODO remove the username from the database
                     shouldTerminate = true;
-                    return new AckPacket('a', '0', 0);
+                    return new AckPacket('a', '1', 0);
                 }
                 else
                 {
@@ -126,7 +118,7 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
                 else
                 {
                     // TODO add the username to the database
-                    return new AckPacket('a', '0', 0);
+                    return new AckPacket('a', '1', 0);
                 }
             }
             default:

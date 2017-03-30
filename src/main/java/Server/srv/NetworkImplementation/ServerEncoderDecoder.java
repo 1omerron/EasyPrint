@@ -15,193 +15,219 @@ import java.io.IOException;
  */
 public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 {
-    private static final String JsonFilesDirectory = "C:\\Users\\1omer\\Desktop\\ServerFiles";
-    // TODO change to Client files directory
-    // TODO make it somewhere static so every class will use this path
+    private static final String ServerFilesFolder = "C:\\Users\\1omer\\Desktop\\ServerFiles\\";
 
     // general variables
-    private final int BUFFER_SIZE = 1024;
-    private int index=0;
+    private final int BUFFER_SIZE = 102400000;
+    private int index = 0;
     private byte[] buffer = new byte[BUFFER_SIZE];
     private Packet toReturn = null;
 
     // decoding variables
     private char opCode;
     private char operationCode;
-    private String jsonFileName = null;
+    private String jsonFileName;
     private File jsonFile;
     private File zippedFolder;
-    private int received=0;
-    private int orderIndex=2;
+
+    private int nameLength;
+    private int fileLength;
+    private int zipLength;
+
+    private int beginningOfFileIndex;
+    private int partsReceived;
+
 
     /**
      * add the next byte to the decoding process
+     *
      * @param nextByte the next byte to consider for the currently decoded message
      * @return a message if this byte completes one or null if it doesn't.
      */
     @Override
     public Packet decodeNextByte(byte nextByte)
     {
-        // TODO remove PINIs from this class
-
-        if(index>= this.buffer.length) {
-            System.out.println("Server EncDec increasing byte buffer");
+        toReturn = null;
+        if (index >= this.buffer.length) {
             buffer = increaseBufferSize(buffer);
         }
-        buffer[index] = nextByte;
-        index++;
-        if(index==1) // already read 1 byte (op code byte)
+        buffer[index++] = nextByte;
+        if (index == 1) // already read 1 byte (op code byte)
         {
             opCode = (char) buffer[index - 1];
-            System.out.println("Server EncDec >> read opCode : '"+opCode+"'");
             return null;
-        }
-        else if(index==2) // already read 2 bytes (operation)
+        } else if (index == 2) // already read 2 bytes (operation)
         {
             operationCode = (char) buffer[index - 1];
-            System.out.println("Server EncDec >> read operationCode : '"+operationCode+"'");
             return null;
-        }
-        else if(nextByte=='\0') {
+        } else {
             switch (opCode) {
                 case 'e': // Error
                 {
-                    toReturn = decodeError();
-                    if (toReturn != null)
-                        reset();
+                    if (nextByte == '\0') {
+                        toReturn = decodeError();
+                        if (toReturn != null)
+                            reset();
+                    }
                     return toReturn;
                 }
                 case 'l': // Log In/Out
                 {
-                    toReturn = decodeLog();
-                    if (toReturn != null)
-                        reset();
+                    if (nextByte == '\0') {
+                        toReturn = decodeLog();
+                        if (toReturn != null)
+                            reset();
+                    }
                     return toReturn;
                 }
                 case 'o': // Order
                 {
-                    toReturn = decodeOrder();
-                    if (toReturn != null)
-                        reset();
-                    return toReturn;
+                    if (index == 6) // now need to get length of an item
+                    {
+                        byte[] bytesOfLength = new byte[4];
+                        bytesOfLength[0] = buffer[2];
+                        bytesOfLength[1] = buffer[3];
+                        bytesOfLength[2] = buffer[4];
+                        bytesOfLength[3] = buffer[5];
+                        this.nameLength = fromByteArrayToInt(bytesOfLength);
+                    } else if (index == 10) {
+                        byte[] bytesOfLength = new byte[4];
+                        bytesOfLength[0] = buffer[6];
+                        bytesOfLength[1] = buffer[7];
+                        bytesOfLength[2] = buffer[8];
+                        bytesOfLength[3] = buffer[9];
+                        this.fileLength = fromByteArrayToInt(bytesOfLength);
+                    } else if (index == 14) {
+                        byte[] bytesOfLength = new byte[4];
+                        bytesOfLength[0] = buffer[10];
+                        bytesOfLength[1] = buffer[11];
+                        bytesOfLength[2] = buffer[12];
+                        bytesOfLength[3] = buffer[13];
+                        this.zipLength = fromByteArrayToInt(bytesOfLength);
+                        System.out.println("decodeNextByte : zipLength = " + this.zipLength);
+                        beginningOfFileIndex = 14;
+                        partsReceived = 0;
+                    } else if (index >= 15)// finished getting lengths
+                    {
+                        toReturn = decodeOrder();
+                        if (toReturn != null)
+                        {
+                            reset();
+                            return toReturn;
+                        }
+                        return null;
+                    }
+                    break;
                 }
                 case 'a': // Acknowledge
                 {
-                    toReturn = decodeAck();
-                    if (toReturn != null) {
-                        reset();
+                    if (nextByte == '\0') {
+                        toReturn = decodeAck();
+                        if (toReturn != null) {
+                            reset();
+                        }
                     }
                     return toReturn;
                 }
-                default: // Any Other
-                {
-                    reset();
-                    jsonFileName = null;
-                    System.out.println("################################################");
-                    System.out.println("Server EncDec >> Illegal OpCode : '" + opCode + "'");
-                    System.out.println("################################################");
-                    // TODO handle wrong op code - return error message
-                    break;
-                }
             }
         }
-        return toReturn;
+        return null;
     }
 
     private Packet decodeAck()
     {
-        String ackNumberString = new String(buffer,2,index-2);
+        String ackNumberString = new String(buffer, 2, index - 2);
         return new AckPacket(opCode, operationCode, Integer.valueOf(ackNumberString));
     }
 
-    private Packet decodeOrder()
+    private Packet decodeOrder() // received all lengths
     {
-        received++;
-        switch (received)
+        switch (partsReceived)
         {
-            case 1: // json name
+            case 0: // now receiving the JSON File Name
+            {
+                if(index-beginningOfFileIndex==nameLength)
                 {
-                    jsonFileName = new String(buffer, 2, index-3);
-                    orderIndex = index;
-                    toReturn = null;
-                    break;
+                    partsReceived++;
+                    this.jsonFileName = new String(buffer, beginningOfFileIndex, nameLength);
+                    beginningOfFileIndex = index;
                 }
-            case 2: // json file
+                break;
+            }
+            case 1: // now receiving the JSON File
+            {
+                if(index-beginningOfFileIndex==fileLength)
                 {
                     try {
-                        System.out.println("ServerEncDec >> jsonFileName = "+jsonFileName);
-                        File file = new File("C:\\Users\\1omer\\Desktop\\ServerFiles\\"+jsonFileName);
-                        file.createNewFile();
+                        File file = new File(ServerFilesFolder + this.jsonFileName);
+                        boolean fileCreationSuccess = file.createNewFile();
+                        if(!fileCreationSuccess)
+                            throw new RuntimeException("JSON file creation FAILED");
                         FileOutputStream stream = new FileOutputStream(file);
-                        stream.write(buffer,orderIndex, index-orderIndex);
+                        stream.write(buffer, beginningOfFileIndex, fileLength);
                         stream.flush();
                         stream.close();
                         jsonFile = file;
-                        System.out.println("ServerEncDec >> decodeOrder >> finished creating json file");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    toReturn = null;
-                    orderIndex=index;
-                    break;
+                    partsReceived++;
+                    beginningOfFileIndex = index;
                 }
-            case 3: // zipped folder
+                break;
+            }
+            case 2:  // now receiving the Zipped Folder
+            {
+                if(index-beginningOfFileIndex==zipLength)
                 {
                     try {
-                        String zipName = jsonFileName.substring(0, (jsonFileName.length()-4)); // removes json (. stays)
+                        String zipName;
+                        int fileExtPos = this.jsonFileName.lastIndexOf(".");
+                        zipName= this.jsonFileName.substring(0, fileExtPos);
                         zipName = zipName + ".zip";
-                        System.out.println("ServerEncDec >> zipFileName = "+zipName);
-                        File file = new File("C:\\Users\\1omer\\Desktop\\ServerFiles\\"+zipName);
-                        file.createNewFile();
+                        File file = new File(ServerFilesFolder + zipName);
+                        boolean createFileSucceed = file.createNewFile();
+                        if (!createFileSucceed)
+                            throw new RuntimeException("ServerEncDec >> decodeOrder >> create new fie FAILED");
                         FileOutputStream stream = new FileOutputStream(file);
-                        stream.write(buffer,orderIndex, index-orderIndex);
+                        stream.write(buffer, beginningOfFileIndex, zipLength);
                         stream.flush();
                         stream.close();
-                        System.out.println("ServerEncDec >> decodeOrder >> finished creating zipped file");
-                        zippedFolder = file;
+                        this.zippedFolder = file;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    toReturn = new OrderPacket(jsonFileName, jsonFile, zippedFolder);
-                    orderIndex=2;
-                    received=0;
-                    break;
+                    return new OrderPacket(this.jsonFileName, this.jsonFile, this.zippedFolder);
                 }
-            default:
-                {
-                    System.out.println("ServerEncDec >> decodeOrder >> default switch case");
-                }
+                break;
+            }
         }
-        return toReturn;
+        return null;
     }
 
-    private Packet decodeLog()
-    {
-        String userName = new String(buffer,2,index-2);
+    private Packet decodeLog() {
+        String userName = new String(buffer, 2, index - 2);
         return new LogInOutPacket(opCode, operationCode, userName);
     }
 
-    private Packet decodeError()
-    {
-        String errorMessage = new String(buffer,2,index-2);
+    private Packet decodeError() {
+        String errorMessage = new String(buffer, 2, index - 2);
         return new LogInOutPacket(opCode, operationCode, errorMessage);
     }
 
-    private void reset()
-    {
-        index=0;
-        opCode = '\0';
-        operationCode = '\0';
+    private void reset() {
+        this.index = 0;
     }
+
     /**
      * increases buffer's size by BUFFER_SIZE * 10
      * buffer will not return to original first size after this function
+     *
      * @param buf the buf to increase and copy
      * @return new buffer with the same bytes, with the length required
      */
-    private byte[] increaseBufferSize(byte[] buf)
-    {
-        byte[] newBuf = new byte[buf.length + BUFFER_SIZE*10];
+    private byte[] increaseBufferSize(byte[] buf) {
+        byte[] newBuf = new byte[buf.length + BUFFER_SIZE * 10];
         System.arraycopy(buf, 0, newBuf, 0, buf.length);
         return newBuf;
     }
@@ -214,5 +240,10 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
     @Override
     public byte[] encode(Packet message) {
         return message.encodePacket();
+    }
+
+    private static int fromByteArrayToInt(byte[] bytes)
+    {
+        return bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
     }
 }

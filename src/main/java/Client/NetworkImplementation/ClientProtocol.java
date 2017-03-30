@@ -19,14 +19,10 @@ public class ClientProtocol implements MessagingProtocol<Packet>
     private char operation;
     private Packet toReturn;
 
-    private String jsonFileName;
-    private File jsonObject, zippedFolder;
+    private Packet receivedPacket;
 
     public void setAndSendOrder(File jsonObject, String jsonFileName, File zippedFolder)
     {
-        this.jsonObject = jsonObject;
-        this.zippedFolder = zippedFolder;
-        this.jsonFileName = jsonFileName;
         this.myHandler.send(new OrderPacket(jsonFileName, jsonObject, zippedFolder));
     }
 
@@ -40,7 +36,7 @@ public class ClientProtocol implements MessagingProtocol<Packet>
     {
         this.opCode = msg.getCode();
         this.operation = msg.getOperation();
-        System.out.println("Client Protocol >> Process >> OpCode: "+opCode+", Operation: "+operation);
+        this.receivedPacket = msg;
 
         switch(opCode)
         {
@@ -50,7 +46,6 @@ public class ClientProtocol implements MessagingProtocol<Packet>
                 // the error message will be that the packet received had a non-existing op code
                 System.out.println("#### Got an Error Message from the Server: ####");
                 System.out.println(((ErrorPacket)msg).getErrorMessage());
-                // TODO change or remove
                 break;
             }
             case 'l': // log in/out
@@ -87,20 +82,16 @@ public class ClientProtocol implements MessagingProtocol<Packet>
     {
         switch (operation)
         {
-            case '0':
+            case '0': // operation '0' represents log out request
             {
                 toReturn = new LogInOutPacket('l', '0', myUserName);
                 break;
             }
-            case '1':
+            case '1': // operation '1' represents log in request
             {
                 toReturn = null;
                 shouldTerminate = true;
                 break;
-            }
-            default:
-            {
-                System.out.println("ClientProt >> handleAck >> default switch case");
             }
         }
         return toReturn;
@@ -122,6 +113,6 @@ public class ClientProtocol implements MessagingProtocol<Packet>
     {
         this.myHandler = myHandler;
         shouldTerminate = false;
-        this.myUserName = "Omer"; // TODO change
+        this.myUserName = "Omer";
     }
 }

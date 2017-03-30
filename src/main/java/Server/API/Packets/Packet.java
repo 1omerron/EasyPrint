@@ -46,7 +46,7 @@ public abstract class Packet
         byte[] encoded = new byte[data.length+2];
         encoded[0] = (byte)code;
         encoded[1] = (byte)operation;
-        System.arraycopy(data, 0, encoded, 2, data.length); // i hope it works - omer
+        System.arraycopy(data, 0, encoded, 2, data.length);
         return encoded;
     }
 

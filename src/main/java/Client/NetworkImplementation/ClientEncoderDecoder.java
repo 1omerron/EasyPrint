@@ -20,13 +20,11 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
     private final int BUFFER_SIZE = 1024;
     private int index=0;
     private byte[] buffer = new byte[BUFFER_SIZE];
-    private Packet toReturn = null;
+    private Packet toReturn;
 
     // decoding variables
     private char opCode;
     private char operationCode;
-    private String jsonFileName = null;
-    private int received=0;
 
     /**
      * add the next byte to the decoding process
@@ -36,16 +34,20 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
     @Override
     public Packet decodeNextByte(byte nextByte)
     {
+        toReturn = null;
         if(index>= this.buffer.length)
             buffer = increaseBufferSize(buffer);
         buffer[index++] = nextByte;
         if(index==1) // already read 1 byte (op code byte)
-            opCode = (char) buffer[index-1];
+        {
+            opCode = (char) buffer[index - 1];
+        }
         else if(index==2) // already read 2 bytes (operation)
-            operationCode = (char) buffer[index-1];
+        {
+            operationCode = (char) buffer[index - 1];
+        }
         else if(nextByte=='\0') // finished receiving bytes, decode. skip and return null otherwise
         {
-            System.out.println("ClientEncDec >> decodeNextByte : byte is /0 (packed fully received)");
             switch(opCode)
             {
                 case 'e': // Error
@@ -76,13 +78,6 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
                         reset();
                     return toReturn;
                 }
-                default: // Any Other
-                {
-                    if (toReturn != null)
-                        reset();
-                    jsonFileName = null;
-                    return new ErrorPacket('e','0', "Wrong Op-Code Received From Decoded Packet");
-                }
             }
         }
         return toReturn;
@@ -90,9 +85,13 @@ public class ClientEncoderDecoder implements MessageEncoderDecoder<Packet>
 
     private Packet decodeAck()
     {
-        String ackNumberString = new String(buffer, 2, index-2);
-        ackNumberString = ackNumberString.substring(0, ackNumberString.length()-1);
-        int ackNum = Integer.parseInt(ackNumberString);
+        String bytesOfInteger = "";
+        for(int i=2; i<index; i++)
+        {
+            if(buffer[i]!='\0')
+                bytesOfInteger = bytesOfInteger+(char)buffer[i];
+        }
+        int ackNum = Integer.parseInt(bytesOfInteger);
         return new AckPacket(opCode, operationCode, ackNum);
     }
 

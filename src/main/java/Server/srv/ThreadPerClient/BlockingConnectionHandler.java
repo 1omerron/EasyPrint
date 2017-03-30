@@ -30,8 +30,8 @@ public class BlockingConnectionHandler<T> implements Runnable, java.io.Closeable
     }
 
     @Override
-    public void run() {
-
+    public void run()
+    {
         try (Socket sock = this.sock) { //just for automatic closing
             int read;
 
@@ -43,11 +43,9 @@ public class BlockingConnectionHandler<T> implements Runnable, java.io.Closeable
                 T nextMessage = encdec.decodeNextByte((byte) read);
                 if (nextMessage != null)
                 {
-                    System.out.println("Server Handler >> run() >> Decoded Message != null");
                     T toReturn =  protocol.process(nextMessage);
                     if(toReturn!=null)
                     {
-                        System.out.println("ServerHandler >> Process return Packet != null. SENDING PACKET TO CLIENT");
                         send(toReturn);
                     }
                 }
@@ -56,7 +54,6 @@ public class BlockingConnectionHandler<T> implements Runnable, java.io.Closeable
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
     @Override
