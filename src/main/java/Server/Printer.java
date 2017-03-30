@@ -5,6 +5,8 @@ import Client.RequestOrganization.OrderInstruction;
 import Client.RequestOrganization.PageRangeInstruction;
 import Server.API.Connections;
 import Server.API.Packets.Packet;
+import com.sun.org.apache.xerces.internal.dom.RangeImpl;
+
 import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
@@ -36,9 +38,10 @@ public class Printer {
      */
     private void printFile(FileInstruction instruction) {
         PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-        //aset.add(new Copies(5));
-        //aset.add(MediaSize.ISO.A4);
-        //aset.add(Sides.DUPLEX);
+        aset.add(new Copies(1));
+        aset.add(MediaSize.ISO.A4);
+        aset.add(Sides.DUPLEX);
+        aset.add(new PageRanges("1:2"));
         if(!instruction.getRanges().isEmpty()) {
             PageRanges ranges = new PageRanges(buildRangesAttribute(instruction.getRanges()));
             aset.add(ranges);
@@ -58,6 +61,24 @@ public class Printer {
             ans = String.format("%f:%d,",range.getFirstPage(), range.getLastPage());
         }
         return ans.substring(0,ans.length()-1);     //without the last comma
+    }
+
+    /**
+     * method of the gui - checks if the user entered a valid string of {@link PageRanges}
+     */
+    private static boolean isValidRangeInput(String input){
+        try{
+            PageRanges ranges = new PageRanges(input);
+        }
+        catch (IllegalArgumentException iae){
+            return false;
+        }
+        catch (NullPointerException e){
+            System.out.println("null string of range");
+            return false;
+        }
+
+        return true;
     }
 
 
