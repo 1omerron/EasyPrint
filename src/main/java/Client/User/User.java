@@ -1,7 +1,10 @@
 package Client.User;
 
+import Client.Client;
 import Client.RequestOrganization.OrderInstruction;
 
+import Client.JsonHandler;
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -11,6 +14,27 @@ public class User
 {
     private String userId;
     private HashMap<String,OrderInstruction> orderInstructions;
+
+    public User()
+    {
+        String jsonName = "";
+        User oldUser = null;
+        boolean exist = false;
+        File directory = new File(Client.pathClient);
+        String[] files = directory.list();
+        for(String s : files)
+        {
+            if(s.endsWith("User.json"))
+            {
+                oldUser = JsonHandler.fromJson(s);
+                exist=true;
+            }
+        }
+        if(oldUser == null)//old user
+        {
+
+        }
+    }
 
     public User(HashMap<String, OrderInstruction> orderInstructions)
     {

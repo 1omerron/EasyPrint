@@ -1,16 +1,11 @@
 package Client;
 
-import Client.RequestOrganization.FileInfo;
-import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
+import Client.User.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.*;
 
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.io.*;
 
 /**
  * Created by 1omer on 25/03/2017.
@@ -21,7 +16,13 @@ public class JsonHandler
 
     public static void main(String[] args)
     {
-        FileInfo fileInfo1 = new FileInfo();
+        File file = new File("C:\\Users\\nimrod\\Desktop\\easyPrint");
+        String[] files = file.list();
+        for(String s : files)
+        {
+            System.out.println(s);
+        }
+        /*FileInfo fileInfo1 = new FileInfo();
         FileInfo fileInfo2 = new FileInfo();
         fileInfo1.setFile(new File("C:\\Users\\nimrod\\Desktop\\algo\\algo-zohar.pdf"));
         fileInfo2.setFile(new File("C:\\Users\\nimrod\\Desktop\\easyPrint\\zohar.pdf"));
@@ -32,7 +33,7 @@ public class JsonHandler
         list.add(file2);
         OrderInstruction order= new OrderInstruction(list);
         toJson(order);
-        new ConvertToZip().zipFiles(order);
+        new ConvertToZip().zipFiles(order);*/
         //todo end json tests*/
     }
 
@@ -60,5 +61,20 @@ public class JsonHandler
             e.printStackTrace();
         }
 
+    }
+
+    public static User fromJson(String filename)
+    {
+        Gson gson = new Gson();
+        User user = null;
+        try (Reader reader = new FileReader(Client.pathClient+filename)) {
+
+            // Convert JSON to Java Object
+            user = gson.fromJson(reader, User.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }

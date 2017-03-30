@@ -1,12 +1,12 @@
-/*
+
 package Server;
 
 import Client.RequestOrganization.OrderInstruction;
 
-*/
+
 /**
  * Created by nimrod on 30-Mar-17.
- *//*
+ */
 
 public class ServerInterface
 {
@@ -16,11 +16,11 @@ public class ServerInterface
         this.printer = printer;
     }
 
-    */
+
 /**
      * print the order
      * @param jsonName the name of the json file
-     *//*
+     */
 
     public void printOrder(String jsonName)
     {
@@ -29,11 +29,10 @@ public class ServerInterface
         printer.sendOrderInstruction(order);
     }
 
-    */
 /**
      * @param jsonName
      * @return Order Instruction from the json file
-     *//*
+     */
 
     public OrderInstruction createOrder(String  jsonName)
     {
@@ -41,4 +40,4 @@ public class ServerInterface
         return order;
     }
 }
-*/
+

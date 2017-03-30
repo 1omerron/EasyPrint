@@ -15,7 +15,6 @@ public class UserInterface
 {
     private String currentOrderId;
     private User user;
-    private HashMap<String , OrderInstruction > orders;
 
     public void setCurrentOrderId(String currentOrderId) {
         this.currentOrderId = currentOrderId;
@@ -26,7 +25,7 @@ public class UserInterface
     }
 
     public void setOrders(HashMap<String, OrderInstruction> orders) {
-        this.orders = orders;
+        this.user.setOrderInstructions(orders);
     }
 
     public String getCurrentOrderId() {
@@ -39,7 +38,7 @@ public class UserInterface
     }
 
     public HashMap<String, OrderInstruction> getOrders() {
-        return orders;
+        return user.getOrderInstructions();
     }
 
     public UserInterface(User user)
@@ -106,6 +105,7 @@ public class UserInterface
             LinkedList<FileInstruction> list = new LinkedList<>();
             list.addLast(fileIns);
             OrderInstruction newOrder = new OrderInstruction(fileIns);
+            user.getOrderInstructions().put(newOrder.getOrderId(),newOrder);
         }
         else
         {//order exist
