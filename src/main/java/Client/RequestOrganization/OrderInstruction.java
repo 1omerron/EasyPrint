@@ -11,19 +11,15 @@ import java.util.LinkedList;
 public class OrderInstruction
 {
     private String orderId;
-    private String userId;
     private String orderName;
     public String getOrderId() {
         return orderId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
     public OrderInstruction(LinkedList<FileInstruction> instructionsList,String orderId) {
         this.orderId = SingeltonIdMonitor.getInstance().getAvailableId();
-        this.userId = userId;
+
         this.instructionsList = instructionsList;
     }
 
@@ -31,9 +27,6 @@ public class OrderInstruction
         this.orderId = orderId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public static void setPathClient(String pathClient) {
         OrderInstruction.pathClient = pathClient;

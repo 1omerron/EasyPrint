@@ -18,7 +18,7 @@ public class EditOrderWindow extends BigBasicFrame {
     private Insets inset;
     private GridBagConstraints constraints;
 
-    public EditOrderWindow() throws HeadlessException, MalformedURLException {
+    public EditOrderWindow(String orderId) throws HeadlessException, MalformedURLException {
         Dimension buttonSize1 = new Dimension( screenSize.width/15,screenSize.height/20 );
         Dimension buttonSize2 = new Dimension( screenSize.width/20,screenSize.height/20 );
         this.mainPanel = new JPanel( new GridBagLayout() );
