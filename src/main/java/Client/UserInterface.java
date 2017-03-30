@@ -15,6 +15,7 @@ public class UserInterface
 {
     private String currentOrderId;
     private User user;
+    private HashMap<String , OrderInstruction > orders;
 
     public UserInterface(User user)
     {
