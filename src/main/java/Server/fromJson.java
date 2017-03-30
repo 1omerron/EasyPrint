@@ -14,7 +14,7 @@ import java.util.LinkedList;
 /**
  * Created by nimrod on 26/03/2017.
  */
-public class fromJson
+public class FromJson
 {
     public static String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the server
     public static void main(String[] args)

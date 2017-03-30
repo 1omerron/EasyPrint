@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class OrderInstruction
 {
     private String orderId;
-
+    private String userId;
     public String getOrderId() {
         return orderId;
     }
