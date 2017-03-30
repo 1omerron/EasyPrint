@@ -109,9 +109,9 @@ public class UserInterface
     /**
      * create new file instruction
      */
-    public FileInstruction createFileInstruction(FileInfo fileInfo, PageRangeInstruction page)
+    public FileInstruction createFileInstruction(FileInfo fileInfo, String range)
     {
-        FileInstruction fileIns = new FileInstruction(fileInfo, page);
+        FileInstruction fileIns = new FileInstruction(fileInfo, range);
         return fileIns;
     }
 
@@ -119,7 +119,7 @@ public class UserInterface
      * @param fileIns the file instruction to add to.
      * @param pageRange the PageRange Instruction to add.
      */
-    public void addPageRangeInstruction(FileInstruction fileIns, PageRangeInstruction pageRange)
+    public void addPageRangeInstruction(FileInstruction fileIns, String pageRange)
     {
         fileIns.addPageRangeInstruction(pageRange);
     }
