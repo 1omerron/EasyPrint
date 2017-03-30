@@ -41,12 +41,11 @@ public class Printer {
         aset.add(new Copies(1));
         aset.add(MediaSize.ISO.A4);
         aset.add(Sides.DUPLEX);
-        aset.add(new PageRanges("1:2"));
-        if(!instruction.getRanges().isEmpty()) {
-            PageRanges ranges = new PageRanges(buildRangesAttribute(instruction.getRanges()));
-            aset.add(ranges);
+        if(instruction.getRanges() != null) {
+            aset.add(new PageRanges(instruction.getRanges()));
         }
     }
+
 
     /**
      * this method returns the ranges of a file instruction in the appropriate syntax
