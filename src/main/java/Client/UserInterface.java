@@ -17,9 +17,35 @@ public class UserInterface
     private User user;
     private HashMap<String , OrderInstruction > orders;
 
+    public void setCurrentOrderId(String currentOrderId) {
+        this.currentOrderId = currentOrderId;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setOrders(HashMap<String, OrderInstruction> orders) {
+        this.orders = orders;
+    }
+
+    public String getCurrentOrderId() {
+
+        return currentOrderId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public HashMap<String, OrderInstruction> getOrders() {
+        return orders;
+    }
+
     public UserInterface(User user)
     {
         this.user = user;
+
         currentOrderId = null;
     }
 
