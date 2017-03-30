@@ -33,9 +33,9 @@ public class FilePrinter {
 // Create a Doc
         Doc myDoc = new SimpleDoc(textstream, myFormat, null);
 // Build a set of attributes
-        PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-        aset.add(new Copies(1));
-        aset.add(MediaSize.ISO.A4);
+        //PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+        //aset.add(new Copies(1));
+        //aset.add(MediaSize.ISO.A4);
         //aset.add(Sides.DUPLEX);
 // discover the printers that can print the format according to the
 // instructions in the attribute set
@@ -53,7 +53,7 @@ public class FilePrinter {
             PrintJobWatcher pjw = new PrintJobWatcher(job);
 
             try {
-                job.print(myDoc, aset);
+                job.print(myDoc, null);
                 pjw.waitForDone();
                 textstream.close();
             } catch (PrintException pe) {
