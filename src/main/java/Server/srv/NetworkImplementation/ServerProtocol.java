@@ -27,7 +27,6 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
     private char opCode;
     private char operation;
     private Packet toReturn;
-    private int orderPartsReceived = 0;
 
     private String jsonFileName;
 
@@ -81,7 +80,7 @@ public class ServerProtocol<T> implements MessagingProtocol<Packet>
     {
         System.out.println("ServerProt >> handleOrder");
         // PrintOrder printOrder = new PrintOrder(msg.getJsonFileName());
-        toReturn = new AckPacket('a', '0', orderPartsReceived);
+        toReturn = new AckPacket('a', '0', 0);
         return toReturn;
     }
 

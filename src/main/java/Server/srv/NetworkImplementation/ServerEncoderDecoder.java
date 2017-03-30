@@ -12,10 +12,6 @@ import java.io.IOException;
 
 /**
  * Created by 1omer on 27/03/2017.
- *
- * Notes:
- * 1. The class checks if JSON file NAME packet was received before the Zipped file itself and before the json file,
- * in order to create the files in the server's directory. we can move it to the protocol if we want.
  */
 public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
 {
@@ -142,10 +138,10 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
                         stream.close();
                         jsonFile = file;
                         System.out.println("ServerEncDec >> decodeOrder >> finished creating json file");
-                        toReturn = null;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    toReturn = null;
                     orderIndex=index;
                     break;
                 }
@@ -153,7 +149,7 @@ public class ServerEncoderDecoder<T> implements MessageEncoderDecoder<Packet>
                 {
                     try {
                         String zipName = jsonFileName.substring(0, (jsonFileName.length()-4)); // removes json (. stays)
-                        zipName = zipName + "zip";
+                        zipName = zipName + ".zip";
                         System.out.println("ServerEncDec >> zipFileName = "+zipName);
                         File file = new File("C:\\Users\\1omer\\Desktop\\ServerFiles\\"+zipName);
                         file.createNewFile();
