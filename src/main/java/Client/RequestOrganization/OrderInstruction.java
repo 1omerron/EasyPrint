@@ -1,6 +1,7 @@
 package Client.RequestOrganization;
 
 import Client.User.SingeltonIdMonitor;
+import Client.User.User;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -15,13 +16,18 @@ public class OrderInstruction
 
 
     private String orderName;
+
+    public OrderInstruction(User user) {
+
+    }
+
     public String getOrderId() {
         return orderId;
     }
 
 
-    public OrderInstruction(LinkedList<FileInstruction> instructionsList,String orderId) {
-        this.orderId = SingeltonIdMonitor.getInstance().getAvailableId();
+    public OrderInstruction(LinkedList<FileInstruction> instructionsList,String userId) {
+        this.orderId = userId;
 
         this.instructionsList = instructionsList;
     }
