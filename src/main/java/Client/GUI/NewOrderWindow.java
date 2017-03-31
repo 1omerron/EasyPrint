@@ -21,7 +21,7 @@ public class NewOrderWindow extends BasicFrame {
         constraints.fill = GridBagConstraints.HORIZONTAL;//not sure what it's doing
         constraints.anchor = GridBagConstraints.CENTER; //same..
 
-        //JTextArea init
+        //JTextField init
         JTextField newNameTextBox = new JTextField(30);
         /*
         newNameTextBox.addFocusListener( new FocusListener() {
@@ -52,7 +52,15 @@ public class NewOrderWindow extends BasicFrame {
         createOrderButton.setPreferredSize( buttonSize );
         createOrderButton.addActionListener( e ->{
             newName = newNameTextBox.getText();
-           // UI.createOrderInstruction();
+            String tempId = UI.createOrderInstruction();
+            EditOrderWindow editOrderWindow = null;
+            try {
+                editOrderWindow = new EditOrderWindow(tempId);
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
+            editOrderWindow.setVisible( true );
+            dispose();
 
         });
         mainPanel.add(createOrderButton, constraints);

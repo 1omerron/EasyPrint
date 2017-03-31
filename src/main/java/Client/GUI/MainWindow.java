@@ -49,7 +49,8 @@ public class MainWindow extends BigBasicFrame {
         editOrderWindow.setFont(font);
         this.editOrderWindow.addActionListener( e -> {
             try {
-                EditOrderWindow editOrderWindow = new EditOrderWindow("");
+                if(orderToEdit.equals( "" )) return;
+                EditOrderWindow editOrderWindow = new EditOrderWindow(orderToEdit);//TODO fix the string for the window
                 editOrderWindow.setVisible( true );
                 dispose();
             } catch (MalformedURLException e1) {

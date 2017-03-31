@@ -14,6 +14,7 @@ public class EditOrderWindow extends BigBasicFrame {
     private JButton submitNewFileButton;
     private JButton printButton;
     private JButton backToMainButton;
+    //private JTextArea orderName
     private JPanel instructionPanel;
     private Insets inset;
     private GridBagConstraints constraints;

@@ -44,6 +44,10 @@ public class User
     public HashMap<String, OrderInstruction> getOrderInstructions() {
         return orderInstructions;
     }
+    public void addOrderInstruction(OrderInstruction instruction){
+        orderInstructionsById.put( instruction.getOrderName(), instruction.getOrderId() );
+        orderInstructions.put( instruction.getOrderId(),instruction );
+    }
 
     public void toPrint()
     {

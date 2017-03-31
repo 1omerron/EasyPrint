@@ -11,6 +11,9 @@ import java.util.LinkedList;
 public class OrderInstruction
 {
     private String orderId;
+
+
+
     private String orderName;
     public String getOrderId() {
         return orderId;
@@ -27,6 +30,13 @@ public class OrderInstruction
         this.orderId = orderId;
     }
 
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
 
     public static void setPathClient(String pathClient) {
         OrderInstruction.pathClient = pathClient;
