@@ -76,8 +76,8 @@ public class UserInterface
      *
      * @return New order's ID
      */
-    public String createOrderInstruction(){
-        OrderInstruction temp =  new OrderInstruction(  );
+    public String createOrderInstruction(String orderName){
+        OrderInstruction temp =  new OrderInstruction( orderName, user );
         user.addOrderInstruction( temp );
         return temp.getOrderId();
     }
