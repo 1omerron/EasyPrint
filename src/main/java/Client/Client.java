@@ -31,7 +31,7 @@ public class Client<T>
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.handler = new BlockingConnectionHandler<T>(this.socket, coder, prot);
+        this.handler = new BlockingConnectionHandler<>(this.socket, coder, prot);
     }
 
     public void sendOrder(File jsonObject, String jsonFileName, File zippedFolder)
@@ -48,7 +48,7 @@ public class Client<T>
     public static void main(String[] args)
     {
         /* JUST FOR TESTING THE CLIENT - REMOVE THE MAIN AFTER */
-        Client client = new Client("132.72.233.199",7777);
+        Client client = new Client("127.0.0.1",7777);
         client.start(new ClientEncoderDecoder(),new ClientProtocol());
         String fileName = "jsonfile";
         File jsonObject = new File(pathClient+fileName+".json");
