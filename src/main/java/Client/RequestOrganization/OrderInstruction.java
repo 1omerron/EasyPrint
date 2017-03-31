@@ -13,7 +13,7 @@ public class OrderInstruction
 {
     private String orderId;
 
-
+    private User user;
 
     private String orderName;
 
@@ -21,9 +21,16 @@ public class OrderInstruction
 
     }
 
+    public OrderInstruction(String orderName, User user){
+        this.orderName = orderName;
+        this.user  = user;
+
+    }
+
     public String getOrderId() {
         return orderId;
     }
+
 
 
     public OrderInstruction(LinkedList<FileInstruction> instructionsList,String userId) {
