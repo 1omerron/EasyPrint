@@ -36,7 +36,7 @@ public class UserInterface
         }
         if(oldUser == null)// new user
         {
-            this.user = new User();
+            this.user = new User("");
         }
     }
     public void setCurrentOrderId(String currentOrderId) {
