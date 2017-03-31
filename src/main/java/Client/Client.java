@@ -16,7 +16,7 @@ import java.net.Socket;
  */
 public class Client<T>
 {
-    public static String pathClient = "C:\\Users\\1omer\\Desktop\\ClientFiles\\";
+    public static String pathClient = "C:\\Users\\nimrod\\Desktop\\easyPrint";
 
     private final String serverIp;
     private final int serverPort;

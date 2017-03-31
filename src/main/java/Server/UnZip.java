@@ -21,6 +21,7 @@ public class UnZip
     public static void unZipIt(OrderInstruction order){
         String pathServer = FromJson.pathServer;//todo check what the path to the files in the server
         new File(pathServer+File.separator+order.getOrderId()).mkdir();
+        System.out.println("un zip it: "+order.getOrderId());
         String zipFile = pathServer+File.separator+order.getOrderId()+".zip";
         String outputFolder = pathServer+File.separator+order.getOrderId();
         byte[] buffer = new byte[1024];

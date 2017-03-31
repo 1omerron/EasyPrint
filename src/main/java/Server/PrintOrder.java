@@ -28,15 +28,16 @@ public class PrintOrder {
 
     public static void printOrder(String jsonName)
     {
-        System.out.println("try to open json: "+jsonName);
+        System.out.println("try to open json: "+jsonName);//todo
         OrderInstruction order = FromJson.fromJson(jsonName);
+        order.print();
         String path = FromJson.pathServer;
         UnZip.unZipIt(order);
         for(FileInstruction fileIns : order.getInstructionsList())
         {
             String fileName = fileIns.getFile().getFile().getName();
-            System.out.println(fileName);
-            String filePath = path+"\\"+fileName;
+            System.out.println(fileName);//todo
+            String filePath = path+fileName;
             print(filePath);
         }
 

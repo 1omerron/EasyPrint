@@ -1,14 +1,14 @@
 package Client;
 
+import Client.RequestOrganization.FileInfo;
+import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 import Client.User.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.util.LinkedList;
 
 /**
  * Created by 1omer on 25/03/2017.
@@ -19,17 +19,18 @@ public class JsonHandler
 
     public static void main(String[] args)
     {
-        /*FileInfo fileInfo1 = new FileInfo();
+        FileInfo fileInfo1 = new FileInfo();
         FileInfo fileInfo2 = new FileInfo();
-        fileInfo1.setFile(new File("C:\\Users\\nimrod\\Desktop\\algo\\algo-zohar.pdf"));
-        fileInfo2.setFile(new File("C:\\Users\\nimrod\\Desktop\\easyPrint\\zohar.pdf"));
+        fileInfo1.setFile(new File("C:\\Users\\nimrod\\Desktop\\easyPrint\\Start.docx"));
+        fileInfo2.setFile(new File("C:\\Users\\nimrod\\Desktop\\easyPrint\\nimrod.txt"));
         FileInstruction file1 = new FileInstruction(fileInfo1);
-        FileInstruction file2 = new FileInstruction(fileInfo2);*/
-        UserInterface ui = new UserInterface();
-        //ui.addFileInstruction(file1);
-        //ui.addFileInstruction(file2);
-
-        ui.exit();
+        FileInstruction file2 = new FileInstruction(fileInfo2);
+        LinkedList<FileInstruction> list = new LinkedList<>();
+        list.add(file1);
+        list.add(file2);
+        OrderInstruction order = new OrderInstruction(list, "jsonfile");
+        JsonHandler.toJson(order);
+        ConvertToZip.zipFiles(order);
         //todo end json tests*/
     }
 

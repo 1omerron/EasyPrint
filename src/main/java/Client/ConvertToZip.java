@@ -7,20 +7,14 @@ package Client;
 import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ConvertToZip {
 
-    public void zipFiles(OrderInstruction order)
+    public static void zipFiles(OrderInstruction order)
     {
         LinkedList<FileInstruction> files = order.getInstructionsList();
         FileOutputStream fos = null;

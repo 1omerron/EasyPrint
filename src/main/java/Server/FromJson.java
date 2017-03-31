@@ -4,6 +4,7 @@ package Server;
 import Client.RequestOrganization.FileInfo;
 import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
+import Client.UserInterface;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -19,7 +20,7 @@ import java.util.LinkedList;
 
 public class FromJson
 {
-    public static String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint";//todo check what the path to the files in the server
+    public static String pathServer = "C:\\Users\\nimrod\\Desktop\\easyPrint\\";//todo check what the path to the files in the server
     public static void main(String[] args)
     {
         FileInfo fileInfo1 = new FileInfo();
@@ -32,6 +33,8 @@ public class FromJson
         list.add(file1);
         list.add(file2);
         OrderInstruction order = new OrderInstruction(list);
+        UserInterface ui = new UserInterface();
+        ui.addOrderInstruction(order);
         //OrderInstruction orderTest = fromJson("order.json"); //make class from the json file "order.json"
         // Client client = new Client("127.0.0.1",7777);
         // client.init(new ClientEncoderDecoder(),new ClientProtocol());

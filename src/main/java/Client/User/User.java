@@ -21,7 +21,7 @@ public class User
 
     public User()
     {
-        userId = "1234678";//todo change to stdin its only for tests.
+        userId = "308043611";//todo change to stdin its only for tests.
         orderInstructions = new HashMap<>();
     }
 

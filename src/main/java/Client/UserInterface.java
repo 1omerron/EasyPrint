@@ -2,7 +2,6 @@ package Client;
 import Client.RequestOrganization.FileInfo;
 import Client.RequestOrganization.FileInstruction;
 import Client.RequestOrganization.OrderInstruction;
-import Client.RequestOrganization.PageRangeInstruction;
 import Client.User.User;
 
 import java.io.File;
@@ -24,11 +23,11 @@ public class UserInterface
         boolean exist = false;
         File directory = new File(Client.pathClient);
         String[] files = directory.list();
-        for(String s : files)
+        for(int i=0; i<files.length ; i++)
         {
-            if(s.endsWith("_User.json"))
+            if(files[i].endsWith("_User.json"))
             {
-                oldUser = JsonHandler.fromJson(s);
+                oldUser = JsonHandler.fromJson(files[i]);
                 System.out.println("user in the system");//todo remove.
                 exist=true;
                 currentOrderId = null;
@@ -80,20 +79,6 @@ public class UserInterface
         OrderInstruction temp =  new OrderInstruction( orderName, user );
         user.addOrderInstruction( temp );
         return temp.getOrderId();
-    }
-
-
-
-
-    /**
-     * @param firstPage
-     * @param lastPage
-     * @param printQuantity
-     */
-    public PageRangeInstruction createPageRangeInstruction(int firstPage, int lastPage, int printQuantity)
-    {
-        PageRangeInstruction range = new PageRangeInstruction(firstPage,lastPage,printQuantity);
-        return range;
     }
 
     /**
@@ -155,5 +140,11 @@ public class UserInterface
     public void exit()
     {
         JsonHandler.toJson(user);
+    }
+
+    public void addOrderInstruction(OrderInstruction order)
+    {
+        user.getOrderInstructions().put(order.getOrderId(), order);
+        //todo add to the gui hash
     }
 }
