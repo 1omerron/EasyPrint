@@ -17,7 +17,8 @@ public class OrderInstruction
 
     public OrderInstruction(String orderName, User user){
         this.orderName = orderName;
-        this.user  = user;
+        this.user = user;
+        orderId = user.getUserId() + "_" + user.getIdCounter();
     }
 
     public String getOrderId() {
