@@ -72,8 +72,14 @@ public class UserInterface
         currentOrderId = null;
     }
 
-    public OrderInstruction createOrderInstruction(){
-        return new OrderInstruction(  );
+    /**
+     *
+     * @return New order's ID
+     */
+    public String createOrderInstruction(String orderName){
+        OrderInstruction temp =  new OrderInstruction( orderName, user );
+        user.addOrderInstruction( temp );
+        return temp.getOrderId();
     }
 
 

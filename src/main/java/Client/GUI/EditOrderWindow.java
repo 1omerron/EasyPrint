@@ -14,6 +14,7 @@ public class EditOrderWindow extends BigBasicFrame {
     private JButton submitNewFileButton;
     private JButton printButton;
     private JButton backToMainButton;
+    private JTextArea orderNamelabel;
     private JPanel instructionPanel;
     private Insets inset;
     private GridBagConstraints constraints;
@@ -84,6 +85,11 @@ public class EditOrderWindow extends BigBasicFrame {
             //TODO
         });
         mainPanel.add( backToMainButton, constraints );
+
+        //orderNameLabel
+        orderNamelabel = new JTextArea( UI.getUser().getOrderInstructions().get( orderId ).getOrderName() );
+        System.out.println(UI.getUser().getOrderInstructions().get( orderId ).getOrderName());
+        mainPanel.add( orderNamelabel, constraints );
 
 
 
