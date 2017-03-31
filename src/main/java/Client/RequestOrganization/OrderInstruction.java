@@ -12,19 +12,12 @@ import java.util.LinkedList;
 public class OrderInstruction
 {
     private String orderId;
-
     private User user;
-
     private String orderName;
-
-    public OrderInstruction(User user) {
-
-    }
 
     public OrderInstruction(String orderName, User user){
         this.orderName = orderName;
         this.user  = user;
-
     }
 
     public String getOrderId() {
